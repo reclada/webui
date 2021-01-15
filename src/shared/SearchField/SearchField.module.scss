@@ -1,0 +1,14 @@
+@import 'src/styles/variables';
+
+.root {
+  height: 60px;
+  border-radius: 30px;
+  overflow-x: auto;
+  border: 2px solid $steel-blue-1;
+  padding: 0 15px;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: $background;
+}

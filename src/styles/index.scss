@@ -1,0 +1,15 @@
+@import 'normalize';
+@import 'fonts';
+@import 'select';
+@import 'variables';
+
+.body {
+  background-color: $background;
+  color: $primary;
+  font-size: 14px;
+  line-height: 130%;
+}
+
+#root {
+  height: 100%;
+}

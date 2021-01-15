@@ -1,0 +1,69 @@
+@import 'src/styles/variables';
+
+.root {
+  background-color: $page-background;
+  overflow-x: hidden;
+}
+
+.header {
+  padding: 30px;
+  width: 100%;
+  color: $midnight-gray;
+  fill: $midnight-gray;
+  text-align: center;
+}
+
+.accountMenu {
+  float: right;
+}
+
+.searchPanel {
+  padding: 0 30px 20px 30px;
+}
+
+.appIcon {
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.title {
+  margin: 0 0 40px 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.resultTabs {
+  padding: 0 30px 0 30px;
+}
+
+.toolbar {
+  padding: 0 30px 30px 30px;
+}
+
+.main {
+  padding: 0 30px;
+  flex-grow: 1;
+  display: flex;
+}
+
+.leftPanel {
+  height: 1000px;
+  overflow-y: auto;
+  padding-right: 18px;
+  transition: width 300ms;
+}
+
+.leftPanelWide {
+  composes: leftPanel;
+  width: 100%;
+}
+
+.leftPanelSlim {
+  composes: leftPanel;
+  width: 50%;
+}
+
+.rightPanel {
+  width: 50%;
+  padding-left: 18px;
+}

@@ -1,0 +1,63 @@
+@import 'src/styles/variables';
+
+$entry-padding-x: 30px;
+
+.root {
+  width: 30px;
+  height: 100%;
+  background-color: $sidebar-background;
+  color: $sidebar-color;
+  position: relative;
+
+  transition-property: width;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-out;
+
+}
+.root.opened {
+  width: 300px;
+}
+
+.wrapper {
+  overflow-x: hidden;
+  height: 100%;
+}
+
+.content {
+  height: 100%;
+  padding: 40px $entry-padding-x;
+}
+
+
+.toggle {
+  position: absolute;
+  top: 30px;
+  right: -15px;
+}
+
+.title {
+  color: $sidebar-header;
+  white-space: nowrap;
+  font-size: 18px;
+  line-height: 21px;
+  margin-bottom: 24px;
+  font-weight: bold;
+}
+
+.label {
+  display: block;
+  white-space: nowrap;
+  font-size: 16px;
+  line-height: 150%;
+
+  input {
+    margin-right: 14px;
+  }
+}
+
+.hr {
+  border: 1px solid $dark-blue-1;
+  margin: 30px 0;
+  margin-left: -$entry-padding-x;
+  margin-right: -$entry-padding-x;
+}

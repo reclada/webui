@@ -1,0 +1,23 @@
+@import '../../styles/variables';
+
+$avatar-size: 24px;
+
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  margin: 0;
+  padding: 0 14px 0 0;
+  color: $steel-blue;
+}
+
+.avatar {
+  background: $steel-blue;
+  width: $avatar-size;
+  height: $avatar-size;
+  border-radius: 400px;
+  display: block;
+}

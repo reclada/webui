@@ -1,0 +1,28 @@
+.root {
+  margin-left: 10px;
+  min-width: 200px;
+  :global {
+    .rc-select-customize-input {
+      font-size: 16px;
+    }
+  }
+}
+
+.suggestOption {
+  //height: 100px;
+}
+
+.suggestLabel {
+  font-weight: bold;
+  margin: 0;
+  padding-top: 5px;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.suggestGroup {
+  margin: 0;
+  padding: 10px 0;
+  font-size: 14px;
+  line-height: 14px;
+}

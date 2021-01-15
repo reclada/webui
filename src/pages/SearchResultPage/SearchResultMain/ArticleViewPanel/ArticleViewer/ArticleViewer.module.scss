@@ -1,0 +1,28 @@
+@import '../../../../../styles/variables';
+
+.root {
+  padding: 3px;
+}
+
+.documentArea {
+  background: $white;
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+.controlPanel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  font-size: 14px;
+
+  button {
+    padding: 0 10px;
+    cursor: pointer;
+  }
+
+  svg {
+    fill: $steel-blue;
+  }
+}

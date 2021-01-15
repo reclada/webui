@@ -1,0 +1,15 @@
+@import 'src/styles/variables';
+
+.root {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $page-background;
+}
+
+.searchWrapper {
+  width: 80%;
+  max-width: 950px;
+  padding-bottom: 10%;
+}

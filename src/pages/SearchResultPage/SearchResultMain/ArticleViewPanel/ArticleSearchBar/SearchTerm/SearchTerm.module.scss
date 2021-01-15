@@ -1,0 +1,21 @@
+@import 'src/styles/variables';
+
+.root {
+  display: flex;
+  flex-wrap: nowrap;
+  height: 24px;
+  border-radius: 12px;
+  padding: 0 10px;
+  align-items: center;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.title {
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+.count {
+  font-weight: bold;
+}

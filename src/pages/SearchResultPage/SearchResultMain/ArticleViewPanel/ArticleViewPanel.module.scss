@@ -1,0 +1,71 @@
+@import 'src/styles/variables';
+
+.root {
+  border-radius: 10px;
+  padding: 20px;
+  background-color: $light-blue-1;
+}
+
+.header {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.headerTitle {
+  flex-grow: 1;
+  display: flex;
+  margin-right: 15px;
+}
+
+.titleIcon {
+  flex-shrink: 0;
+  margin-right: 10px;
+  svg {
+    width: 24px;
+    fill: $steel-blue;
+  }
+}
+
+.titleWrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.title {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
+  margin: 0 0 5px;
+  color: $dark-blue-0;
+}
+
+.fileInfo {
+  font-size: 12px;
+  line-height: 130%;
+  color: $steel-blue;
+}
+
+.headerTools {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.iconButton {
+  margin-right: 15px;
+  svg {
+    fill: $steel-blue;
+  }
+}
+
+.searchWrapper {
+  margin-bottom: 20px;
+}
+
+.articleWrapper {
+  //background: $white;
+  //overflow: hidden;
+  //border-radius: 5px;
+}

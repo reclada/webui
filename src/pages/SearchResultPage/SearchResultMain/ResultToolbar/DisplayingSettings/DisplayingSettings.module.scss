@@ -1,0 +1,24 @@
+@import 'src/styles/variables';
+
+.root {
+  border: none;
+  display: flex;
+}
+
+.iconButton {
+  cursor: pointer;
+  svg {
+    fill: $steel-blue
+  }
+
+  &:nth-of-type(2) {
+    padding: 0 25px;
+  }
+
+}
+
+.iconButton.active {
+  svg {
+    fill: $cyan;
+  }
+}

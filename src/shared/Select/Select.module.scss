@@ -1,0 +1,70 @@
+@import 'src/styles/variables';
+
+.root {
+  font-size: 14px;
+  margin-bottom: -2px;
+
+
+}
+
+:global {
+  .rc-select {
+    cursor: pointer !important;
+    padding: 0;
+
+    &-selector {
+      border: none !important;
+      font-size: 14px;
+
+      input {
+        cursor: pointer;
+      }
+    }
+
+    // ============== Dropdown ===============
+    &-dropdown {
+      width: auto !important;
+      padding-top: 5px;
+      font-size: 14px;
+
+      & > div {
+        border: 1px solid $dark-blue-0;
+        border-radius: 5px;
+        overflow: hidden;
+        min-height: 50px;
+        background: $white;
+      }
+    }
+
+    // =============== Option ================
+    &-item {
+      font-size: 14px;
+      cursor: pointer;
+      // >>> Option
+      &-option {
+        .rc-select-item-option-state {
+          display: none;
+        }
+        // ------- Active -------
+        &-active {
+          background: $light-blue-1;
+        }
+        // ------ Disabled ------
+        &-disabled {
+          color: $gray-4;
+        }
+      }
+      // >>> Empty
+      &-empty {
+        text-align: center;
+        color: #999;
+      }
+    }
+  }
+}
+
+.arrow {
+  fill: $steel-blue;
+  margin-top: 5px;
+}
+

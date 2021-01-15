@@ -1,0 +1,187 @@
+@import 'src/styles/variables';
+
+.root {
+  font-size: 16px;
+  width: 100%;
+  margin-bottom: -10px;
+
+  :global {
+    .rc-tabs {
+
+      &-nav {
+        display: flex;
+        flex: none;
+        position: relative;
+
+
+        &-measure,
+        &-wrap {
+          transform: translate(0);
+          position: relative;
+          flex: auto;
+          white-space: nowrap;
+          overflow: hidden;
+          display: flex;
+
+          &-ping-left::before,
+          &-ping-right::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+          }
+          &-ping-left::before {
+            left: 0;
+          }
+          &-ping-right::after {
+            right: 0;
+          }
+
+          &-ping-top::before,
+          &-ping-bottom::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+          }
+          &-ping-top::before {
+            top: 0;
+            border-top: 1px solid red;
+          }
+          &-ping-bottom::after {
+            bottom: 0;
+            border-top: 1px solid red;
+          }
+        }
+
+        &-list {
+          display: flex;
+          position: relative;
+          transition: transform 0.3s;
+        }
+
+        // >>>>>>>> Operations
+        &-operations {
+          display: flex;
+
+          &-hidden {
+            position: absolute;
+            visibility: hidden;
+            pointer-events: none;
+          }
+        }
+
+        &-more {
+          border: none;
+          background-color: transparent;
+          padding: 0 10px;
+          margin-bottom: 15px;
+          font-size: 14px;
+          white-space: nowrap;
+          svg {
+            fill: $steel-blue;
+            margin-left: 10px;
+          }
+        }
+        &-add {
+        }
+      }
+
+      &-tab {
+        text-align: center;
+        //min-width: 222px;
+        padding: 15px 36px 25px 36px;
+        cursor: pointer;
+        position: relative;
+
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 16px;
+        color: #333333;
+
+        &-btn,
+        &-remove {
+          border: 0;
+          background: transparent;
+        }
+
+        &-btn {
+          font-weight: inherit;
+        }
+
+        &-remove {
+          &:hover {
+          }
+        }
+
+        &-active {
+          background: $light-blue-1;
+          border-radius: 10px 10px 0 0;
+        }
+      }
+
+      &-ink-bar {
+        position: absolute;
+        pointer-events: none;
+        bottom: 0;
+        height: 7px;
+        background-color: $primary;
+        display: none;
+
+        &-animated {
+          transition: all 0.3s;
+        }
+      }
+
+      &-extra-content {
+        flex: none;
+      }
+    }
+
+  }
+}
+
+.tabTitle {
+}
+
+.tabCount {
+  font-weight: 700;
+}
+
+:global {
+  .rc-tabs-dropdown {
+    position: absolute;
+    background-color: $page-background;
+    border: 1px solid black;
+    max-height: 200px;
+    width: 222px;
+    overflow: auto;
+
+    &-hidden {
+      display: none;
+    }
+
+    &-menu {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      &-item {
+        padding: 10px 10px;
+         &:hover {
+           background-color: $gray-5;
+         }
+
+        &-selected {
+          background: $gray-5;
+        }
+
+        &-disabled {
+          opacity: 0.3;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,126 @@
+@import 'src/styles/variables';
+
+.root {
+  display: flex;
+}
+
+.button {
+  border: none;
+  height: 30px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+
+  svg {
+    cursor: pointer;
+    fill: $steel-blue;
+  }
+
+  &[disabled] svg {
+    fill: $disabled-color;
+    cursor: not-allowed;
+  }
+}
+
+.leftButton {
+  composes: button;
+  padding: 0 20px 0 0;
+}
+
+.rightButton {
+  composes: button;
+  padding: 0 0 0 20px;
+}
+
+
+:global {
+  .rc-pagination {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    font-size: 14px;
+    color: $dark-blue-0;
+
+    svg {
+      cursor: pointer;
+      fill: $steel-blue;
+    }
+
+    li {
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  .rc-pagination-item {
+    vertical-align: center;
+    cursor: pointer;
+
+    a {
+      display: block;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+      margin-right: 15px;
+    }
+  }
+
+  .rc-pagination-next,
+  .rc-pagination-prev {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    cursor: pointer;
+  }
+
+  .rc-pagination-jump-next,
+  .rc-pagination-jump-prev {
+    display: block;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    cursor: default;
+  }
+
+  .rc-pagination-jump-next,
+  .rc-pagination-jump-prev {
+    width: 30px;
+    cursor: pointer;
+  }
+
+  .rc-pagination-prev,
+  .rc-pagination-jump-next,
+  .rc-pagination-jump-prev {
+    margin-right: 15px;
+  }
+
+  .rc-pagination-prev svg {
+    margin-right: 12px;
+  }
+
+  .rc-pagination-next svg {
+    margin-left: 12px;
+  }
+
+  .rc-pagination-item-active {
+    a {
+      margin-top: -1px;
+      border: 1px solid $steel-blue-1;
+      border-radius: 3px;
+    }
+  }
+
+  .rc-pagination-disabled {
+    color: $disabled-color;
+    cursor: not-allowed;
+
+    svg {
+      fill: $disabled-color;
+      cursor: not-allowed;
+    }
+  }
+
+}
