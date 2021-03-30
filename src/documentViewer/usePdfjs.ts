@@ -11,6 +11,7 @@ type usePdfJsArgs = {
 export function usePdfJs({ url, canvasRef, textLayerRef }: usePdfJsArgs) {
   const [height, setHeight] = useState(800);
   const [width, setWidth] = useState(600);
+  const [isTextRendered, setIsTextRendered] = useState(false);
 
   useEffect(() => {
     pdfjsLib.getDocument(url).promise.then(pdf => {
@@ -36,13 +37,15 @@ export function usePdfJs({ url, canvasRef, textLayerRef }: usePdfJsArgs) {
           // @ts-ignore -- todo update type definitions
           pdfjsLib.renderTextLayer({
             textContent,
-            container: textLayerRef.current!,
+            container: textLayer,
             viewport,
             textDivs: [],
             textContentItemsStr: [],
             timeout: 100,
             enhanceTextSelection: false,
           });
+
+          setIsTextRendered(true);
         });
 
         // Prepare canvas using PDF page dimensions
@@ -69,5 +72,6 @@ export function usePdfJs({ url, canvasRef, textLayerRef }: usePdfJsArgs) {
   return {
     height,
     width,
+    isTextRendered,
   };
 }
