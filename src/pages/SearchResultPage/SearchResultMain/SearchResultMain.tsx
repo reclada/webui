@@ -31,7 +31,7 @@ export const SearchResultMain: FC<SearchResultMainProps> = function SearchResult
   return (
     <div className={classNames(className, style.root)}>
       <header className={style.header}>
-        <Logotype />
+        <span className={style.headerTitle}>Reclada</span>
         <AccountMenu className={style.accountMenu} />
       </header>
       <SearchPanel className={style.searchPanel} setSearchResults={setSearchResults} />
