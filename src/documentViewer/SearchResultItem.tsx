@@ -1,3 +1,4 @@
+import { Popover } from 'antd';
 import React, { FC } from 'react';
 
 import { classNames } from '../utils/classNames';
@@ -15,15 +16,16 @@ export const SearchResultItem: FC<SearchResultItemProps> = function SearchResult
   item,
 }) {
   return (
-    <div
-      className={classNames(className, style.root)}
-      style={{
-        width: item.width,
-        height: item.height,
-        top: item.top,
-        left: item.left,
-      }}
-      onMouseEnter={event => console.log(event)}
-    />
+    <Popover content={<div> {item.text} </div>}>
+      <div
+        className={classNames(className, style.root)}
+        style={{
+          width: item.width,
+          height: item.height,
+          top: item.top,
+          left: item.left,
+        }}
+      />
+    </Popover>
   );
 };
