@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-// import { SearchPage } from './pages/SearchPage/SearchPage';
 import { MainPage } from './pages/MainPage/MainPage';
 import { SearchResultPage } from './pages/SearchResultPage/SearchResultPage';
 import { TemporaryPdfView } from './pages/TemporaryPdfView/TemporaryPdfView';
+import { userService } from './services/userService';
 
 function App() {
+  useEffect(() => {
+    userService.restoreSession();
+  }, []);
+
   return (
     <BrowserRouter>
       <Switch>

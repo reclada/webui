@@ -1,6 +1,12 @@
 import { fetchAuthToken, fetchLoginUrl } from '../api/loginDataGateService';
 import { UserModel } from '../models/UserModel';
 
+interface ISessionData {
+  token: string;
+  name: string;
+  expired: number;
+}
+
 class UserService {
   readonly user = new UserModel();
 
@@ -14,9 +20,45 @@ class UserService {
     const resp = await fetchAuthToken(code);
     const token = resp.access_token;
     const jwt = parseJwt(resp.access_token);
+    const name = jwt.name;
 
-    console.log('set is logged');
-    this.user.login(token, jwt.name);
+    this.storeSession({
+      token,
+      name,
+      expired: jwt.exp,
+    });
+    this.user.login(token, name);
+  }
+
+  logout() {
+    this.clearSession();
+    this.user.logout();
+  }
+
+  restoreSession() {
+    try {
+      const sessionData = window.localStorage.getItem('session');
+
+      if (sessionData) {
+        const session: ISessionData = JSON.parse(sessionData);
+
+        if (session.expired > Date.now()) {
+          this.user.logout();
+        } else {
+          this.user.login(session.token, session.name);
+        }
+      }
+    } catch {
+      this.user.logout();
+    }
+  }
+
+  private storeSession(sessionData: ISessionData) {
+    window.localStorage.setItem('session', JSON.stringify(sessionData));
+  }
+
+  private clearSession() {
+    window.localStorage.setItem('session', '');
   }
 }
 

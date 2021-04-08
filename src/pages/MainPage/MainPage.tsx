@@ -8,7 +8,6 @@ type MainPageProps = {
 };
 
 export const MainPage: FC<MainPageProps> = function MainPage({ query }) {
-  console.log(query);
   useEffect(() => {
     const params = new URLSearchParams(query);
     const code = params.get('code');

@@ -8,7 +8,9 @@ import style from './SearchPage.module.scss';
 export const SearchPage: React.FC = function SearchPage() {
   return (
     <main className={style.root}>
-      <Navigation />
+      <header className={style.header}>
+        <Navigation />
+      </header>
       <div className={style.searchWrapper}>
         <SearchPanel />
       </div>

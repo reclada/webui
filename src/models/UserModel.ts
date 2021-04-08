@@ -17,4 +17,11 @@ export class UserModel {
     this.token = token;
     this.userName = userName;
   }
+
+  @action
+  logout() {
+    this.isLogged = false;
+    this.token = null;
+    this.userName = '';
+  }
 }

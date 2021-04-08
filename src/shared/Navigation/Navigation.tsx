@@ -16,15 +16,13 @@ export const Navigation: FC = observer(function Navigation() {
     userService.login();
   }, []);
 
-  console.log('isLogged', isLogged);
-
   return (
     <div className={style.root}>
       {!isLogged && (
         <Button
           ghost
           icon={<Icon component={LoginIcon} />}
-          shape="circle"
+          shape="round"
           size="large"
           type="primary"
           onClick={login}
