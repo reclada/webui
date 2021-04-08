@@ -5,9 +5,12 @@
   "description": "Search pdf documents",
   "license": "Apache-2.0",
   "dependencies": {
+    "@ant-design/icons": "^4.6.2",
     "antd": "^4.15.0",
     "axios": "^0.19.2",
     "lodash": "^4.17.19",
+    "mobx": "^6.1.8",
+    "mobx-react-lite": "^3.2.0",
     "rc-pagination": "^3.1.2",
     "rc-select": "^11.5.3",
     "rc-tabs": "^11.7.1",
