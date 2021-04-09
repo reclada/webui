@@ -1,0 +1,10 @@
+version: '2.3'
+services:
+  ui:
+    image: nginx:1.18.0-alpine
+    volumes:
+      - ./nginx/templates:/etc/nginx/templates
+    environment:
+      - NGINX_PORT=3300
+    ports:
+      - 80:3300
