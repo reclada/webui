@@ -28,7 +28,7 @@ export const SearchPanel: FC<SearchPanelProps> = function SearchPanel({
             window.location.pathname + 'media/'
           );
 
-          if (!article.snippets.length) {
+          if (article.snippets === undefined || !article.snippets.length) {
             article.snippets = [
               'Sample text',
               'Sample text',
