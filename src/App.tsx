@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
+import { FilesPage } from './pages/FilesPage/FilesPage';
 import { MainPage } from './pages/MainPage/MainPage';
 import { SearchResultPage } from './pages/SearchResultPage/SearchResultPage';
 import { TemporaryPdfView } from './pages/TemporaryPdfView/TemporaryPdfView';
@@ -19,6 +20,9 @@ function App() {
           path="/search"
           render={routeProps => <SearchResultPage query={routeProps.location.search} />}
         />
+        <Route path="/files">
+          <FilesPage />
+        </Route>
         <Route
           path="/"
           render={routeProps => <MainPage query={routeProps.location.search} />}
