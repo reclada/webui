@@ -2,6 +2,7 @@ import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Dropdown, Menu } from 'antd';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 
 import { userService } from '../../../services/userService';
 
@@ -14,7 +15,14 @@ export const UserBadge: FC = observer(function UserBadge() {
   }, []);
   const userMenu = (
     <Menu>
-      <Menu.Item onClick={logout}>Logout</Menu.Item>
+      <Menu.Item key="0">
+        <Link className={style.menuItem} to="/files">
+          Files
+        </Link>
+      </Menu.Item>
+      <Menu.Item key="1" onClick={logout}>
+        Logout
+      </Menu.Item>
     </Menu>
   );
 

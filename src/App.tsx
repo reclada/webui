@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import { MainPage } from './pages/MainPage/MainPage';
 import { FilesPage } from './pages/FilesPage/FilesPage';
+import { MainPage } from './pages/MainPage/MainPage';
 import { SearchResultPage } from './pages/SearchResultPage/SearchResultPage';
 import { TemporaryPdfView } from './pages/TemporaryPdfView/TemporaryPdfView';
 import { userService } from './services/userService';

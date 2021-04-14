@@ -36,10 +36,11 @@ export const ArticlesListItem: FC<ArticlesListItemProps> = function ArticlesList
       </header>
       <section className={style.snippets}>
         {article.snippets &&
-          article.snippets.map(snippet => (
+          article.snippets.map((snippet, idx) => (
             <div
-              dangerouslySetInnerHTML={{ __html: snippet }}
+              key={idx}
               className={style.snippet}
+              dangerouslySetInnerHTML={{ __html: snippet }}
             />
           ))}
 
@@ -57,8 +58,10 @@ export const ArticlesListItem: FC<ArticlesListItemProps> = function ArticlesList
 
         <ul className={style.dictionaries}>
           {article.dictionaries &&
-            article.dictionaries.map(dict => (
-              <li className={style.dictionary}>#{dict}</li>
+            article.dictionaries.map((dict, idx) => (
+              <li key={idx} className={style.dictionary}>
+                #{dict}
+              </li>
             ))}
         </ul>
 
