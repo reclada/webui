@@ -3,12 +3,12 @@ import { axiosCall } from '../utils/ajaxCall';
 export async function fetchLoginUrl(): Promise<string> {
   return axiosCall
     .post<{ login_url: string }>(
-      '/api/rpc/get_login_url',
+      '/api/rpc/auth_get_login_url',
       {
         data: {},
       },
       {
-        headers: { 'Content-Profile': 'reclada_user' },
+        headers: { 'Content-Profile': 'api' },
       }
     )
     .then(res => res.data.login_url);
@@ -30,12 +30,12 @@ export interface ITokenResponse {
 export async function fetchAuthToken(code: string): Promise<ITokenResponse> {
   return axiosCall
     .post<ITokenResponse>(
-      '/api/rpc/get_token',
+      '/api/rpc/auth_get_token',
       {
         data: { code },
       },
       {
-        headers: { 'Content-Profile': 'reclada_user' },
+        headers: { 'Content-Profile': 'api' },
       }
     )
     .then(res => res.data);

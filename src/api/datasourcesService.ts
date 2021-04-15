@@ -1,3 +1,6 @@
+import { userService } from '../services/userService';
+import { axiosCall } from '../utils/ajaxCall';
+
 import { IArticle, Type } from './articleService';
 
 export interface IDatasourceResponseObject {
@@ -97,3 +100,40 @@ export const mockedDatasource: IDatasourceResponseObject[] = [
     owner: ['user1', 'user2'],
   },
 ];
+
+interface IRecladaObjectFile {
+  id: string;
+  revision: number;
+  attrs: {
+    checksum: string;
+    mimeType: string;
+    name: string;
+    uri: string;
+  };
+  class: 'File';
+  isDeleted: boolean;
+}
+
+export async function fetchFilesList() {
+  const token = userService.user.token;
+
+  return axiosCall
+    .post<IRecladaObjectFile[]>(
+      '/api/rpc/reclada_object_list',
+      {
+        data: {
+          class: 'File',
+          attrs: {},
+          access_token: token,
+        },
+      },
+      {
+        headers: { 'Content-Profile': 'api' },
+      }
+    )
+    .then(res => {
+      console.log('reclada_object_list', res.data);
+
+      return res.data;
+    });
+}
