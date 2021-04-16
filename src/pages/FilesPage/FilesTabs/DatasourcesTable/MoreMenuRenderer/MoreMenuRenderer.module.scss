@@ -1,7 +1,3 @@
-.root {
-  display: flex;
-}
-
 .moreMenu {
   cursor: pointer;
   padding-top: 14px;
@@ -13,10 +9,4 @@
 .moreMenu > svg {
   position: relative;
   top: 6px;
-}
-
-.menuHeader > svg {
-  margin-left: 8px;
-  position: relative;
-  bottom: 1px
 }
