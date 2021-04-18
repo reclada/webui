@@ -1,3 +1,4 @@
+import { Tag } from 'antd';
 import React, { FC } from 'react';
 
 import { IArticle } from '../../../../../api/articleService';
@@ -17,14 +18,10 @@ export const ArticleNameRenderer: FC<ArticleNameRendererProps> = function Articl
         <div className={style.title}>{article.title}</div>
       </div>
 
-      <ul className={style.dictionaries}>
+      <>
         {article.dictionaries &&
-          article.dictionaries.map((dict, idx) => (
-            <li key={idx} className={style.dictionary}>
-              #{dict}
-            </li>
-          ))}
-      </ul>
+          article.dictionaries.map((dict, idx) => <Tag key={idx}>#{dict}</Tag>)}
+      </>
     </>
   );
 };
