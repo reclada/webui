@@ -1,26 +1,26 @@
-import { TableColumnType } from 'antd';
-import React, { FC } from 'react';
+import { Result, TableColumnType } from 'antd';
+import React, { FC, useEffect, useState } from 'react';
 
-import { IDatasourceResponseObject } from '../../../../api/datasourcesService';
+import { fetchDatasources, IDatasource } from '../../../../api/datasourcesService';
 import { Table } from '../../../../shared/Table/Table';
+import { OwnersRenderer } from '../shared/OwnersRenderer/OwnersRenderer';
 
 import { ArticleNameRenderer } from './ArticleNameRenderer/ArticleNameRenderer';
 import { ArticleTypeRenderer } from './ArticleTypeRenderer/ArticleTypeRenderer';
 import { MoreMenuRenderer } from './MoreMenuRenderer/MoreMenuRenderer';
-import { OwnersRenderer } from './OwnersRenderer/OwnersRenderer';
 
-const columns: TableColumnType<IDatasourceResponseObject>[] = [
+const columns: TableColumnType<IDatasource>[] = [
   {
     dataIndex: 'article',
     title: 'Type',
-    render: (article: IDatasourceResponseObject['article']) => (
+    render: (article: IDatasource['article']) => (
       <ArticleTypeRenderer article={article} />
     ),
   },
   {
     dataIndex: 'article',
     title: 'Name',
-    render: (article: IDatasourceResponseObject['article']) => (
+    render: (article: IDatasource['article']) => (
       <ArticleNameRenderer article={article} />
     ),
   },
@@ -43,9 +43,7 @@ const columns: TableColumnType<IDatasourceResponseObject>[] = [
   {
     dataIndex: 'owner',
     title: 'Owner',
-    render: (owners: IDatasourceResponseObject['owner']) => (
-      <OwnersRenderer owners={owners} />
-    ),
+    render: (owners: IDatasource['owner']) => <OwnersRenderer owners={owners} />,
   },
   {
     render: () => <MoreMenuRenderer />,
@@ -53,11 +51,43 @@ const columns: TableColumnType<IDatasourceResponseObject>[] = [
 ];
 
 type DatasourcesTableProps = {
-  datasources: IDatasourceResponseObject[];
+  datasetId?: string;
 };
 
 export const DatasourcesTable: FC<DatasourcesTableProps> = function DatasourcesTable({
-  datasources,
+  datasetId,
 }) {
-  return <Table columns={columns} dataSource={datasources} rowKey="id" />;
+  const [datasources, setDatasources] = useState<IDatasource[] | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    setDatasources(undefined);
+    setIsError(false);
+
+    fetchDatasources(datasetId)
+      .then(({ datasources }) => {
+        setDatasources(datasources);
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setIsError(true);
+        setIsLoading(false);
+      });
+  }, [datasetId]);
+
+  if (isError) {
+    return (
+      <Result
+        status="error"
+        subTitle="Please, try again"
+        title="Failed to load datasources"
+      />
+    );
+  }
+
+  return (
+    <Table columns={columns} dataSource={datasources} loading={isLoading} rowKey="id" />
+  );
 };

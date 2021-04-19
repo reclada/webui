@@ -1,11 +1,11 @@
 import { Tabs } from 'antd';
 import React from 'react';
 
-import { mockedDatasource } from '../../../api/datasourcesService';
 import { ReactComponent as AssetsIcon } from '../../../resources/assets.svg';
 import { ReactComponent as DatasetsIcon } from '../../../resources/datasets.svg';
 import { ReactComponent as DatasourceIcon } from '../../../resources/datasources.svg';
 
+import { DatasetsPane } from './DatasetsPane/DatasetsPane';
 import { DatasourcesTable } from './DatasourcesTable/DatasourcesTable';
 import style from './FilesTabs.module.scss';
 
@@ -28,7 +28,7 @@ export const FilesTabs: React.FC = function FilesPage() {
             </span>
           }
         >
-          <DatasourcesTable datasources={mockedDatasource} />
+          <DatasourcesTable />
         </TabPane>
         <TabPane
           key="2"
@@ -39,7 +39,7 @@ export const FilesTabs: React.FC = function FilesPage() {
             </span>
           }
         >
-          Content 2
+          <DatasetsPane />
         </TabPane>
         <TabPane
           key="3"
