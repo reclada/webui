@@ -14,7 +14,7 @@ export const AccountMenu: FC<AccountMenuProps> = function AccountMenu({ classNam
   const menu = (
     <Menu className={style.menu}>
       <Menu.Item key="0">
-        <Link to="/files" className={style.menuItem}>
+        <Link className={style.menuItem} to="/files">
           Files
         </Link>
       </Menu.Item>
@@ -25,7 +25,7 @@ export const AccountMenu: FC<AccountMenuProps> = function AccountMenu({ classNam
   );
 
   return (
-    <Dropdown overlay={menu} trigger={['click']} placement={'bottomRight'}>
+    <Dropdown overlay={menu} placement={'bottomRight'} trigger={['click']}>
       <div className={classNames(className, style.root)}>
         <div className={style.avatar} />
       </div>

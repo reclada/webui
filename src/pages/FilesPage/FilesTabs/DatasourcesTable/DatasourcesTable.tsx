@@ -1,99 +1,93 @@
-import { Dropdown, Menu } from 'antd';
-import React, { FC } from 'react';
+import { Result, TableColumnType } from 'antd';
+import React, { FC, useEffect, useState } from 'react';
 
-import { IDatasourceResponseObject } from '../../../../api/datasourcesService';
-import { ReactComponent as MenuArrowIcon } from '../../../../resources/menu-arrow.svg';
-import { ReactComponent as MoreIcon } from '../../../../resources/more.svg';
-import { ArticlesListItem } from '../../../SearchResultPage/SearchResultMain/ArticlesList/ArticlesListItem/ArticlesListItem';
+import { fetchDatasources, IDatasource } from '../../../../api/datasourcesService';
+import { Table } from '../../../../shared/Table/Table';
+import { OwnersRenderer } from '../shared/OwnersRenderer/OwnersRenderer';
 
-import style from './DatasourcesTable.module.scss';
+import { ArticleNameRenderer } from './ArticleNameRenderer/ArticleNameRenderer';
+import { ArticleTypeRenderer } from './ArticleTypeRenderer/ArticleTypeRenderer';
+import { MoreMenuRenderer } from './MoreMenuRenderer/MoreMenuRenderer';
 
-type DatasourcesProps = {
-  datasources: IDatasourceResponseObject[];
+const columns: TableColumnType<IDatasource>[] = [
+  {
+    dataIndex: 'article',
+    title: 'Type',
+    render: (article: IDatasource['article']) => (
+      <ArticleTypeRenderer article={article} />
+    ),
+  },
+  {
+    dataIndex: 'article',
+    title: 'Name',
+    render: (article: IDatasource['article']) => (
+      <ArticleNameRenderer article={article} />
+    ),
+  },
+  {
+    dataIndex: 'createDate',
+    title: 'Create date',
+  },
+  {
+    dataIndex: 'author',
+    title: 'Author',
+  },
+  {
+    dataIndex: 'lastUpdate',
+    title: 'Last update',
+  },
+  {
+    dataIndex: 'whoUpdated',
+    title: 'Who updated',
+  },
+  {
+    dataIndex: 'owner',
+    title: 'Owner',
+    render: (owners: IDatasource['owner']) => <OwnersRenderer owners={owners} />,
+  },
+  {
+    render: () => <MoreMenuRenderer />,
+  },
+];
+
+type DatasourcesTableProps = {
+  datasetId?: string;
 };
 
-export const DatasourcesTable: FC<DatasourcesProps> = function ArticlesList({
-  datasources,
+export const DatasourcesTable: FC<DatasourcesTableProps> = function DatasourcesTable({
+  datasetId,
 }) {
+  const [datasources, setDatasources] = useState<IDatasource[] | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    setDatasources(undefined);
+    setIsError(false);
+
+    fetchDatasources(datasetId)
+      .then(({ datasources }) => {
+        setDatasources(datasources);
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setIsError(true);
+        setIsLoading(false);
+      });
+  }, [datasetId]);
+
+  if (isError) {
+    return (
+      <Result
+        status="error"
+        subTitle="Please, try again"
+        title="Failed to load datasources"
+      />
+    );
+  }
+
   return (
-    <div className={style.root}>
-      <table className={style.ul}>
-        <tbody>
-          {datasources &&
-            datasources.map((datasource, index) => {
-              const menu = (
-                <Menu className={style.menu}>
-                  {datasource.owner.map((owner, index) => (
-                    <Menu.Item key={index}>
-                      <a>{owner}</a>
-                    </Menu.Item>
-                  ))}
-                </Menu>
-              );
-
-              const moreMenu = (
-                <Menu className={style.menu}>
-                  <Menu.Item key={1}>
-                    <span>Data set</span>
-                  </Menu.Item>
-                  <Menu.Item key={2}>
-                    <span>Version</span>
-                  </Menu.Item>
-                  <Menu.Item key={3}>
-                    <span>Edit</span>
-                  </Menu.Item>
-                  <Menu.Item key={4}>
-                    <span>Permissions</span>
-                  </Menu.Item>
-                  <Menu.Item key={5}>
-                    <span>Share</span>
-                  </Menu.Item>
-                  <Menu.Item key={6}>
-                    <span>Delete</span>
-                  </Menu.Item>
-                </Menu>
-              );
-
-              return (
-                <>
-                  <tr key={index} className={style.li}>
-                    <td>
-                      <ArticlesListItem article={datasource.article} isMinimized={true} />
-                    </td>
-                    <td className={style.td}>{datasource.createDate}</td>
-                    <td className={style.td}>{datasource.author}</td>
-                    <td className={style.td}>{datasource.lastUpdate}</td>
-                    <td className={style.td}>{datasource.whoUpdated}</td>
-                    <td className={style.td}>
-                      {datasource.owner.length > 1 ? (
-                        <Dropdown
-                          overlay={menu}
-                          placement={'bottomRight'}
-                          trigger={['click']}
-                        >
-                          <div className={style.menuHeader}>
-                            Multiple owners <MenuArrowIcon />
-                          </div>
-                        </Dropdown>
-                      ) : (
-                        <>{datasource.owner}</>
-                      )}
-                    </td>
-                    <td className={style.moreMenu}>
-                      <Dropdown
-                        overlay={moreMenu}
-                        placement={'bottomRight'}
-                        trigger={['click']}
-                      >
-                        <MoreIcon />
-                      </Dropdown>
-                    </td>
-                  </tr>
-                </>
-              );
-            })}
-        </tbody>
-      </table>
-    </div>
+    <Table columns={columns} dataSource={datasources} loading={isLoading} rowKey="id" />
   );
 };
