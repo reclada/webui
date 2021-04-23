@@ -1,10 +1,37 @@
 import { Button, Divider, Modal, Typography } from 'antd';
 import React, { FC, useMemo } from 'react';
 
-import { useUploadFiles } from '../../../../utils/useUploadFiles';
+import { UploadFileInfo, useUploadFiles } from '../../../../utils/useUploadFiles';
 
-import { UploadFilesList } from './UploadFilesList/UploadFilesList';
 import { UploadLocalDatasource } from './UploadLocalDatasource/UplloadLocalDatasource';
+
+const mockUploadFiles: UploadFileInfo[] = [
+  {
+    id: '123',
+    name: 'InProgress.csv',
+    uploadProgress: 50,
+    uploadStatus: 'uploading',
+    size: 124 * 1000,
+  },
+  {
+    id: '12345',
+    name: 'Uploaded.pdf',
+    uploadStatus: 'success',
+    size: 56 * 1000,
+  },
+  {
+    id: '1234567',
+    name: 'Invalid.pdf',
+    uploadStatus: 'error',
+  },
+  {
+    id: '123456789',
+    name:
+      'VeryLongFileName-VeryLongFileName-VeryLongFileName-VeryLongFileName-VeryLongFileName.pdf',
+    uploadStatus: 'uploading',
+    uploadProgress: 95,
+  },
+];
 
 type UploadDatasourceModalProps = {
   isOpen: boolean;
@@ -15,33 +42,7 @@ export const UploadDatasourceModal: FC<UploadDatasourceModalProps> = function Up
   isOpen,
   onClose,
 }) {
-  const [files, setFileInfo] = useUploadFiles([
-    {
-      id: '123',
-      name: 'InProgress.csv',
-      uploadProgress: 50,
-      uploadStatus: 'uploading',
-      size: 124 * 1000,
-    },
-    {
-      id: '12345',
-      name: 'Uploaded.pdf',
-      uploadStatus: 'success',
-      size: 56 * 1000,
-    },
-    {
-      id: '1234567',
-      name: 'Invalid.pdf',
-      uploadStatus: 'error',
-    },
-    {
-      id: '123456789',
-      name:
-        'VeryLongFileName-VeryLongFileName-VeryLongFileName-VeryLongFileName-VeryLongFileName.pdf',
-      uploadStatus: 'uploading',
-      uploadProgress: 95,
-    },
-  ]);
+  const [files, setFileInfo] = useUploadFiles(mockUploadFiles);
 
   const isUploading = useMemo(
     () => files.some(file => file.uploadStatus === 'uploading'),
@@ -74,9 +75,7 @@ export const UploadDatasourceModal: FC<UploadDatasourceModalProps> = function Up
 
       <Divider />
 
-      <UploadLocalDatasource onChange={setFileInfo} />
-
-      {files.length > 0 ? <UploadFilesList files={files} /> : null}
+      <UploadLocalDatasource files={files} onUploadChange={setFileInfo} />
     </Modal>
   );
 };

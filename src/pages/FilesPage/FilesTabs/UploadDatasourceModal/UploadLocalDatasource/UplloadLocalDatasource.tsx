@@ -1,26 +1,29 @@
 import { CloudUploadOutlined } from '@ant-design/icons';
-import { Button, Upload, UploadProps } from 'antd';
+import { Button, Modal, Upload, UploadProps } from 'antd';
 import React, { FC, useCallback, useEffect, useRef } from 'react';
 
 import { UploadFileInfo } from '../../../../../utils/useUploadFiles';
+import { UploadFilesList } from '../UploadFilesList/UploadFilesList';
 
 import style from './UploadLocalDatasource.module.scss';
 
 const { Dragger } = Upload;
 
 type UploadLocalDatasourceProps = {
-  onChange: (fileInfo: UploadFileInfo) => void;
+  files: UploadFileInfo[];
+  onUploadChange: (fileInfo: UploadFileInfo) => void;
 };
 
 export const UploadLocalDatasource: FC<UploadLocalDatasourceProps> = function UploadLocalDatasource({
-  onChange,
+  files,
+  onUploadChange,
 }) {
   const handleChange: UploadProps['onChange'] = useCallback(
     info => {
       const { uid: id, status, percent, name = 'File', size } = info.file;
 
       if (status === 'uploading') {
-        onChange({
+        onUploadChange({
           id,
           name,
           uploadStatus: 'uploading',
@@ -29,7 +32,7 @@ export const UploadLocalDatasource: FC<UploadLocalDatasourceProps> = function Up
       }
 
       if (status === 'done') {
-        onChange({
+        onUploadChange({
           id,
           name,
           uploadStatus: 'success',
@@ -38,14 +41,14 @@ export const UploadLocalDatasource: FC<UploadLocalDatasourceProps> = function Up
       }
 
       if (status === 'error') {
-        onChange({
+        onUploadChange({
           id,
           name,
           uploadStatus: 'error',
         });
       }
     },
-    [onChange]
+    [onUploadChange]
   );
 
   const mockRequestTimerIdRef = useRef(0);
@@ -53,6 +56,18 @@ export const UploadLocalDatasource: FC<UploadLocalDatasourceProps> = function Up
   useEffect(() => {
     return () => clearTimeout(mockRequestTimerIdRef.current);
   }, []);
+
+  const handleUploadCancel = useCallback(
+    (fileInfo: UploadFileInfo) => {
+      onUploadChange({
+        ...fileInfo,
+        uploadStatus: 'cancelled',
+      });
+
+      clearTimeout(mockRequestTimerIdRef.current);
+    },
+    [onUploadChange]
+  );
 
   const handleMockRequest: UploadProps['customRequest'] = options => {
     const progressTick = (curProgress: number) => {
@@ -76,29 +91,35 @@ export const UploadLocalDatasource: FC<UploadLocalDatasourceProps> = function Up
   };
 
   return (
-    <Dragger
-      accept=".pdf,.csv,.xls,.xlsx,.doc,.docx,.txt"
-      action="/api/rpc/upload_datasource_file"
-      className={style.dragger}
-      customRequest={handleMockRequest}
-      multiple={false}
-      name="file"
-      showUploadList={false}
-      onChange={handleChange}
-    >
-      <CloudUploadOutlined className={style.uploadIcon} />
+    <div>
+      <Dragger
+        accept=".pdf,.xls,.xlsx,.doc,.docx,.txt"
+        action="/api/rpc/upload_datasource_file"
+        className={style.dragger}
+        customRequest={handleMockRequest}
+        multiple={false}
+        name="file"
+        showUploadList={false}
+        onChange={handleChange}
+      >
+        <CloudUploadOutlined className={style.uploadIcon} />
 
-      <div className={style.uploadSupported}>
-        Supported <strong>PDF, XLS, XLSX, DOC, DOCX and TXT</strong>
-      </div>
+        <div className={style.uploadSupported}>
+          Supported <strong>PDF, XLS, XLSX, DOC, DOCX and TXT</strong>
+        </div>
 
-      <div className={style.uploadDragDropDescription}>
-        Drag & Drop your files here OR
-      </div>
+        <div className={style.uploadDragDropDescription}>
+          Drag & Drop your files here OR
+        </div>
 
-      <Button shape="round" size="large" type="primary">
-        Browse files
-      </Button>
-    </Dragger>
+        <Button shape="round" size="large" type="primary">
+          Browse files
+        </Button>
+      </Dragger>
+
+      {files.length > 0 ? (
+        <UploadFilesList files={files} onUploadCancel={handleUploadCancel} />
+      ) : null}
+    </div>
   );
 };

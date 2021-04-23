@@ -1,6 +1,7 @@
+import omit from 'lodash/omit';
 import { useMemo, useReducer } from 'react';
 
-export type UploadFileStatus = 'uploading' | 'success' | 'error';
+export type UploadFileStatus = 'uploading' | 'success' | 'error' | 'cancelled';
 
 export interface UploadFileInfo {
   id: string;
@@ -19,6 +20,13 @@ function uploadFilesReducer(
   state: UploadFilesState,
   fileInfo: UploadFileInfo
 ): UploadFilesState {
+  if (fileInfo.uploadStatus === 'cancelled') {
+    return {
+      byId: omit(state.byId, fileInfo.id),
+      ids: state.ids.filter(id => id !== fileInfo.id),
+    };
+  }
+
   return {
     byId: {
       ...state.byId,
@@ -28,14 +36,14 @@ function uploadFilesReducer(
   };
 }
 
-function initUploadFilesState(files: UploadFileInfo[]): UploadFilesState {
+function initUploadFilesState(filesInfos: UploadFileInfo[]): UploadFilesState {
   return {
-    byId: files.reduce<UploadFilesState['byId']>((acc, file) => {
-      acc[file.id] = file;
+    byId: filesInfos.reduce<UploadFilesState['byId']>((acc, fileInfo) => {
+      acc[fileInfo.id] = fileInfo;
 
       return acc;
     }, {}),
-    ids: files.map(file => file.id),
+    ids: filesInfos.map(fileInfo => fileInfo.id),
   };
 }
 

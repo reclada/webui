@@ -1,5 +1,5 @@
 import { Col, Row, List } from 'antd';
-import React, { FC } from 'react';
+import React, { FC, ReactNode, useCallback } from 'react';
 
 import { UploadFileInfo } from '../../../../../utils/useUploadFiles';
 
@@ -10,29 +10,37 @@ import { UploadFileTypeRenderer } from './UploadFileTypeRenderer/UploadFileTypeR
 
 const { Item: ListItem } = List;
 
-const renderItem = (fileInfo: UploadFileInfo) => (
-  <ListItem key={fileInfo.id}>
-    <Row align="stretch" className={style.listItemRow} gutter={16} wrap={false}>
-      <Col flex="56px">
-        <UploadFileTypeRenderer fileInfo={fileInfo} />
-      </Col>
-      <Col flex="auto">
-        <UploadFileNameRenderer fileInfo={fileInfo} />
-      </Col>
-      <Col flex="40px">
-        <UploadFileStatusRenderer fileInfo={fileInfo} />
-      </Col>
-    </Row>
-  </ListItem>
-);
-
 type UploadFileItemProps = {
   files: UploadFileInfo[];
+  onUploadCancel: (fileInfo: UploadFileInfo) => void;
 };
 
 export const UploadFilesList: FC<UploadFileItemProps> = function UploadFilesList({
   files,
+  onUploadCancel,
 }) {
+  const renderItem = useCallback(
+    (fileInfo: UploadFileInfo): ReactNode => (
+      <ListItem key={fileInfo.id}>
+        <Row align="stretch" className={style.listItemRow} gutter={16} wrap={false}>
+          <Col flex="56px">
+            <UploadFileTypeRenderer fileInfo={fileInfo} />
+          </Col>
+          <Col flex="auto">
+            <UploadFileNameRenderer fileInfo={fileInfo} />
+          </Col>
+          <Col flex="40px">
+            <UploadFileStatusRenderer
+              fileInfo={fileInfo}
+              onUploadCancel={onUploadCancel}
+            />
+          </Col>
+        </Row>
+      </ListItem>
+    ),
+    [onUploadCancel]
+  );
+
   return (
     <List
       className={style.list}
