@@ -1,0 +1,17 @@
+@import '../../../../../../styles/variables';
+
+.statusWrapper {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.iconError {
+  color: $danger-color;
+  font-size: 22px;
+}
+
+.iconSuccess {
+  color: $success-color;
+  font-size: 24px;
+}

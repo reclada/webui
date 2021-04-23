@@ -8,6 +8,7 @@
     "@ant-design/icons": "^4.6.2",
     "antd": "^4.15.0",
     "axios": "^0.19.2",
+    "filesize": "^6.3.0",
     "lodash": "^4.17.19",
     "mobx": "^6.1.8",
     "mobx-react-lite": "^3.2.0",
