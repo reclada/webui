@@ -6,33 +6,32 @@ import {
 import { Button } from 'antd';
 import React, { FC, useCallback } from 'react';
 
-import { UploadFileInfo } from '../../../../../../utils/useUploadFiles';
+import { UploadFile } from '../useUploadList';
 
-import style from './UploadFileStatusRenderer.module.scss';
+import style from './UploadStatusRenderer.module.scss';
 
 type UploadFileStatusRendererProps = {
-  fileInfo: UploadFileInfo;
-  onUploadCancel: (fileInfo: UploadFileInfo) => void;
+  file: UploadFile;
+  onUploadCancel: (fileId: string) => void;
 };
 
-export const UploadFileStatusRenderer: FC<UploadFileStatusRendererProps> = function UploadFileStatusRenderer({
-  fileInfo,
+export const UploadStatusRenderer: FC<UploadFileStatusRendererProps> = function UploadStatusRenderer({
+  file,
   onUploadCancel,
 }) {
   const handleUploadCancel = useCallback(() => {
-    onUploadCancel(fileInfo);
-  }, [onUploadCancel, fileInfo]);
+    onUploadCancel(file.id);
+  }, [onUploadCancel, file.id]);
 
   return (
     <div className={style.statusWrapper}>
-      {fileInfo.uploadStatus === 'error' ? (
+      {file.uploadStatus === 'error' ? (
         <WarningOutlined className={style.iconError} />
-      ) : fileInfo.uploadStatus === 'success' ? (
+      ) : file.uploadStatus === 'success' ? (
         <CheckCircleOutlined className={style.iconSuccess} />
-      ) : fileInfo.uploadStatus === 'uploading' ? (
+      ) : file.uploadStatus === 'uploading' ? (
         <Button
           className={style.buttonCancel}
-          ghost={true}
           icon={<CloseCircleOutlined className={style.iconCancel} />}
           shape="circle"
           type="link"

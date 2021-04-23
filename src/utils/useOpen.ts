@@ -2,8 +2,8 @@ import { useCallback, useState } from 'react';
 
 interface UseOpenResult {
   isOpen: boolean;
-  onOpen: () => void;
-  onClose: () => void;
+  open: () => void;
+  close: () => void;
 }
 
 export function useOpen(initialValue: boolean): UseOpenResult {
@@ -19,7 +19,7 @@ export function useOpen(initialValue: boolean): UseOpenResult {
 
   return {
     isOpen,
-    onOpen: handleOpen,
-    onClose: handleClose,
+    open: handleOpen,
+    close: handleClose,
   };
 }

@@ -18,14 +18,14 @@ export const FilesTabsActions: FC = function FilesTabsActions() {
         icon={<PlusOutlined style={{ fontSize: 14 }} />}
         shape="round"
         type="primary"
-        onClick={uploadDatasourceModal.onOpen}
+        onClick={uploadDatasourceModal.open}
       >
         Data source
       </Button>
 
       <UploadDatasourceModal
         isOpen={uploadDatasourceModal.isOpen}
-        onClose={uploadDatasourceModal.onClose}
+        onClose={uploadDatasourceModal.close}
       />
     </>
   );

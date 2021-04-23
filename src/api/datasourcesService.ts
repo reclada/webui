@@ -1,4 +1,4 @@
-import { axiosCall } from '../utils/ajaxCall';
+import { axiosCall, CancelToken } from '../utils/ajaxCall';
 
 import { IArticle, Type } from './articleService';
 
@@ -218,3 +218,67 @@ export async function fetchDatasources(
       return mockedAnswer;
     });
 }
+
+interface IDatasourceResponseObject {
+  datasource: IDatasource;
+}
+
+interface UploadDatasourceOptions {
+  onProgress?: (percent: number) => void;
+  onSetCancel?: (cancel: () => void) => void;
+}
+
+export async function uploadDatasource(
+  file: Blob,
+  options: UploadDatasourceOptions = {}
+): Promise<IDatasourceResponseObject> {
+  const formData = new FormData();
+
+  formData.append('file', file);
+
+  return axiosCall
+    .post<IDatasourceResponseObject>('/api/rpc/upload_datasource_file', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      onUploadProgress: (event: ProgressEvent) => {
+        if (event.lengthComputable) {
+          options.onProgress?.(Math.round(event.loaded / event.total) * 100);
+        }
+      },
+      cancelToken: new CancelToken(cancel => options.onSetCancel?.(() => cancel())),
+    })
+    .then(({ data }) => data);
+}
+
+export const mockedUploadDatasource = (
+  file: File,
+  options: UploadDatasourceOptions = {}
+): Promise<IDatasourceResponseObject> => {
+  return new Promise((resolve, reject) => {
+    let cancelled = false;
+
+    options.onSetCancel?.(() => {
+      cancelled = true;
+    });
+
+    const progressTick = (curProgress: number) => {
+      setTimeout(() => {
+        if (cancelled) {
+          reject('cancelled');
+
+          return;
+        }
+
+        if (curProgress >= 100) {
+          resolve({ datasource: mockedAnswer.datasources[0] });
+        } else {
+          options.onProgress?.(curProgress);
+          progressTick(curProgress + 5);
+        }
+      }, 200);
+    };
+
+    progressTick(0);
+  });
+};

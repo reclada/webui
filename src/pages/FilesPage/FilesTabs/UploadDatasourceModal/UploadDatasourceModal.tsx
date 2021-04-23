@@ -1,21 +1,14 @@
 import { Button, Divider, Modal, Typography } from 'antd';
 import React, { FC, useMemo } from 'react';
 
-import { UploadFileInfo, useUploadFiles } from '../../../../utils/useUploadFiles';
-
+import { UploadList } from './UploadList/UploadList';
+import { UploadFile, useUploadList } from './UploadList/useUploadList';
 import { UploadLocalDatasource } from './UploadLocalDatasource/UplloadLocalDatasource';
 
-const mockUploadFiles: UploadFileInfo[] = [
-  {
-    id: '123',
-    name: 'InProgress.csv',
-    uploadProgress: 50,
-    uploadStatus: 'uploading',
-    size: 124 * 1000,
-  },
+const mockUploadFiles: UploadFile[] = [
   {
     id: '12345',
-    name: 'Uploaded.pdf',
+    name: 'Valid.pdf',
     uploadStatus: 'success',
     size: 56 * 1000,
   },
@@ -23,13 +16,6 @@ const mockUploadFiles: UploadFileInfo[] = [
     id: '1234567',
     name: 'Invalid.pdf',
     uploadStatus: 'error',
-  },
-  {
-    id: '123456789',
-    name:
-      'VeryLongFileName-VeryLongFileName-VeryLongFileName-VeryLongFileName-VeryLongFileName.pdf',
-    uploadStatus: 'uploading',
-    uploadProgress: 95,
   },
 ];
 
@@ -42,19 +28,22 @@ export const UploadDatasourceModal: FC<UploadDatasourceModalProps> = function Up
   isOpen,
   onClose,
 }) {
-  const [files, setFileInfo] = useUploadFiles(mockUploadFiles);
+  const { files, setFile, setUploadCancel, uploadCancel } = useUploadList(
+    mockUploadFiles
+  );
 
   const isUploading = useMemo(
     () => files.some(file => file.uploadStatus === 'uploading'),
     [files]
   );
 
+  const canCloseModal = !isUploading;
+
   return (
     <Modal
-      cancelButtonProps={{
-        disabled: isUploading,
-      }}
+      cancelButtonProps={{ disabled: !canCloseModal }}
       cancelText="Close"
+      closable={canCloseModal}
       destroyOnClose={true}
       footer={
         <Button
@@ -67,6 +56,7 @@ export const UploadDatasourceModal: FC<UploadDatasourceModalProps> = function Up
           Close
         </Button>
       }
+      maskClosable={canCloseModal}
       okText={null}
       visible={isOpen}
       onCancel={onClose}
@@ -75,7 +65,11 @@ export const UploadDatasourceModal: FC<UploadDatasourceModalProps> = function Up
 
       <Divider />
 
-      <UploadLocalDatasource files={files} onUploadChange={setFileInfo} />
+      <UploadLocalDatasource onSetFile={setFile} onSetUploadCancel={setUploadCancel} />
+
+      {files.length > 0 ? (
+        <UploadList files={files} onUploadCancel={uploadCancel} />
+      ) : null}
     </Modal>
   );
 };

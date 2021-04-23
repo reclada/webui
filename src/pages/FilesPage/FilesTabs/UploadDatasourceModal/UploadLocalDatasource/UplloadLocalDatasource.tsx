@@ -1,111 +1,84 @@
 import { CloudUploadOutlined } from '@ant-design/icons';
-import { Button, Modal, Upload, UploadProps } from 'antd';
-import React, { FC, useCallback, useEffect, useRef } from 'react';
+import { Button, Upload, UploadProps } from 'antd';
+import { nanoid } from 'nanoid/non-secure';
+import React, { FC, useCallback } from 'react';
 
-import { UploadFileInfo } from '../../../../../utils/useUploadFiles';
-import { UploadFilesList } from '../UploadFilesList/UploadFilesList';
+import { mockedUploadDatasource } from '../../../../../api/datasourcesService';
+import { UploadCancel, UploadListResult } from '../UploadList/useUploadList';
 
 import style from './UploadLocalDatasource.module.scss';
 
 const { Dragger } = Upload;
 
 type UploadLocalDatasourceProps = {
-  files: UploadFileInfo[];
-  onUploadChange: (fileInfo: UploadFileInfo) => void;
+  onSetFile: UploadListResult['setFile'];
+  onSetUploadCancel: UploadListResult['setUploadCancel'];
 };
 
 export const UploadLocalDatasource: FC<UploadLocalDatasourceProps> = function UploadLocalDatasource({
-  files,
-  onUploadChange,
+  onSetFile,
+  onSetUploadCancel,
 }) {
-  const handleChange: UploadProps['onChange'] = useCallback(
-    info => {
-      const { uid: id, status, percent, name = 'File', size } = info.file;
+  const handleRequest: UploadProps['customRequest'] = useCallback(
+    options => {
+      const fileId = nanoid();
+      const file = options.file as File;
 
-      if (status === 'uploading') {
-        onUploadChange({
-          id,
-          name,
-          uploadStatus: 'uploading',
-          uploadProgress: percent,
-        });
-      }
-
-      if (status === 'done') {
-        onUploadChange({
-          id,
-          name,
-          uploadStatus: 'success',
-          size,
-        });
-      }
-
-      if (status === 'error') {
-        onUploadChange({
-          id,
-          name,
-          uploadStatus: 'error',
-        });
-      }
-    },
-    [onUploadChange]
-  );
-
-  const mockRequestTimerIdRef = useRef(0);
-
-  useEffect(() => {
-    return () => clearTimeout(mockRequestTimerIdRef.current);
-  }, []);
-
-  const handleUploadCancel = useCallback(
-    (fileInfo: UploadFileInfo) => {
-      onUploadChange({
-        ...fileInfo,
-        uploadStatus: 'cancelled',
+      onSetFile({
+        id: fileId,
+        name: file.name,
+        uploadStatus: 'uploading',
+        uploadProgress: 0,
       });
 
-      clearTimeout(mockRequestTimerIdRef.current);
-    },
-    [onUploadChange]
-  );
-
-  const handleMockRequest: UploadProps['customRequest'] = options => {
-    const progressTick = (curProgress: number) => {
-      mockRequestTimerIdRef.current = (setTimeout(() => {
-        if (curProgress >= 100) {
-          options.onSuccess?.({}, new XMLHttpRequest());
-
-          return;
-        }
-
-        options.onProgress?.({
-          ...({} as ProgressEvent),
-          percent: curProgress,
+      mockedUploadDatasource(file, {
+        onProgress: (percent: number) => {
+          onSetFile({
+            id: fileId,
+            name: file.name,
+            uploadStatus: 'uploading',
+            uploadProgress: percent,
+          });
+        },
+        onSetCancel: (uploadCancel: UploadCancel) => {
+          onSetUploadCancel(fileId, uploadCancel);
+        },
+      })
+        .then(() => {
+          onSetFile({
+            id: fileId,
+            name: file.name,
+            size: file.size,
+            uploadStatus: 'success',
+          });
+        })
+        .catch(err => {
+          if (err !== 'cancelled') {
+            onSetFile({
+              id: fileId,
+              name: file.name,
+              uploadStatus: 'error',
+            });
+          }
         });
-
-        void progressTick(curProgress + 5);
-      }, 200) as unknown) as number;
-    };
-
-    void progressTick(0);
-  };
+    },
+    [onSetFile, onSetUploadCancel]
+  );
 
   return (
     <div>
       <Dragger
-        accept=".pdf,.xls,.xlsx,.doc,.docx,.txt"
-        action="/api/rpc/upload_datasource_file"
+        accept=".pdf,.csv,.xls,.xlsx,.doc,.docx,.txt"
         className={style.dragger}
-        customRequest={handleMockRequest}
+        customRequest={handleRequest}
         multiple={false}
         name="file"
         showUploadList={false}
-        onChange={handleChange}
       >
         <CloudUploadOutlined className={style.uploadIcon} />
 
         <div className={style.uploadSupported}>
-          Supported <strong>PDF, XLS, XLSX, DOC, DOCX and TXT</strong>
+          Supported <strong>PDF, CSV, XLS, XLSX, DOC, DOCX and TXT</strong>
         </div>
 
         <div className={style.uploadDragDropDescription}>
@@ -116,10 +89,6 @@ export const UploadLocalDatasource: FC<UploadLocalDatasourceProps> = function Up
           Browse files
         </Button>
       </Dragger>
-
-      {files.length > 0 ? (
-        <UploadFilesList files={files} onUploadCancel={handleUploadCancel} />
-      ) : null}
     </div>
   );
 };
