@@ -1,6 +1,7 @@
 import { Result } from 'antd';
-import { fetchDatasets, IDataset } from 'api/datasetsDataGateService';
 import React, { FC, useCallback, useEffect, useState } from 'react';
+
+import { fetchDatasets, IDataset } from 'src/api/datasetsDataGateService';
 
 import { DatasourcesTable } from '../DatasourcesTable/DatasourcesTable';
 

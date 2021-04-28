@@ -1,8 +1,7 @@
-import { rpcUrls } from 'api/rpcUrls';
-
 import { apiService } from './apiService';
 import { ArticleType } from './articleService';
 import { IRecladaFile, RecladaObjectClass } from './IRecladaObject';
+import { rpcUrls } from './rpcUrls';
 
 export interface IDatasource {
   id: string;

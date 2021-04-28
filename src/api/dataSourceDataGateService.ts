@@ -1,7 +1,6 @@
-import { apiService } from 'api/apiService';
+import { axiosCall, CancelToken } from 'src/utils/ajaxCall';
 
-import { axiosCall, CancelToken } from '../utils/ajaxCall';
-
+import { apiService } from './apiService';
 import { IRecladaFile } from './IRecladaObject';
 
 interface IS3PathResponse {

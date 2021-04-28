@@ -1,6 +1,7 @@
 import { Tag } from 'antd';
-import { IDataset } from 'api/datasetsDataGateService';
 import React, { FC, useCallback } from 'react';
+
+import { IDataset } from 'src/api/datasetsDataGateService';
 
 import style from './DatasetNameRenderer.module.scss';
 

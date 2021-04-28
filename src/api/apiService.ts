@@ -1,6 +1,5 @@
-import { userService } from 'services/userService';
-
-import { axiosCall } from '../utils/ajaxCall';
+import { userService } from 'src/services/userService';
+import { axiosCall } from 'src/utils/ajaxCall';
 
 class ApiService {
   callRpcPost<T>(url: string, payload: any): Promise<T> {

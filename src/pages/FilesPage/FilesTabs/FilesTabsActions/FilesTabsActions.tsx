@@ -1,9 +1,9 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import { createDataset } from 'api/datasetsDataGateService';
 import React, { FC, useCallback } from 'react';
+import { createDataset } from 'src/api/datasetsDataGateService';
+import { useOpen } from 'src/utils/useOpen';
 
-import { useOpen } from '../../../../utils/useOpen';
 import { UploadDatasourceModal } from '../UploadDatasourceModal/UploadDatasourceModal';
 
 import style from './FilesTabsActions.module.scss';

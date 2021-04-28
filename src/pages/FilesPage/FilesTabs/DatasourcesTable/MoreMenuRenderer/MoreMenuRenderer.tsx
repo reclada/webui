@@ -1,8 +1,8 @@
 import { Menu } from 'antd';
-import { getDatasourceDownloadLink } from 'api/dataSourceDataGateService';
 import React, { FC, useCallback } from 'react';
-import { MoreDropdown } from 'shared/MoreDropdown/MoreDropdown';
-import { downloadURI } from 'utils/downloadUri';
+import { getDatasourceDownloadLink } from 'src/api/dataSourceDataGateService';
+import { MoreDropdown } from 'src/shared/MoreDropdown/MoreDropdown';
+import { downloadURI } from 'src/utils/downloadUri';
 
 export type MoreMenuRendererProps = {
   datasourceId: string;

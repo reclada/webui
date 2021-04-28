@@ -1,7 +1,8 @@
 import { TableColumnType } from 'antd';
-import { IDataset } from 'api/datasetsDataGateService';
 import React, { FC, useMemo } from 'react';
-import { Table } from 'shared/Table/Table';
+
+import { IDataset } from 'src/api/datasetsDataGateService';
+import { Table } from 'src/shared/Table/Table';
 
 import { MoreMenuRenderer } from '../../DatasourcesTable/MoreMenuRenderer/MoreMenuRenderer';
 import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';

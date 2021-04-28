@@ -1,10 +1,10 @@
-import { apiService } from 'api/apiService';
+import { apiService } from './apiService';
 import {
   IRecladaDataset,
   RecladaObjectClass,
   RecladaPartialObject,
-} from 'api/IRecladaObject';
-import { rpcUrls } from 'api/rpcUrls';
+} from './IRecladaObject';
+import { rpcUrls } from './rpcUrls';
 
 export interface IDataset {
   id: string;
