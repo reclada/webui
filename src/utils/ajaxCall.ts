@@ -2,6 +2,8 @@ import axios from 'axios';
 
 export const axiosCall = axios.create();
 
+export const CancelToken = axios.CancelToken;
+
 axiosCall.interceptors.response.use(
   result => result,
   error => {
