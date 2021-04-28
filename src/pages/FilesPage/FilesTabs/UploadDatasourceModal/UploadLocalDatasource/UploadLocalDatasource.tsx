@@ -4,7 +4,6 @@ import { nanoid } from 'nanoid/non-secure';
 import React, { FC, useCallback } from 'react';
 
 import { createFileDataSource } from '../../../../../api/dataSourceDataGateService';
-import { mockedUploadDatasource } from '../../../../../api/datasourcesService';
 import { UploadCancel, UploadListResult } from '../UploadList/useUploadList';
 
 import style from './UploadLocalDatasource.module.scss';

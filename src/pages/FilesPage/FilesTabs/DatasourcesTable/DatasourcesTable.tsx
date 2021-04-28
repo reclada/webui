@@ -46,7 +46,7 @@ const columns: TableColumnType<IDatasource>[] = [
     render: (owners: IDatasource['owners']) => <OwnersRenderer owners={owners} />,
   },
   {
-    render: () => <MoreMenuRenderer />,
+    render: (_, dataset) => <MoreMenuRenderer datasourceId={dataset.id} />,
   },
 ];
 

@@ -1,3 +1,5 @@
+import { apiService } from 'api/apiService';
+
 import { userService } from '../services/userService';
 import { axiosCall, CancelToken } from '../utils/ajaxCall';
 
@@ -83,4 +85,15 @@ export async function createFileDataSource(
     },
     cancelToken: new CancelToken(cancel => options.onSetCancel?.(() => cancel())),
   });
+}
+
+export async function getDatasourceDownloadLink(id: string): Promise<string> {
+  const token = userService.user.token;
+
+  return apiService
+    .callRpcPost<{ url: string }>('/api/rpc/storage_generate_presigned_get', {
+      object_id: id,
+      access_token: token,
+    })
+    .then(res => res.url);
 }
