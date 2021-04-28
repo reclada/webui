@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { FileUpload } from '../../shared/FileUpload/FileUpload';
 import { Navigation } from '../../shared/Navigation/Navigation';
 import { SearchPanel } from '../../shared/SearchPanel/SearchPanel';
 
@@ -11,9 +10,6 @@ export const SearchPage: React.FC = function SearchPage() {
     <main className={style.root}>
       <header className={style.header}>
         <Navigation />
-        <div>
-          <FileUpload />
-        </div>
       </header>
       <div className={style.searchWrapper}>
         <SearchPanel />

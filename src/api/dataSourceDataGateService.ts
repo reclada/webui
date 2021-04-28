@@ -1,37 +1,39 @@
-import { v4 } from 'uuid';
-
 import { userService } from '../services/userService';
-import { axiosCall } from '../utils/ajaxCall';
+import { axiosCall, CancelToken } from '../utils/ajaxCall';
+
+import { IRecladaFileObject } from './IRecladaObject';
 
 interface IS3PathResponse {
-  url: string;
-  fields: {
-    key: string;
-    policy: string;
-    signature: string;
-    'Content-Type': string;
-    AWSAccessKeyId: string;
+  object: IRecladaFileObject;
+  upload_url: {
+    url: string;
+    fields: {
+      key: string;
+      policy: string;
+      signature: string;
+      'Content-Type': string;
+      AWSAccessKeyId: string;
+    };
   };
 }
 
-const S3_URL = 'http://localhost:9000';
-const BUCKET = 'sample';
+interface getS3PathParams {
+  accessToken: string;
+  name: string;
+  fileSize: number;
+  fileType: string;
+}
 
-async function getS3Path(token: string, name: string) {
+async function getS3Path(params: getS3PathParams) {
   return axiosCall
     .post<IS3PathResponse>(
       '/api/rpc/storage_generate_presigned_post',
       {
         data: {
-          endpoint_url: S3_URL,
-          region_name: 'us-east-1',
-          access_key_id: 'minio',
-          secret_access_key: 'password',
-          file_type: 'application/pdf',
-          file_size: '50000000',
-          bucket_name: BUCKET,
-          object_name: name,
-          access_token: token,
+          file_type: params.fileType,
+          file_size: params.fileSize,
+          object_name: params.name,
+          access_token: params.accessToken,
         },
       },
       {
@@ -41,63 +43,44 @@ async function getS3Path(token: string, name: string) {
     .then(res => res.data);
 }
 
-async function uploadFile(file: Blob, name: string, token: string) {
-  const config = await getS3Path(token, name);
+interface UploadDatasourceOptions {
+  onProgress?: (percent: number) => void;
+  onSetCancel?: (cancel: () => void) => void;
+}
+
+export async function createFileDataSource(
+  file: File,
+  options: UploadDatasourceOptions = {}
+) {
+  const accessToken = userService.user.token;
+
+  if (!accessToken) {
+    throw new Error('Is not logged in');
+  }
+
+  const config = await getS3Path({
+    accessToken,
+    name: file.name,
+    fileSize: file.size,
+    fileType: file.type,
+  });
   const form = new FormData();
 
   form.append('file', file);
-  const fields = config.fields;
+  const fields = config.upload_url.fields;
 
   Object.keys(fields).forEach(key => {
     // @ts-ignore
     form.append(key, fields[key]);
   });
 
-  return axiosCall.post(config.url, form, {
+  return axiosCall.post(config.upload_url.url, form, {
     headers: { 'content-type': 'multipart/form-data' },
-    onUploadProgress: event => console.log('upload', event),
-  });
-}
-
-async function callRpc(name: string, originalName: string, token: string) {
-  const uri = `${S3_URL}/minio/download/${BUCKET}/${name}`;
-
-  return axiosCall
-    .post(
-      '/api/rpc/reclada_object_create',
-      {
-        data: {
-          class: 'File',
-          attrs: {
-            name: originalName,
-            checksum: 'asdfasdfasdf',
-            mimeType: 'application/pdf',
-            uri: uri,
-          },
-          access_token: token,
-        },
-      },
-      {
-        headers: { 'Content-Profile': 'api' },
+    onUploadProgress: (event: ProgressEvent) => {
+      if (event.lengthComputable) {
+        options.onProgress?.(Math.round(event.loaded / event.total) * 100);
       }
-    )
-    .then(res => {
-      console.log('reclada_object_create', res.data);
-
-      return uri;
-    });
-}
-
-export async function createFileDataSource(file: File) {
-  const token = userService.user.token;
-
-  if (!token) {
-    throw new Error('Is not logged in');
-  }
-
-  const name = `${v4()}.pdf`;
-
-  await uploadFile(file, name, token);
-
-  return callRpc(name, file.name, token);
+    },
+    cancelToken: new CancelToken(cancel => options.onSetCancel?.(() => cancel())),
+  });
 }

@@ -1,15 +1,14 @@
+import { ArticleType } from 'api/articleService';
 import React, { FC } from 'react';
-
-import { IArticle } from '../../../../../api/articleService';
 
 import style from './ArticleTypeRenderer.module.scss';
 
 type ArticleTypeRendererProps = {
-  article: IArticle;
+  articleType: ArticleType;
 };
 
 export const ArticleTypeRenderer: FC<ArticleTypeRendererProps> = function ArticleTypeRenderer({
-  article,
+  articleType,
 }) {
-  return <div className={style.type}>{article.type}</div>;
+  return <div className={style.type}>{articleType}</div>;
 };
