@@ -1,8 +1,8 @@
 import { TableColumnType } from 'antd';
+import { IDataset } from 'api/datasetsDataGateService';
 import React, { FC, useMemo } from 'react';
+import { Table } from 'shared/Table/Table';
 
-import { IDataset } from '../../../../../api/datasetsService';
-import { Table } from '../../../../../shared/Table/Table';
 import { MoreMenuRenderer } from '../../DatasourcesTable/MoreMenuRenderer/MoreMenuRenderer';
 import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';
 
@@ -31,6 +31,8 @@ export const DatasetsTable: FC<DatasetsTableProps> = function DatasetsTable({
       {
         dataIndex: 'createDate',
         title: 'Create date',
+        render: (date: Date) =>
+          date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear(),
       },
       {
         dataIndex: 'author',
@@ -39,15 +41,17 @@ export const DatasetsTable: FC<DatasetsTableProps> = function DatasetsTable({
       {
         dataIndex: 'lastUpdate',
         title: 'Last update',
+        render: (date: Date) =>
+          date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear(),
       },
       {
         dataIndex: 'whoUpdated',
         title: 'Who updated',
       },
       {
-        dataIndex: 'owner',
+        dataIndex: 'owners',
         title: 'Owner',
-        render: (owners: IDataset['owner']) => <OwnersRenderer owners={owners} />,
+        render: (owners: IDataset['owners']) => <OwnersRenderer owners={owners} />,
       },
       {
         render: (_, dataset) => <MoreMenuRenderer datasourceId={dataset.id} />,

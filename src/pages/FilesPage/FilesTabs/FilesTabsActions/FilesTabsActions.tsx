@@ -1,6 +1,7 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import React, { FC } from 'react';
+import { createDataset } from 'api/datasetsDataGateService';
+import React, { FC, useCallback } from 'react';
 
 import { useOpen } from '../../../../utils/useOpen';
 import { UploadDatasourceModal } from '../UploadDatasourceModal/UploadDatasourceModal';
@@ -10,6 +11,10 @@ import style from './FilesTabsActions.module.scss';
 export const FilesTabsActions: FC = function FilesTabsActions() {
   const uploadDatasourceModal = useOpen(false);
 
+  const handleDatasetCreate = useCallback(() => {
+    createDataset('test-test');
+  }, []);
+
   return (
     <>
       <Button
@@ -18,9 +23,20 @@ export const FilesTabsActions: FC = function FilesTabsActions() {
         icon={<PlusOutlined style={{ fontSize: 14 }} />}
         shape="round"
         type="primary"
+        onClick={handleDatasetCreate}
+      >
+        Data Set
+      </Button>
+
+      <Button
+        className={style.actionBtn}
+        ghost={true}
+        icon={<PlusOutlined style={{ fontSize: 14 }} />}
+        shape="round"
+        type="primary"
         onClick={uploadDatasourceModal.open}
       >
-        Data source
+        Data Source
       </Button>
 
       <UploadDatasourceModal

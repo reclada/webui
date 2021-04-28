@@ -1,8 +1,8 @@
-import { userService } from '../services/userService';
+import { rpcUrls } from 'api/rpcUrls';
 
 import { apiService } from './apiService';
 import { ArticleType } from './articleService';
-import { IRecladaFileObject } from './IRecladaObject';
+import { IRecladaFile, RecladaObjectClass } from './IRecladaObject';
 
 export interface IDatasource {
   id: string;
@@ -39,11 +39,8 @@ export async function fetchDatasources(datasetId?: string): Promise<IDatasource[
 }
 
 async function fetchFilesList() {
-  const token = userService.user.token;
-
-  return apiService.callRpcPost<IRecladaFileObject[]>('/api/rpc/reclada_object_list', {
-    class: 'File',
+  return apiService.callRpcPost<IRecladaFile[]>(rpcUrls.getRecladaObjectList, {
+    class: RecladaObjectClass.File,
     attrs: {},
-    access_token: token,
   });
 }
