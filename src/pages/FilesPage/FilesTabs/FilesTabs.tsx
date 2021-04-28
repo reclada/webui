@@ -8,6 +8,7 @@ import { ReactComponent as DatasourceIcon } from '../../../resources/datasources
 import { DatasetsPane } from './DatasetsPane/DatasetsPane';
 import { DatasourcesTable } from './DatasourcesTable/DatasourcesTable';
 import style from './FilesTabs.module.scss';
+import { FilesTabsActions } from './FilesTabsActions/FilesTabsActions';
 
 export const FilesTabs: React.FC = function FilesPage() {
   const { TabPane } = Tabs;
@@ -18,7 +19,12 @@ export const FilesTabs: React.FC = function FilesPage() {
 
   return (
     <div className={style.root}>
-      <Tabs className={style.tabs} defaultActiveKey="1" onChange={callback}>
+      <Tabs
+        className={style.tabs}
+        defaultActiveKey="1"
+        tabBarExtraContent={<FilesTabsActions />}
+        onChange={callback}
+      >
         <TabPane
           key="1"
           tab={
