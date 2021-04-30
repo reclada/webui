@@ -1,5 +1,8 @@
 import { axiosCall } from '../utils/ajaxCall';
 
+/**
+ * @deprecated
+ */
 export async function fetchLoginUrl(): Promise<string> {
   return axiosCall
     .post<{ login_url: string }>(
@@ -27,6 +30,9 @@ export interface ITokenResponse {
   ['not-before-policy']: number;
 }
 
+/**
+ * @deprecated
+ */
 export async function fetchAuthToken(code: string): Promise<ITokenResponse> {
   return axiosCall
     .post<ITokenResponse>(
