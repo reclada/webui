@@ -34,5 +34,6 @@ export interface IRecladaDataset extends IRecladaObject {
   class: RecladaObjectClass.DataSet;
   attrs: {
     name: string;
+    dataSources: string[];
   };
 }

@@ -1,5 +1,9 @@
 import { Result, TableColumnType } from 'antd';
-import React, { FC, useEffect, useState } from 'react';
+import { SelectionSelectFn, TableRowSelection } from 'antd/lib/table/interface';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+
+import { datasourceTableService } from 'src/pages/FilesPage/FilesTabs/DatasourcesTable/datasourceTable.service';
 
 import { fetchDatasources, IDatasource } from '../../../../api/datasourcesService';
 import { Table } from '../../../../shared/Table/Table';
@@ -56,40 +60,58 @@ type DatasourcesTableProps = {
   datasetId?: string;
 };
 
-export const DatasourcesTable: FC<DatasourcesTableProps> = function DatasourcesTable({
-  datasetId,
-}) {
-  const [datasources, setDatasources] = useState<IDatasource[] | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
+  function DatasourcesTable({ datasetId }) {
+    const [datasources, setDatasources] = useState<IDatasource[] | undefined>(undefined);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isError, setIsError] = useState(false);
 
-  useEffect(() => {
-    setIsLoading(true);
-    setDatasources(undefined);
-    setIsError(false);
+    useEffect(() => {
+      setIsLoading(true);
+      setDatasources(undefined);
+      setIsError(false);
 
-    fetchDatasources(datasetId)
-      .then(datasources => {
-        setDatasources(datasources);
-        setIsLoading(false);
-      })
-      .catch(() => {
-        setIsError(true);
-        setIsLoading(false);
-      });
-  }, [datasetId]);
+      fetchDatasources(datasetId)
+        .then(datasources => {
+          setDatasources(datasources);
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setIsError(true);
+          setIsLoading(false);
+        });
+    }, [datasetId]);
 
-  if (isError) {
+    const onSelect: SelectionSelectFn<IDatasource> = useCallback(
+      (record: IDatasource, selected: boolean) => {
+        datasourceTableService.selectDataSource(record, selected);
+      },
+      []
+    );
+
+    const rowSelection: TableRowSelection<any> = {
+      selectedRowKeys: datasourceTableService.selectedRows,
+      onSelect,
+    };
+
+    if (isError) {
+      return (
+        <Result
+          status="error"
+          subTitle="Please, try again"
+          title="Failed to load datasources"
+        />
+      );
+    }
+
     return (
-      <Result
-        status="error"
-        subTitle="Please, try again"
-        title="Failed to load datasources"
+      <Table
+        columns={columns}
+        dataSource={datasources}
+        loading={isLoading}
+        rowKey="id"
+        rowSelection={rowSelection}
       />
     );
   }
-
-  return (
-    <Table columns={columns} dataSource={datasources} loading={isLoading} rowKey="id" />
-  );
-};
+);
