@@ -1,34 +1,51 @@
-import React, { FC, useRef } from 'react';
+import { Pagination } from 'antd';
+import React, { FC, useEffect, useState } from 'react';
 
 import style from './DocumentViewer.module.scss';
-import { SearchResultItem } from './SearchResultItem';
-import { usePdfJs } from './usePdfjs';
-import { useSearchResults } from './useSearchResults';
+import { DocumentViewerPage } from './DocumentViewerPage/DocumentViewerPage';
+import { usePdfjsDocument } from './usePdfjsDocument';
 
 export type DocumentViewerProps = {
   url: string;
+  showSearchItems?: boolean;
 };
 
 export const DocumentViewer: FC<DocumentViewerProps> = function DocumentViewer({
   url,
+  showSearchItems,
 }: DocumentViewerProps) {
-  const canvasRef = useRef(null);
-  const textLayerRef = useRef(null);
+  const [pageNum, setPageNum] = useState(1);
+  const { pdfDocument, isLoading, errorMessage } = usePdfjsDocument(url);
 
-  const { height, width, isTextRendered } = usePdfJs({
-    url,
-    canvasRef,
-    textLayerRef,
-  });
+  useEffect(() => {
+    setPageNum(1);
+  }, [pdfDocument]);
 
-  const items = useSearchResults({ width, height });
+  if (isLoading) {
+    return <div>Loading...</div>;
+  } else if (errorMessage !== undefined) {
+    return <div>Error loading document</div>;
+  } else if (pdfDocument === undefined) {
+    return null;
+  }
 
   return (
-    <div className={style.root}>
-      <canvas ref={canvasRef} className={style.canvas} />
-      <div ref={textLayerRef} className={style.textLayer} style={{ height, width }} />
-      {isTextRendered &&
-        items.map(item => <SearchResultItem key={item.id} item={item} />)}
-    </div>
+    <>
+      <DocumentViewerPage
+        pageNum={pageNum}
+        pdfDocument={pdfDocument}
+        showSearchItems={showSearchItems}
+      />
+
+      <Pagination
+        className={style.pagination}
+        current={pageNum}
+        hideOnSinglePage={true}
+        pageSize={1}
+        simple={true}
+        total={pdfDocument.numPages}
+        onChange={setPageNum}
+      />
+    </>
   );
 };

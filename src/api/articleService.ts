@@ -23,21 +23,21 @@ const mockAnswer: IArticleResponseObject = {
   Articles: [
     {
       id: 1,
-      url: 'null',
+      url: '/pdf/sample.pdf',
       title: 'example3.pdf',
       snippets: [],
       type: ArticleType.PDF,
     },
     {
       id: 2,
-      url: 'null',
+      url: '/pdf/sample2.pdf',
       title: 's3://qde/testing/documents/example3.pdf',
       snippets: [],
       type: ArticleType.XLS,
     },
     {
       id: 3,
-      url: 'null',
+      url: '/pdf/sample3.pdf',
       title: 's3://qde/testing/documents/example3.pdf',
       snippets: [],
       type: ArticleType.PDF,

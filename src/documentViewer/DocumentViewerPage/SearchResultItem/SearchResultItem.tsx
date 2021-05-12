@@ -1,10 +1,10 @@
 import { Popover } from 'antd';
 import React, { FC } from 'react';
 
-import { classNames } from '../utils/classNames';
+import { classNames } from '../../../utils/classNames';
+import { ISearchResultItem } from '../useSearchResults';
 
 import style from './SearchResultItem.module.scss';
-import { ISearchResultItem } from './useSearchResults';
 
 type SearchResultItemProps = {
   className?: string;
