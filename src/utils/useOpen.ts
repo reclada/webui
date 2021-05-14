@@ -6,7 +6,7 @@ interface UseOpenResult {
   close: () => void;
 }
 
-export function useOpen(initialValue: boolean): UseOpenResult {
+export function useOpen(initialValue = false): UseOpenResult {
   const [isOpen, setIsOpen] = useState(initialValue);
 
   const handleOpen = useCallback(() => {

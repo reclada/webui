@@ -30,8 +30,9 @@ export const DocumentViewer: FC<DocumentViewerProps> = function DocumentViewer({
   }
 
   return (
-    <>
+    <div className={style.root}>
       <DocumentViewerPage
+        className={style.document}
         pageNum={pageNum}
         pdfDocument={pdfDocument}
         showSearchItems={showSearchItems}
@@ -46,6 +47,6 @@ export const DocumentViewer: FC<DocumentViewerProps> = function DocumentViewer({
         total={pdfDocument.numPages}
         onChange={setPageNum}
       />
-    </>
+    </div>
   );
 };

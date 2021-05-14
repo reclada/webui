@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reclada</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.js"></script>
+</head>
+<body>
+
+<script>
+  var mgr = new Oidc.UserManager({
+    authority: 'http://keycloak:8080/auth/realms/reclada-users',
+    client_id: 'reclada-client',
+    response_type: 'code', // or "code" for "Authorization code flow"
+  });
+  mgr.signinPopupCallback()
+    .then(user => console.log(user))
+    .catch( error => console.error(error));
+</script>
+</body>
+</html>

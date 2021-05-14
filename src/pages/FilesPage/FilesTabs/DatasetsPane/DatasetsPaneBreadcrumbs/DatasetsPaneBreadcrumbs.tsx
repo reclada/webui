@@ -1,7 +1,7 @@
 import { Breadcrumb } from 'antd';
 import React, { FC } from 'react';
 
-import { IDataset } from '../../../../../api/datasetsService';
+import { IDataset } from 'src/api/datasetsDataGateService';
 
 import style from './DatasetsPaneBreadcrumbs.module.scss';
 

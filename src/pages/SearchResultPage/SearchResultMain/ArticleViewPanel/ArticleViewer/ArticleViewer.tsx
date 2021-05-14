@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
-import { DocumentViewer } from '../../../../../documentViewer/DocumentViewer';
-import { classNames } from '../../../../../utils/classNames';
+import { DocumentViewer } from 'src/shared/DocumentViewer/DocumentViewer';
+import { classNames } from 'src/utils/classNames';
 
 import style from './ArticleViewer.module.scss';
 

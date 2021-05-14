@@ -1,7 +1,8 @@
 import { Result } from 'antd';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 
-import { fetchDatasets, IDataset } from '../../../../api/datasetsService';
+import { fetchDatasets, IDataset } from 'src/api/datasetsDataGateService';
+
 import { DatasourcesTable } from '../DatasourcesTable/DatasourcesTable';
 
 import { DatasetsPaneBreadcrumbs } from './DatasetsPaneBreadcrumbs/DatasetsPaneBreadcrumbs';
@@ -24,7 +25,7 @@ export const DatasetsPane: FC = function DatasetsPane() {
     setIsError(false);
 
     fetchDatasets()
-      .then(({ datasets }) => {
+      .then(datasets => {
         setDatasets(datasets);
         setIsLoading(false);
       })
