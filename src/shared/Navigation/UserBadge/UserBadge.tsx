@@ -4,14 +4,14 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
-import { userService } from '../../../services/userService';
+import { authService } from 'src/services/authService';
 
 import style from './UserBadge.module.scss';
 
 export const UserBadge: FC = observer(function UserBadge() {
-  const userName = userService.user.userName;
+  const userName = authService.user.userName;
   const logout = useCallback(() => {
-    userService.logout();
+    authService.logout();
   }, []);
   const userMenu = (
     <Menu>

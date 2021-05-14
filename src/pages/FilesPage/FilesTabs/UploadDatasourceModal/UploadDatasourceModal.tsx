@@ -2,22 +2,8 @@ import { Button, Divider, Modal, Typography } from 'antd';
 import React, { FC, useMemo } from 'react';
 
 import { UploadList } from './UploadList/UploadList';
-import { UploadFile, useUploadList } from './UploadList/useUploadList';
-import { UploadLocalDatasource } from './UploadLocalDatasource/UplloadLocalDatasource';
-
-const mockUploadFiles: UploadFile[] = [
-  {
-    id: '12345',
-    name: 'Valid.pdf',
-    uploadStatus: 'success',
-    size: 56 * 1000,
-  },
-  {
-    id: '1234567',
-    name: 'Invalid.pdf',
-    uploadStatus: 'error',
-  },
-];
+import { useUploadList } from './UploadList/useUploadList';
+import { UploadLocalDatasource } from './UploadLocalDatasource/UploadLocalDatasource';
 
 type UploadDatasourceModalProps = {
   isOpen: boolean;
@@ -28,9 +14,7 @@ export const UploadDatasourceModal: FC<UploadDatasourceModalProps> = function Up
   isOpen,
   onClose,
 }) {
-  const { files, setFile, setUploadCancel, uploadCancel } = useUploadList(
-    mockUploadFiles
-  );
+  const { files, setFile, setUploadCancel, uploadCancel } = useUploadList();
 
   const isUploading = useMemo(
     () => files.some(file => file.uploadStatus === 'uploading'),

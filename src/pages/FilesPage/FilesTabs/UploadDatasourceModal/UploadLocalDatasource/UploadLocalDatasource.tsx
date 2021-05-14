@@ -3,7 +3,7 @@ import { Button, Upload, UploadProps } from 'antd';
 import { nanoid } from 'nanoid/non-secure';
 import React, { FC, useCallback } from 'react';
 
-import { mockedUploadDatasource } from '../../../../../api/datasourcesService';
+import { createFileDataSource } from '../../../../../api/dataSourceDataGateService';
 import { UploadCancel, UploadListResult } from '../UploadList/useUploadList';
 
 import style from './UploadLocalDatasource.module.scss';
@@ -31,7 +31,7 @@ export const UploadLocalDatasource: FC<UploadLocalDatasourceProps> = function Up
         uploadProgress: 0,
       });
 
-      mockedUploadDatasource(file, {
+      createFileDataSource(file, {
         onProgress: (percent: number) => {
           onSetFile({
             id: fileId,
@@ -68,17 +68,17 @@ export const UploadLocalDatasource: FC<UploadLocalDatasourceProps> = function Up
   return (
     <div>
       <Dragger
-        accept=".pdf,.csv,.xls,.xlsx,.doc,.docx,.txt"
+        accept=".pdf,application/pdf"
         className={style.dragger}
         customRequest={handleRequest}
-        multiple={false}
+        multiple={true}
         name="file"
         showUploadList={false}
       >
         <CloudUploadOutlined className={style.uploadIcon} />
 
         <div className={style.uploadSupported}>
-          Supported <strong>PDF, CSV, XLS, XLSX, DOC, DOCX and TXT</strong>
+          Supports <strong>PDF</strong> files
         </div>
 
         <div className={style.uploadDragDropDescription}>

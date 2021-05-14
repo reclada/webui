@@ -11,22 +11,20 @@ import { MoreMenuRenderer } from './MoreMenuRenderer/MoreMenuRenderer';
 
 const columns: TableColumnType<IDatasource>[] = [
   {
-    dataIndex: 'article',
+    dataIndex: 'type',
     title: 'Type',
-    render: (article: IDatasource['article']) => (
-      <ArticleTypeRenderer article={article} />
-    ),
+    render: (type: IDatasource['type']) => <ArticleTypeRenderer articleType={type} />,
   },
   {
-    dataIndex: 'article',
+    dataIndex: 'name',
     title: 'Name',
-    render: (article: IDatasource['article']) => (
-      <ArticleNameRenderer article={article} />
-    ),
+    render: (name: IDatasource['name']) => <ArticleNameRenderer title={name} />,
   },
   {
     dataIndex: 'createDate',
     title: 'Create date',
+    render: (date: Date) =>
+      date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear(),
   },
   {
     dataIndex: 'author',
@@ -35,18 +33,20 @@ const columns: TableColumnType<IDatasource>[] = [
   {
     dataIndex: 'lastUpdate',
     title: 'Last update',
+    render: (date: Date) =>
+      date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear(),
   },
   {
     dataIndex: 'whoUpdated',
     title: 'Who updated',
   },
   {
-    dataIndex: 'owner',
+    dataIndex: 'owners',
     title: 'Owner',
-    render: (owners: IDatasource['owner']) => <OwnersRenderer owners={owners} />,
+    render: (owners: IDatasource['owners']) => <OwnersRenderer owners={owners} />,
   },
   {
-    render: () => <MoreMenuRenderer />,
+    render: (_, dataset) => <MoreMenuRenderer datasourceId={dataset.id} />,
   },
 ];
 
@@ -67,7 +67,7 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = function DatasourcesT
     setIsError(false);
 
     fetchDatasources(datasetId)
-      .then(({ datasources }) => {
+      .then(datasources => {
         setDatasources(datasources);
         setIsLoading(false);
       })

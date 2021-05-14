@@ -1,11 +1,35 @@
 import { Menu } from 'antd';
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 
-import { MoreDropdown } from '../../../../../shared/MoreDropdown/MoreDropdown';
+import { getDatasourceDownloadLink } from 'src/api/dataSourceDataGateService';
+import { MoreDropdown } from 'src/shared/MoreDropdown/MoreDropdown';
+import { downloadURI } from 'src/utils/downloadUri';
 
-export const MoreMenuRenderer: FC = function MoreMenuRenderer() {
+export type MoreMenuRendererProps = {
+  datasourceId: string;
+};
+
+export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRenderer({
+  datasourceId,
+}) {
+  const downloadDatasource = useCallback(async () => {
+    const link = await getDatasourceDownloadLink(datasourceId);
+
+    const resp = await fetch(link, {
+      method: 'GET',
+    });
+    const blob = await resp.blob();
+    const obj = window.URL.createObjectURL(blob);
+
+    downloadURI(obj, 'fileName.pdf');
+    window.URL.revokeObjectURL(obj);
+  }, [datasourceId]);
+
   const moreMenu = (
     <Menu>
+      <Menu.Item key={0} onClick={downloadDatasource}>
+        <span>Download</span>
+      </Menu.Item>
       <Menu.Item key={1}>
         <span>Data set</span>
       </Menu.Item>
