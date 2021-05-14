@@ -1,9 +1,10 @@
 import { Menu } from 'antd';
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 
-import { getDatasourceDownloadLink } from 'src/api/dataSourceDataGateService';
+import {createDataSource, getDatasourceDownloadLink} from 'src/api/dataSourceDataGateService';
 import { MoreDropdown } from 'src/shared/MoreDropdown/MoreDropdown';
 import { downloadURI } from 'src/utils/downloadUri';
+import { EditModal } from '../Modals/EditModal';
 
 export type MoreMenuRendererProps = {
   datasourceId: string;
@@ -25,6 +26,17 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
     window.URL.revokeObjectURL(obj);
   }, [datasourceId]);
 
+  const [isEditModalOpen, seIsEditModalOpen] = useState(false);
+
+  const handleEditOk = () => {
+    createDataSource(datasourceId);
+    seIsEditModalOpen(false);
+  };
+
+  const handleEditCancel = () => {
+    seIsEditModalOpen(false);
+  };
+
   const moreMenu = (
     <Menu>
       <Menu.Item key={0} onClick={downloadDatasource}>
@@ -37,7 +49,7 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
         <span>Version</span>
       </Menu.Item>
       <Menu.Item key={3}>
-        <span>Edit</span>
+        <span> Edit</span>
       </Menu.Item>
       <Menu.Item key={4}>
         <span>Permissions</span>
@@ -48,6 +60,7 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
       <Menu.Item key={6}>
         <span>Delete</span>
       </Menu.Item>
+      <EditModal opened={isEditModalOpen} handleOk={handleEditOk} handleCancel={handleEditCancel}/>
     </Menu>
   );
 
