@@ -1,9 +1,13 @@
 import { Menu } from 'antd';
 import React, { FC, useCallback, useState } from 'react';
 
-import {createDataSource, getDatasourceDownloadLink} from 'src/api/dataSourceDataGateService';
+import {
+  createDataSource,
+  getDatasourceDownloadLink,
+} from 'src/api/dataSourceDataGateService';
 import { MoreDropdown } from 'src/shared/MoreDropdown/MoreDropdown';
 import { downloadURI } from 'src/utils/downloadUri';
+
 import { EditModal } from '../Modals/EditModal';
 
 export type MoreMenuRendererProps = {
@@ -60,7 +64,11 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
       <Menu.Item key={6}>
         <span>Delete</span>
       </Menu.Item>
-      <EditModal opened={isEditModalOpen} handleOk={handleEditOk} handleCancel={handleEditCancel}/>
+      <EditModal
+        opened={isEditModalOpen}
+        handleOk={handleEditOk}
+        handleCancel={handleEditCancel}
+      />
     </Menu>
   );
 

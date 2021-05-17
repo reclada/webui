@@ -1,19 +1,23 @@
 import { Modal, Input, Form, Button } from 'antd';
 import React, { FC } from 'react';
 
+import { createDataset } from '../../../../../../api/datasetsDataGateService';
+
 type EditModalProps = {
   opened: boolean;
   handleOk: () => void;
   handleCancel: () => void;
+  dataSetId: string;
 };
 
-export const EditModal: FC<EditModalProps> = function EditModalRenderer({
+export const EditDataSetModal: FC<EditModalProps> = function EditModalRenderer({
   opened,
   handleOk,
   handleCancel,
 }) {
   const onFinish = (values: any) => {
     handleOk();
+    createDataset(values.name);
     console.log('Success:', values.name);
   };
 

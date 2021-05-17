@@ -4,10 +4,10 @@ import React, { FC, useMemo } from 'react';
 import { IDataset } from 'src/api/datasetsDataGateService';
 import { Table } from 'src/shared/Table/Table';
 
-import { MoreMenuRenderer } from '../../DatasourcesTable/MoreMenuRenderer/MoreMenuRenderer';
 import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';
 
 import { DatasetNameRenderer } from './DatasetNameRenderer/DatasetNameRenderer';
+import { MoreMenuRenderer } from './MoreMenuRenderer/MoreMenuRenderer';
 
 type DatasetsTableProps = {
   datasets: IDataset[] | undefined;
@@ -55,7 +55,7 @@ export const DatasetsTable: FC<DatasetsTableProps> = function DatasetsTable({
         render: (owners: IDataset['owners']) => <OwnersRenderer owners={owners} />,
       },
       {
-        render: (_, dataset) => <MoreMenuRenderer datasourceId={dataset.id} />,
+        render: (_, dataset) => <MoreMenuRenderer dataSetId={dataset.id} />,
       },
     ],
     [onSelectDataset]
