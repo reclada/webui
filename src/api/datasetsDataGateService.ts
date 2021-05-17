@@ -22,10 +22,22 @@ export async function createDataset(name: string) {
     class: RecladaObjectClass.DataSet,
     attrs: {
       name,
+      dataSources: [],
     },
   };
 
   return apiService.callRpcPost(rpcUrls.createRecladaObject, dataSet);
+}
+
+export async function addDataSourcesToDataset(datasetId: string, ids: string[]) {
+  const payload = {
+    id: datasetId,
+    class: RecladaObjectClass.DataSet,
+    field: 'dataSources',
+    value: ids,
+  };
+
+  return apiService.callRpcPost(rpcUrls.addToList, payload);
 }
 
 export async function fetchDatasets(): Promise<IDataset[]> {

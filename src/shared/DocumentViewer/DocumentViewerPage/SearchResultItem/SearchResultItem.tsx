@@ -1,8 +1,8 @@
 import { Popover } from 'antd';
 import React, { FC } from 'react';
 
-import { classNames } from '../../../utils/classNames';
-import { ISearchResultItem } from '../useSearchResults';
+import { ISearchResultItem } from 'src/shared/DocumentViewer/DocumentViewerPage/useSearchResults';
+import { classNames } from 'src/utils/classNames';
 
 import style from './SearchResultItem.module.scss';
 

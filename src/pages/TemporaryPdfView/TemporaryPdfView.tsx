@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DocumentViewer } from '../../documentViewer/DocumentViewer';
+import { DocumentViewer } from 'src/shared/DocumentViewer/DocumentViewer';
 
 import style from './TemporaryPdfView.module.scss';
 

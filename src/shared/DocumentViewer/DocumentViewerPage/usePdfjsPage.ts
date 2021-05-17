@@ -8,6 +8,7 @@ export interface UsePdfjsPageParams {
   canvasRef: RefObject<HTMLCanvasElement>;
   textLayerRef: RefObject<HTMLDivElement>;
   containerWidth: number;
+  containerHeight: number;
 }
 
 export interface UsePdfjsPageResult {
@@ -23,6 +24,7 @@ export function usePdfjsPage({
   canvasRef,
   textLayerRef,
   containerWidth,
+  containerHeight,
 }: UsePdfjsPageParams): UsePdfjsPageResult {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
@@ -55,7 +57,10 @@ export function usePdfjsPage({
         if (isCancelled) return;
 
         const unscaledViewport = page.getViewport({ scale: 1 });
-        const scaleToFit = containerWidth / unscaledViewport.width;
+        const scaleToFit = Math.min(
+          containerWidth / unscaledViewport.width,
+          containerHeight / unscaledViewport.height
+        );
         const viewport = page.getViewport({ scale: scaleToFit });
 
         const renderCanvas = (): Promise<void> => {
@@ -125,7 +130,7 @@ export function usePdfjsPage({
         cleanup();
       }
     };
-  }, [pdfDocument, pageNum, canvasRef, textLayerRef, containerWidth]);
+  }, [pdfDocument, pageNum, canvasRef, textLayerRef, containerWidth, containerHeight]);
 
   return {
     isLoading,
