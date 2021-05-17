@@ -9,6 +9,7 @@ import { MoreDropdown } from 'src/shared/MoreDropdown/MoreDropdown';
 import { downloadURI } from 'src/utils/downloadUri';
 
 import { EditModal } from '../Modals/EditModal';
+import {useOpen} from "../../../../../utils/useOpen";
 
 export type MoreMenuRendererProps = {
   datasourceId: string;
@@ -30,15 +31,15 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
     window.URL.revokeObjectURL(obj);
   }, [datasourceId]);
 
-  const [isEditModalOpen, seIsEditModalOpen] = useState(false);
+  const isEditModalOpen = useOpen(false);
 
   const handleEditOk = () => {
     createDataSource(datasourceId);
-    seIsEditModalOpen(false);
+    isEditModalOpen.close;
   };
 
   const handleEditCancel = () => {
-    seIsEditModalOpen(false);
+    isEditModalOpen.close;
   };
 
   const moreMenu = (
@@ -52,7 +53,7 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
       <Menu.Item key={2}>
         <span>Version</span>
       </Menu.Item>
-      <Menu.Item key={3} onClick={() => seIsEditModalOpen(true)}>
+      <Menu.Item key={3} onClick={() => isEditModalOpen.open}>
         <span> Edit</span>
       </Menu.Item>
       <Menu.Item key={4}>
@@ -65,7 +66,7 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
         <span>Delete</span>
       </Menu.Item>
       <EditModal
-        opened={isEditModalOpen}
+        opened={isEditModalOpen.isOpen}
         handleOk={handleEditOk}
         handleCancel={handleEditCancel}
       />

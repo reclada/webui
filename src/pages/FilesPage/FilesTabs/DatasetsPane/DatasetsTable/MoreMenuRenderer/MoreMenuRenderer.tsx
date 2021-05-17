@@ -1,5 +1,7 @@
 import { Menu } from 'antd';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
+
+import { useOpen } from 'src/utils/useOpen';
 
 import { MoreDropdown } from '../../../../../../shared/MoreDropdown/MoreDropdown';
 import { EditDataSetModal } from '../Modals/EditDataSetModal';
@@ -11,22 +13,14 @@ export type MoreMenuRendererProps = {
 export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRenderer({
   dataSetId,
 }) {
-  const [isEditModalOpen, seIsEditModalOpen] = useState(false);
-
-  const handleEditOk = () => {
-    seIsEditModalOpen(false);
-  };
-
-  const handleEditCancel = () => {
-    seIsEditModalOpen(false);
-  };
+  const isEditModalOpen = useOpen(false);
 
   const moreMenu = (
     <Menu>
       <Menu.Item key={1}>
         <span>Version</span>
       </Menu.Item>
-      <Menu.Item key={2} onClick={() => seIsEditModalOpen(true)}>
+      <Menu.Item key={2} onClick={() => isEditModalOpen.open}>
         <span>Edit</span>
       </Menu.Item>
       <Menu.Item key={3}>
@@ -40,9 +34,9 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
       </Menu.Item>
       <EditDataSetModal
         dataSetId={dataSetId}
-        opened={isEditModalOpen}
-        handleOk={handleEditOk}
-        handleCancel={handleEditCancel}
+        opened={isEditModalOpen.isOpen}
+        handleOk={isEditModalOpen.close}
+        handleCancel={isEditModalOpen.close}
       />
     </Menu>
   );
