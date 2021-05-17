@@ -11,17 +11,23 @@ import { useOpen } from 'src/utils/useOpen';
 import { UploadDatasourceModal } from '../UploadDatasourceModal/UploadDatasourceModal';
 
 import style from './FilesTabsActions.module.scss';
+import {EditDataSetModal} from "../DatasetsPane/DatasetsTable/Modals/EditDataSetModal";
 
 export const FilesTabsActions: FC = observer(function FilesTabsActions() {
   const uploadDatasourceModal = useOpen();
   const addDatasourceToDatasetModal = useOpen();
+  const createDatasetModal = useOpen(false);
 
   const selectedDataSources = datasourceTableService.selectedRows;
 
   const isSourcesSelected = Boolean(selectedDataSources.length);
 
   const handleDatasetCreate = useCallback(() => {
-    createDataset('test-test2');
+    createDatasetModal.open();
+  }, []);
+
+  const closeCreateDataSetModal = useCallback(() => {
+    createDatasetModal.close();
   }, []);
 
   return (
@@ -66,6 +72,12 @@ export const FilesTabsActions: FC = observer(function FilesTabsActions() {
         isOpen={addDatasourceToDatasetModal.isOpen}
         selectedDataSources={selectedDataSources}
         onClose={addDatasourceToDatasetModal.close}
+      />
+      <EditDataSetModal
+        opened={createDatasetModal.isOpen}
+        isCreationType={true}
+        handleCancel={closeCreateDataSetModal}
+        handleOk={createDatasetModal.close}
       />
     </>
   );

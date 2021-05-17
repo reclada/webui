@@ -22,7 +22,7 @@ export const EditModal: FC<EditModalProps> = function EditModalRenderer({
   };
 
   return (
-    <Modal visible={opened} footer={[]}>
+    <Modal visible={opened} footer={[]} closeIcon={[]}>
       <Form name="basic" onFinish={onFinish} onFinishFailed={onFinishFailed}>
         <p>Please input new name </p>
         <Form.Item
@@ -37,7 +37,7 @@ export const EditModal: FC<EditModalProps> = function EditModalRenderer({
             Submit
           </Button>
         </Form.Item>
-        <Button type="primary" onClick={handleCancel}>
+        <Button type="ghost" onClick={handleCancel}>
           Cancel
         </Button>
       </Form>

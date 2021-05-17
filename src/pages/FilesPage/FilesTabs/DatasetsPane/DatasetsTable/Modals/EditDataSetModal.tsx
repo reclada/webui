@@ -1,4 +1,4 @@
-import { Modal, Input, Form, Button } from 'antd';
+import { Modal, Input, Form, Button, Row, Col } from 'antd';
 import React, { FC } from 'react';
 
 import { createDataset } from '../../../../../../api/datasetsDataGateService';
@@ -7,17 +7,19 @@ type EditModalProps = {
   opened: boolean;
   handleOk: () => void;
   handleCancel: () => void;
-  dataSetId: string;
+  dataSetId?: string;
+  isCreationType: boolean;
 };
 
 export const EditDataSetModal: FC<EditModalProps> = function EditModalRenderer({
   opened,
   handleOk,
   handleCancel,
+  isCreationType,
 }) {
   const onFinish = (values: any) => {
     handleOk();
-    createDataset(values.name);
+    isCreationType ? createDataset(values.name) : createDataset(values.name);
     console.log('Success:', values.name);
   };
 
@@ -26,7 +28,7 @@ export const EditDataSetModal: FC<EditModalProps> = function EditModalRenderer({
   };
 
   return (
-    <Modal visible={opened} footer={[]}>
+    <Modal visible={opened} footer={[]} closeIcon={[]}>
       <Form name="basic" onFinish={onFinish} onFinishFailed={onFinishFailed}>
         <p>Please input new name </p>
         <Form.Item
@@ -36,14 +38,20 @@ export const EditDataSetModal: FC<EditModalProps> = function EditModalRenderer({
         >
           <Input />
         </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
-        <Button type="primary" onClick={handleCancel}>
-          Cancel
-        </Button>
+        <Row>
+          <Col>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Form.Item>
+          </Col>
+          <Col offset={4}>
+            <Button type="ghost" onClick={handleCancel}>
+              Cancel
+            </Button>
+          </Col>
+        </Row>
       </Form>
     </Modal>
   );

@@ -1,11 +1,10 @@
 import { Menu } from 'antd';
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 
 import {
   createDataSource,
   getDatasourceDownloadLink,
 } from 'src/api/dataSourceDataGateService';
-import { getDatasourceDownloadLink } from 'src/api/dataSourceDataGateService';
 import { FilePreviewModal } from 'src/pages/FilesPage/FilesTabs/DatasourcesTable/FilePreviewModal/FilePreviewModal';
 import { MoreDropdown } from 'src/shared/MoreDropdown/MoreDropdown';
 import { downloadURI } from 'src/utils/downloadUri';

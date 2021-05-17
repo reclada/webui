@@ -37,6 +37,7 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
         opened={isEditModalOpen.isOpen}
         handleOk={isEditModalOpen.close}
         handleCancel={isEditModalOpen.close}
+        isCreationType={false}
       />
     </Menu>
   );
