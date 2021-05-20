@@ -3,15 +3,14 @@ import { Button } from 'antd';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback } from 'react';
 
-import { createDataset } from 'src/api/datasetsDataGateService';
 import { AddDatasourceToDatasetModal } from 'src/pages/FilesPage/FilesTabs/AddDatasourceToDatasetModal/AddDatasourceToDatasetModal';
 import { datasourceTableService } from 'src/pages/FilesPage/FilesTabs/DatasourcesTable/datasourceTable.service';
 import { useOpen } from 'src/utils/useOpen';
 
+import { EditDataSetModal } from '../DatasetsPane/DatasetsTable/Modals/EditDataSetModal';
 import { UploadDatasourceModal } from '../UploadDatasourceModal/UploadDatasourceModal';
 
 import style from './FilesTabsActions.module.scss';
-import {EditDataSetModal} from "../DatasetsPane/DatasetsTable/Modals/EditDataSetModal";
 
 export const FilesTabsActions: FC = observer(function FilesTabsActions() {
   const uploadDatasourceModal = useOpen();
@@ -24,11 +23,11 @@ export const FilesTabsActions: FC = observer(function FilesTabsActions() {
 
   const handleDatasetCreate = useCallback(() => {
     createDatasetModal.open();
-  }, []);
+  }, [createDatasetModal]);
 
   const closeCreateDataSetModal = useCallback(() => {
     createDatasetModal.close();
-  }, []);
+  }, [createDatasetModal]);
 
   return (
     <>

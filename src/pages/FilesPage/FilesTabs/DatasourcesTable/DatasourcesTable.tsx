@@ -65,6 +65,7 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
     const [datasources, setDatasources] = useState<IDatasource[] | undefined>(undefined);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
       setIsLoading(true);
@@ -76,9 +77,10 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
           setDatasources(datasources);
           setIsLoading(false);
         })
-        .catch(() => {
+        .catch(res => {
           setIsError(true);
           setIsLoading(false);
+          setErrorMessage(res.message);
         });
     }, [datasetId]);
 
@@ -98,8 +100,16 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
       return (
         <Result
           status="error"
-          subTitle="Please, try again"
-          title="Failed to load datasources"
+          subTitle={
+            errorMessage.includes('NoneType')
+              ? 'You can create them right now'
+              : 'Please, try again'
+          }
+          title={
+            errorMessage.includes('NoneType')
+              ? 'You have no datasources'
+              : 'Failed to load datasources'
+          }
         />
       );
     }

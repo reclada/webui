@@ -12,6 +12,7 @@ export const DatasetsPane: FC = function DatasetsPane() {
   const [datasets, setDatasets] = useState<IDataset[] | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const [selectedDataset, setSelectedDataset] = useState<IDataset | undefined>(undefined);
 
@@ -29,9 +30,10 @@ export const DatasetsPane: FC = function DatasetsPane() {
         setDatasets(datasets);
         setIsLoading(false);
       })
-      .catch(() => {
+      .catch(res => {
         setIsError(true);
         setIsLoading(false);
+        setErrorMessage(res);
       });
   }, []);
 
@@ -39,8 +41,16 @@ export const DatasetsPane: FC = function DatasetsPane() {
     return (
       <Result
         status="error"
-        subTitle="Please, try again"
-        title="Failed to load datasets"
+        subTitle={
+          errorMessage.includes('NoneType')
+            ? 'You can create them right now'
+            : 'Please, try again'
+        }
+        title={
+          errorMessage.includes('NoneType')
+            ? 'You have no datasets'
+            : 'Failed to load datasets'
+        }
       />
     );
   }

@@ -17,6 +17,7 @@ export interface UploadListResult {
   setFile: (file: UploadFile) => void;
   setUploadCancel: (fileId: string, cancel: UploadCancel) => void;
   uploadCancel: (fileId: string) => void;
+  clearFilesList: () => void;
 }
 
 export function useUploadList(initialFiles: UploadFile[] = []): UploadListResult {
@@ -45,10 +46,15 @@ export function useUploadList(initialFiles: UploadFile[] = []): UploadListResult
     setFiles(curFiles => curFiles.filter(file => file.id !== fileId));
   }, []);
 
+  const handleFilesListClear = useCallback(() => {
+    setFiles([]);
+  }, []);
+
   return {
     files,
     setFile: handleSetFile,
     setUploadCancel: handleSetUploadCancel,
     uploadCancel: handleUploadCancel,
+    clearFilesList: handleFilesListClear,
   };
 }

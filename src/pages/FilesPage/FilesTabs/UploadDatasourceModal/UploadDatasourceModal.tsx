@@ -14,7 +14,13 @@ export const UploadDatasourceModal: FC<UploadDatasourceModalProps> = function Up
   isOpen,
   onClose,
 }) {
-  const { files, setFile, setUploadCancel, uploadCancel } = useUploadList();
+  const {
+    files,
+    setFile,
+    setUploadCancel,
+    uploadCancel,
+    clearFilesList,
+  } = useUploadList();
 
   const isUploading = useMemo(
     () => files.some(file => file.uploadStatus === 'uploading'),
@@ -22,6 +28,11 @@ export const UploadDatasourceModal: FC<UploadDatasourceModalProps> = function Up
   );
 
   const canCloseModal = !isUploading;
+
+  const onComplete = () => {
+    clearFilesList();
+    onClose();
+  };
 
   return (
     <Modal
@@ -35,7 +46,7 @@ export const UploadDatasourceModal: FC<UploadDatasourceModalProps> = function Up
           shape="round"
           size="large"
           type="primary"
-          onClick={onClose}
+          onClick={onComplete}
         >
           Close
         </Button>
@@ -43,7 +54,7 @@ export const UploadDatasourceModal: FC<UploadDatasourceModalProps> = function Up
       maskClosable={canCloseModal}
       okText={null}
       visible={isOpen}
-      onCancel={onClose}
+      onCancel={onComplete}
     >
       <Typography.Title level={4}>Upload Data Source</Typography.Title>
 

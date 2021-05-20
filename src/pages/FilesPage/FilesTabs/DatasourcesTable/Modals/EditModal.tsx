@@ -1,6 +1,8 @@
 import { Modal, Input, Form, Button } from 'antd';
 import React, { FC } from 'react';
 
+import { createDataSource } from '../../../../../api/dataSourceDataGateService';
+
 type EditModalProps = {
   opened: boolean;
   handleOk: () => void;
@@ -14,6 +16,7 @@ export const EditModal: FC<EditModalProps> = function EditModalRenderer({
 }) {
   const onFinish = (values: any) => {
     handleOk();
+    createDataSource(values.name);
     console.log('Success:', values.name);
   };
 

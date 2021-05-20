@@ -37,12 +37,11 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
   const isEditModalOpen = useOpen(false);
 
   const handleEditOk = () => {
-    createDataSource(datasourceId);
-    isEditModalOpen.close;
+    isEditModalOpen.close();
   };
 
   const handleEditCancel = () => {
-    isEditModalOpen.close;
+    isEditModalOpen.close();
   };
 
   const filePreviewModal = useOpen();
@@ -61,7 +60,7 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
       <Menu.Item key={2}>
         <span>Version</span>
       </Menu.Item>
-      <Menu.Item key={3} onClick={() => isEditModalOpen.open}>
+      <Menu.Item key={3} onClick={() => isEditModalOpen.open()}>
         <span> Edit</span>
       </Menu.Item>
       <Menu.Item key={4}>

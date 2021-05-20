@@ -20,7 +20,7 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
       <Menu.Item key={1}>
         <span>Version</span>
       </Menu.Item>
-      <Menu.Item key={2} onClick={() => isEditModalOpen.open}>
+      <Menu.Item key={2} onClick={() => isEditModalOpen.open()}>
         <span>Edit</span>
       </Menu.Item>
       <Menu.Item key={3}>
