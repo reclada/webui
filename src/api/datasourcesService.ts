@@ -14,12 +14,10 @@ export interface IDatasource {
   owners: string[];
 }
 
-// const date = date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();
-
 export async function fetchDatasources(datasetId?: string): Promise<IDatasource[]> {
-  await new Promise(resolve => setTimeout(resolve, 1000));
-
-  const recladaFileObjects = await fetchFilesList();
+  const recladaFileObjects = datasetId
+    ? await fetchFilesListForDataset(datasetId)
+    : await fetchFilesList();
 
   return recladaFileObjects.map(fileObject => {
     const datasource: IDatasource = {
@@ -34,6 +32,14 @@ export async function fetchDatasources(datasetId?: string): Promise<IDatasource[
     };
 
     return datasource;
+  });
+}
+
+async function fetchFilesListForDataset(datasetId: string) {
+  return apiService.callRpcPost<IRecladaFile[]>(rpcUrls.getRecladaObjectsFromList, {
+    id: datasetId,
+    class: RecladaObjectClass.DataSet,
+    field: 'dataSources',
   });
 }
 
