@@ -6,7 +6,7 @@ class ApiService {
     const token = authService.getAccessToken();
 
     if (token) {
-      payload.access_token = token;
+      payload.accessToken = token;
     }
 
     return axiosCall
