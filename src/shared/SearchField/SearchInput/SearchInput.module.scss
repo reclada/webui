@@ -1,6 +1,6 @@
 .root {
   margin-left: 10px;
-  width: 100%;
+  min-width: 200px;
   :global {
     .rc-select-customize-input {
       font-size: 16px;

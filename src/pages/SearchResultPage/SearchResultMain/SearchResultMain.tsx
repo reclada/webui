@@ -1,8 +1,7 @@
 import React, { FC, useMemo, useState } from 'react';
 
 import { IArticle } from '../../../api/articleService';
-import { ReactComponent as BigLogo } from '../../../resources/biglogo.svg';
-import { ReactComponent as Logotype } from '../../../resources/reclada.svg';
+import { ReactComponent as Logotype } from '../../../resources/logo.svg';
 import { AccountMenu } from '../../../shared/AccountMenu/AccountMenu';
 import { SearchPanel } from '../../../shared/SearchPanel/SearchPanel';
 import { classNames } from '../../../utils/classNames';
@@ -31,35 +30,31 @@ export const SearchResultMain: FC<SearchResultMainProps> = function SearchResult
 
   return (
     <div className={classNames(className, style.root)}>
-      <header className={style.header}>{!searchResults && <BigLogo />}</header>
-      <div className={style.search}>
-        {searchResults && <Logotype />}
-        <SearchPanel className={style.searchPanel} setSearchResults={setSearchResults} />
+      <header className={style.header}>
+        <span className={style.headerTitle}>Reclada</span>
         <AccountMenu className={style.accountMenu} />
+      </header>
+      <SearchPanel className={style.searchPanel} setSearchResults={setSearchResults} />
+      <div className={style.resultTabs}>
+        <ResultTabs />
+      </div>
+      <div className={style.toolbar}>
+        <ResultToolbar />
       </div>
       {searchResults && (
-        <>
-          <div className={style.resultTabs}>
-            <ResultTabs />
+        <div className={style.main}>
+          <div className={activeArticle ? style.leftPanelSlim : style.leftPanelWide}>
+            <ArticlesList
+              articles={searchResults}
+              setActiveArticleIndex={setActiveArticleIndex}
+            />
           </div>
-          <div className={style.toolbar}>
-            <ResultToolbar />
-          </div>
-
-          <div className={style.main}>
-            <div className={activeArticle ? style.leftPanelSlim : style.leftPanelWide}>
-              <ArticlesList
-                articles={searchResults}
-                setActiveArticleIndex={setActiveArticleIndex}
-              />
+          {activeArticle && (
+            <div className={style.rightPanel}>
+              <ArticleViewPanel article={activeArticle} />
             </div>
-            {activeArticle && (
-              <div className={style.rightPanel}>
-                <ArticleViewPanel article={activeArticle} />
-              </div>
-            )}
-          </div>
-        </>
+          )}
+        </div>
       )}
     </div>
   );

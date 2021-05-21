@@ -5,22 +5,16 @@
   "description": "Search pdf documents",
   "license": "Apache-2.0",
   "dependencies": {
-    "@ant-design/icons": "^4.6.2",
     "antd": "^4.15.0",
     "axios": "^0.19.2",
-    "filesize": "^6.3.0",
-    "mobx": "^6.1.8",
-    "mobx-react-lite": "^3.2.0",
-    "nanoid": "^3.1.22",
-    "oidc-client": "^1.11.5",
-    "pdfjs-dist": "2.6.347",
+    "lodash": "^4.17.19",
     "rc-pagination": "^3.1.2",
     "rc-select": "^11.5.3",
     "rc-tabs": "^11.7.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-pdf": "^5.1.0",
     "react-router-dom": "^5.2.0",
-    "uuid": "^8.3.2",
     "web-vitals": "^0.2.4"
   },
   "devDependencies": {
@@ -28,11 +22,12 @@
     "@testing-library/react": "^10.4.5",
     "@testing-library/user-event": "^12.0.11",
     "@types/jest": "^26.0.15",
+    "@types/lodash": "^4.14.162",
     "@types/node": "^14.11.2",
     "@types/react": "^16.9.56",
     "@types/react-dom": "^16.9.9",
+    "@types/react-pdf": "^5.0.0",
     "@types/react-router-dom": "^5.1.6",
-    "@types/uuid": "^8.3.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.1.4",
     "json-server": "^0.16.3",
@@ -44,7 +39,6 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "lint:fix": "eslint --fix --ext .ts,.tsx .",
     "test": "react-scripts test"
   },
   "browserslist": {

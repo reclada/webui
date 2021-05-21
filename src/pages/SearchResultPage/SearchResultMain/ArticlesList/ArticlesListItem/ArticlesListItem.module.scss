@@ -2,7 +2,8 @@
 
 .root {
   border-bottom: 1px solid $gray-4;
-  background-color: transparent;
+  background-color: $background;
+  padding: 10px 10px 30px 10px;
 
   &:focus {
     //border: 2px solid $dark-blue-0;
@@ -12,32 +13,11 @@
   }
 }
 
-.minimized {
-  padding: 10px 10px 12px 10px;
-  border-bottom: none;
-  &:focus {
-    //border: 2px solid $dark-blue-0;
-    //padding: 5px;
-    background: transparent;
-  }
-  &:hover{
-    background: $light-blue-1;
-  }
-}
-
-.bigroot {
-  padding: 10px 10px 30px 10px;
-}
-
 .header {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
   margin-bottom: 16px;
-}
-
-.smallHeader {
-  margin-bottom: 8px;
 }
 
 .titleWrapper {
@@ -78,21 +58,14 @@
 }
 
 .dictionary {
-  background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
-  border: 1px solid #E0E0E0;
-  box-sizing: border-box;
-  border-radius: 12px;
-  color: $gray-2;
-  padding: 4px 8px;
-  margin-right: 12px;
-  font-style: normal;
-  font-weight: normal;
+  fill: #666666;
   font-size: 12px;
-  line-height: 14px;
+  margin-right: 10px;
+  margin-bottom: 2px;
 }
 
 .dictionaryIcon {
-  fill: $gray-2;
+  fill: #666666;
   margin-right: 10px;
 }
 
@@ -142,27 +115,4 @@
 .paragraph {
   margin: 0 0 4px;
   padding-left: 5px;
-}
-
-.snippets {
-  display: flex;
-}
-
-.type {
-  background: $dark-blue-0;
-  border-radius: 2px;
-  padding: 0 10px;
-  width: 40px;
-}
-
-.snippet {
-  background-color: $light-blue;
-  border-radius: 12px;
-  padding: 4px 12px;
-  color: darkblue;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 16px;
-  margin-right: 8px;
 }
