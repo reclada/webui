@@ -9,24 +9,39 @@ import style from './ArticlesListItem.module.scss';
 type ArticlesListItemProps = {
   className?: string;
   article: IArticle;
+  isMinimized?: boolean;
 };
 
 export const ArticlesListItem: FC<ArticlesListItemProps> = function ArticlesListItem({
   className,
   article,
+  isMinimized,
 }) {
   return (
-    <div className={classNames(className, style.root)} role="tab" tabIndex={0}>
-      <header className={style.header}>
+    <div
+      className={classNames(
+        className,
+        style.root,
+        isMinimized ? style.minimized : style.bigroot
+      )}
+      role="tab"
+      tabIndex={0}
+    >
+      <header className={classNames(style.header, isMinimized ? style.smallHeader : '')}>
+        {article.type && <div className={style.type}>{article.type}</div>}
         <div className={style.titleWrapper}>
           {/*<div className={style.type}>{article.type && article.type.toUpperCase()}</div>*/}
           <div className={style.title}>{article.title}</div>
         </div>
       </header>
-      <section>
+      <section className={style.snippets}>
         {article.snippets &&
-          article.snippets.map(snippet => (
-            <div dangerouslySetInnerHTML={{ __html: snippet }} />
+          article.snippets.map((snippet, idx) => (
+            <div
+              key={idx}
+              className={style.snippet}
+              dangerouslySetInnerHTML={{ __html: snippet }}
+            />
           ))}
 
         {/*<ul className={style.searchTerms}>*/}
@@ -41,13 +56,14 @@ export const ArticlesListItem: FC<ArticlesListItemProps> = function ArticlesList
         {/*  </li>*/}
         {/*</ul>*/}
 
-        {/*<ul className={style.dictionaries}>*/}
-        {/*  <DictIcon className={style.dictionaryIcon} />*/}
-        {/*  {article.dictionaries &&*/}
-        {/*    article.dictionaries.map(dict => (*/}
-        {/*      <li className={style.dictionary}>{dict}</li>*/}
-        {/*    ))}*/}
-        {/*</ul>*/}
+        <ul className={style.dictionaries}>
+          {article.dictionaries &&
+            article.dictionaries.map((dict, idx) => (
+              <li key={idx} className={style.dictionary}>
+                #{dict}
+              </li>
+            ))}
+        </ul>
 
         {/*{article.snippets.map((snippet, key) => (*/}
         {/*  <div key={key} className={style.paragraphWrapper}>*/}

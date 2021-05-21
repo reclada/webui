@@ -3,13 +3,23 @@
 .root {
   height: 100%;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   background-color: $page-background;
 }
 
+.header {
+  flex-shrink: 0;
+  width: 100%;
+}
+
 .searchWrapper {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 80%;
   max-width: 950px;
-  padding-bottom: 10%;
+  padding-bottom: 15vh;
 }

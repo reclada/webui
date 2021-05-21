@@ -1,0 +1,15 @@
+@import 'src/styles/variables';
+
+.type {
+  width: 40px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 2px;
+  background: $dark-blue-0;
+  color: $white;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 18px;
+  overflow-wrap: normal;
+  text-align: center;
+}
