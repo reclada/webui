@@ -2,8 +2,8 @@ import { authService } from 'src/services/authService';
 import { axiosCall } from 'src/utils/ajaxCall';
 
 class ApiService {
-  callRpcPost<T>(url: string, payload: any): Promise<T> {
-    const token = authService.getAccessToken();
+  async callRpcPost<T>(url: string, payload: any): Promise<T> {
+    const token = await authService.getAccessToken();
 
     if (token) {
       payload.accessToken = token;
