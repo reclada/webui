@@ -1,6 +1,9 @@
-import { User, UserManager, UserManagerSettings } from 'oidc-client';
+import { User, UserManager, UserManagerSettings, Log } from 'oidc-client';
 
 import { UserModel } from '../models/UserModel';
+
+// Log.logger = console;
+// Log.level = Log.DEBUG;
 
 // const url = await fetchLoginUrl(); todo to be discussed with Andrey
 
@@ -49,8 +52,10 @@ class AuthService {
     this.user.logout();
   }
 
-  getAccessToken(): string | undefined {
-    return this.oidcUser?.access_token;
+  async getAccessToken(): Promise<string | undefined> {
+    const user = await this.userManager.getUser();
+
+    return user?.access_token;
   }
 
   private loginUser(user: User) {
