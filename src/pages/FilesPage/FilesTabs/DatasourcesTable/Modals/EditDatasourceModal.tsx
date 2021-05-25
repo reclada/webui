@@ -1,31 +1,26 @@
 import { Modal, Input, Form, Button, Row, Col } from 'antd';
 import React, { FC } from 'react';
 
-import { createDataset, updateDataset } from 'src/api/datasetsDataGateService';
+import { updateDataSource } from 'src/api/dataSourceDataGateService';
 
 type EditModalProps = {
   opened: boolean;
   handleOk: () => void;
   handleCancel: () => void;
-  dataSetId?: string;
-  isCreationType: boolean;
-  datasetId?: string;
-  prevName?: string;
+  datasource: { id: string; checksum: string; mimeType: string };
+  name: string;
 };
 
-export const EditDataSetModal: FC<EditModalProps> = function EditModalRenderer({
+export const EditDatasourceModal: FC<EditModalProps> = function EditDatasourceModal({
   opened,
   handleOk,
   handleCancel,
-  isCreationType,
-  datasetId,
-  prevName,
+  datasource,
+  name,
 }) {
   const onFinish = (values: any) => {
     handleOk();
-    isCreationType
-      ? createDataset(values.name)
-      : datasetId && updateDataset(values.name, datasetId);
+    updateDataSource(values.name, datasource);
     console.log('Success:', values.name);
   };
 
@@ -42,7 +37,7 @@ export const EditDataSetModal: FC<EditModalProps> = function EditModalRenderer({
           name="name"
           rules={[{ required: true, message: 'Please input datasetName!' }]}
         >
-          <Input defaultValue={prevName} />
+          <Input defaultValue={name} />
         </Form.Item>
         <Row>
           <Col>

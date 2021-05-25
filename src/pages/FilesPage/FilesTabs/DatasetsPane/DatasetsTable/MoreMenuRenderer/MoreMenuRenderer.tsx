@@ -8,10 +8,12 @@ import { EditDataSetModal } from '../Modals/EditDataSetModal';
 
 export type MoreMenuRendererProps = {
   dataSetId: string;
+  prevName: string;
 };
 
 export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRenderer({
   dataSetId,
+  prevName,
 }) {
   const isEditModalOpen = useOpen(false);
 
@@ -20,7 +22,7 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
       <Menu.Item key={1}>
         <span>Version</span>
       </Menu.Item>
-      <Menu.Item key={2} onClick={() => isEditModalOpen.open()}>
+      <Menu.Item key={2} onClick={isEditModalOpen.open}>
         <span>Edit</span>
       </Menu.Item>
       <Menu.Item key={3}>
@@ -38,6 +40,8 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
         handleOk={isEditModalOpen.close}
         handleCancel={isEditModalOpen.close}
         isCreationType={false}
+        datasetId={dataSetId}
+        prevName={prevName}
       />
     </Menu>
   );

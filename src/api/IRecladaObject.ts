@@ -18,7 +18,6 @@ export type RecladaPartialObject<T extends IRecladaObject> = {
 export enum RecladaObjectClass {
   File = 'File',
   DataSet = 'DataSet',
-  DataSource = 'DataSource',
 }
 
 export interface IRecladaFile extends IRecladaObject {
@@ -32,16 +31,10 @@ export interface IRecladaFile extends IRecladaObject {
 }
 
 export interface IRecladaDataset extends IRecladaObject {
+  dataSetId?: string;
   class: RecladaObjectClass.DataSet;
   attrs: {
     name: string;
     dataSources: string[];
-  };
-}
-
-export interface IRecladaDataSource extends IRecladaObject {
-  class: RecladaObjectClass.DataSource;
-  attrs: {
-    name: string;
   };
 }

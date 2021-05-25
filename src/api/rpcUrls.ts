@@ -4,4 +4,5 @@ export const rpcUrls = {
   getRecladaObjectsFromList: '/api/rpc/reclada_object_list_related',
   addToList: '/api/rpc/list_add',
   removeFromList: '/api/rpc/list_drop',
+  updateRecladaObject: '/api/rpc/reclada_object_update',
 };

@@ -55,7 +55,9 @@ export const DatasetsTable: FC<DatasetsTableProps> = function DatasetsTable({
         render: (owners: IDataset['owners']) => <OwnersRenderer owners={owners} />,
       },
       {
-        render: (_, dataset) => <MoreMenuRenderer dataSetId={dataset.id} />,
+        render: (_, dataset) => (
+          <MoreMenuRenderer dataSetId={dataset.id} prevName={dataset.title} />
+        ),
       },
     ],
     [onSelectDataset]

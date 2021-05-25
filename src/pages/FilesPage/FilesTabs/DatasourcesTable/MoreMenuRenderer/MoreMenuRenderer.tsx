@@ -1,28 +1,25 @@
 import { Menu } from 'antd';
 import React, { FC, useCallback } from 'react';
 
-import {
-  createDataSource,
-  getDatasourceDownloadLink,
-} from 'src/api/dataSourceDataGateService';
+import { getDatasourceDownloadLink } from 'src/api/dataSourceDataGateService';
 import { FilePreviewModal } from 'src/pages/FilesPage/FilesTabs/DatasourcesTable/FilePreviewModal/FilePreviewModal';
 import { MoreDropdown } from 'src/shared/MoreDropdown/MoreDropdown';
 import { downloadURI } from 'src/utils/downloadUri';
 import { useOpen } from 'src/utils/useOpen';
 
-import { EditModal } from '../Modals/EditModal';
+import { EditDatasourceModal } from '../Modals/EditDatasourceModal';
 
 export type MoreMenuRendererProps = {
-  datasourceId: string;
-  title: string;
+  datasource: { id: string; name: string; checksum: string; mimeType: string };
+  updateDatasources: () => void;
 };
 
 export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRenderer({
-  datasourceId,
-  title,
+  datasource,
+  updateDatasources,
 }) {
   const downloadDatasource = useCallback(async () => {
-    const link = await getDatasourceDownloadLink(datasourceId);
+    const link = await getDatasourceDownloadLink(datasource.id);
 
     const resp = await fetch(link, {
       method: 'GET',
@@ -32,11 +29,12 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
 
     downloadURI(obj, 'fileName.pdf');
     window.URL.revokeObjectURL(obj);
-  }, [datasourceId]);
+  }, [datasource.id]);
 
   const isEditModalOpen = useOpen(false);
 
   const handleEditOk = () => {
+    updateDatasources();
     isEditModalOpen.close();
   };
 
@@ -60,7 +58,7 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
       <Menu.Item key={2}>
         <span>Version</span>
       </Menu.Item>
-      <Menu.Item key={3} onClick={() => isEditModalOpen.open()}>
+      <Menu.Item key={3} onClick={isEditModalOpen.open}>
         <span> Edit</span>
       </Menu.Item>
       <Menu.Item key={4}>
@@ -72,10 +70,12 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
       <Menu.Item key={6}>
         <span>Delete</span>
       </Menu.Item>
-      <EditModal
+      <EditDatasourceModal
         opened={isEditModalOpen.isOpen}
         handleOk={handleEditOk}
         handleCancel={handleEditCancel}
+        datasource={datasource}
+        name={datasource.name}
       />
     </Menu>
   );
@@ -84,8 +84,8 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
     <>
       <MoreDropdown menu={moreMenu} />
       <FilePreviewModal
-        datasourceId={datasourceId}
-        fileName={title}
+        datasourceId={datasource.id}
+        fileName={datasource.name}
         isOpen={filePreviewModal.isOpen}
         onClose={filePreviewModal.close}
       />
