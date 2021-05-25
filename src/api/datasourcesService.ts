@@ -43,6 +43,7 @@ async function fetchFilesListForDataset(datasetId: string) {
   return apiService.callRpcPost<IRecladaFile[]>(rpcUrls.getRecladaObjectsFromList, {
     id: datasetId,
     class: RecladaObjectClass.DataSet,
+    relatedClass: RecladaObjectClass.File,
     field: 'dataSources',
   });
 }

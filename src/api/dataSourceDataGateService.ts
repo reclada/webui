@@ -28,9 +28,9 @@ async function getS3Path(params: getS3PathParams) {
   return apiService.callRpcPost<IS3PathResponse>(
     '/api/rpc/storage_generate_presigned_post',
     {
-      file_type: params.fileType,
-      file_size: params.fileSize,
-      object_name: params.name,
+      fileType: params.fileType,
+      fileSize: params.fileSize,
+      objectName: params.name,
     }
   );
 }
@@ -73,7 +73,7 @@ export async function createFileDataSource(
 export async function getDatasourceDownloadLink(id: string): Promise<string> {
   return apiService
     .callRpcPost<{ url: string }>('/api/rpc/storage_generate_presigned_get', {
-      object_id: id,
+      objectId: id,
     })
     .then(res => res.url);
 }
