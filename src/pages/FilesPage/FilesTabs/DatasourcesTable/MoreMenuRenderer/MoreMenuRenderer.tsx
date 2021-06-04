@@ -11,12 +11,12 @@ import { EditDatasourceModal } from '../Modals/EditDatasourceModal';
 
 export type MoreMenuRendererProps = {
   datasource: { id: string; name: string; checksum: string; mimeType: string };
-  updateDatasources: () => void;
+  onUpdate?: (name: string, datasource: string) => void;
 };
 
 export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRenderer({
   datasource,
-  updateDatasources,
+  onUpdate,
 }) {
   const downloadDatasource = useCallback(async () => {
     const link = await getDatasourceDownloadLink(datasource.id);
@@ -34,7 +34,6 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
   const isEditModalOpen = useOpen(false);
 
   const handleEditOk = () => {
-    updateDatasources();
     isEditModalOpen.close();
   };
 
@@ -75,6 +74,7 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
         handleOk={handleEditOk}
         handleCancel={handleEditCancel}
         datasource={datasource}
+        onUpdate={(name, datasourceId) => onUpdate && onUpdate(name, datasourceId)}
         name={datasource.name}
       />
     </Menu>

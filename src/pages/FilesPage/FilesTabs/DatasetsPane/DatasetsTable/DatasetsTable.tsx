@@ -13,12 +13,14 @@ type DatasetsTableProps = {
   datasets: IDataset[] | undefined;
   isLoading: boolean;
   onSelectDataset: (dataset: IDataset) => void;
+  onUpdate: (name: string, datasetId: string) => void;
 };
 
 export const DatasetsTable: FC<DatasetsTableProps> = function DatasetsTable({
   datasets,
   isLoading,
   onSelectDataset,
+  onUpdate,
 }) {
   const columns: TableColumnType<IDataset>[] = useMemo(
     () => [
@@ -56,11 +58,15 @@ export const DatasetsTable: FC<DatasetsTableProps> = function DatasetsTable({
       },
       {
         render: (_, dataset) => (
-          <MoreMenuRenderer dataSetId={dataset.id} prevName={dataset.title} />
+          <MoreMenuRenderer
+            dataSetId={dataset.id}
+            prevName={dataset.title}
+            onUpdate={onUpdate}
+          />
         ),
       },
     ],
-    [onSelectDataset]
+    [onSelectDataset, onUpdate]
   );
 
   return (

@@ -1,4 +1,4 @@
-import { Modal, Input, Form, Button, Row, Col } from 'antd';
+import { Modal, Input, Form, Button, Row, Col, Typography, Divider } from 'antd';
 import React, { FC } from 'react';
 
 import { createDataset, updateDataset } from 'src/api/datasetsDataGateService';
@@ -11,6 +11,7 @@ type EditModalProps = {
   isCreationType: boolean;
   datasetId?: string;
   prevName?: string;
+  onUpdate?: (name: string, datasetId: string) => void;
 };
 
 export const EditDataSetModal: FC<EditModalProps> = function EditModalRenderer({
@@ -20,13 +21,16 @@ export const EditDataSetModal: FC<EditModalProps> = function EditModalRenderer({
   isCreationType,
   datasetId,
   prevName,
+  onUpdate,
 }) {
   const onFinish = (values: any) => {
     handleOk();
     isCreationType
-      ? createDataset(values.name)
-      : datasetId && updateDataset(values.name, datasetId);
-    console.log('Success:', values.name);
+      ? createDataset(values.name) && onUpdate && onUpdate(values.name, datasetId!)
+      : datasetId &&
+        updateDataset(values.name, datasetId) &&
+        onUpdate &&
+        onUpdate(values.name, datasetId);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -36,7 +40,11 @@ export const EditDataSetModal: FC<EditModalProps> = function EditModalRenderer({
   return (
     <Modal visible={opened} footer={[]} closeIcon={[]}>
       <Form name="basic" onFinish={onFinish} onFinishFailed={onFinishFailed}>
-        <p>Please input new name </p>
+        <Typography.Title level={4}>
+          {isCreationType ? 'Create' : 'Edit'} Data Set
+        </Typography.Title>
+
+        <Divider />
         <Form.Item
           label=""
           name="name"

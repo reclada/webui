@@ -70,6 +70,13 @@ export const DatasetsPane: FC = function DatasetsPane() {
           datasets={datasets}
           isLoading={isLoading}
           onSelectDataset={setSelectedDataset}
+          onUpdate={(name, datasetId) => {
+            const newDataset = datasets?.find(dataset => dataset.id === datasetId);
+
+            if (newDataset !== undefined) newDataset.title = name;
+
+            if (datasets !== undefined) setDatasets([...datasets]);
+          }}
         />
       )}
     </>

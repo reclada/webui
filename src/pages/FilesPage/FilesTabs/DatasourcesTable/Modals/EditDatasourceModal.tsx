@@ -1,4 +1,4 @@
-import { Modal, Input, Form, Button, Row, Col } from 'antd';
+import { Modal, Input, Form, Button, Row, Col, Typography, Divider } from 'antd';
 import React, { FC } from 'react';
 
 import { updateDataSource } from 'src/api/dataSourceDataGateService';
@@ -8,6 +8,7 @@ type EditModalProps = {
   handleOk: () => void;
   handleCancel: () => void;
   datasource: { id: string; checksum: string; mimeType: string };
+  onUpdate: (name: string, dataSourceId: string) => void;
   name: string;
 };
 
@@ -17,10 +18,11 @@ export const EditDatasourceModal: FC<EditModalProps> = function EditDatasourceMo
   handleCancel,
   datasource,
   name,
+  onUpdate,
 }) {
   const onFinish = (values: any) => {
     handleOk();
-    updateDataSource(values.name, datasource);
+    updateDataSource(values.name, datasource) && onUpdate(values.name, datasource.id);
     console.log('Success:', values.name);
   };
 
@@ -31,7 +33,9 @@ export const EditDatasourceModal: FC<EditModalProps> = function EditDatasourceMo
   return (
     <Modal visible={opened} footer={[]} closeIcon={[]}>
       <Form name="basic" onFinish={onFinish} onFinishFailed={onFinishFailed}>
-        <p>Please input new name </p>
+        <Typography.Title level={4}>Edit Data Source</Typography.Title>
+
+        <Divider />
         <Form.Item
           label=""
           name="name"

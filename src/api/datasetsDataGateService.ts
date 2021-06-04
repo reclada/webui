@@ -39,8 +39,6 @@ export async function updateDataset(name: string, datasetId: string) {
     },
   };
 
-  console.log(dataSet);
-
   return apiService.callRpcPost(rpcUrls.updateRecladaObject, dataSet);
 }
 

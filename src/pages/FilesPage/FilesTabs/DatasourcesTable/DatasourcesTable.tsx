@@ -59,7 +59,15 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
         render: (_, datasource) => (
           <MoreMenuRenderer
             datasource={datasource}
-            updateDatasources={UpdateDatasources}
+            onUpdate={(name, datasetId) => {
+              const newDataset = datasources?.find(foo => foo.id === datasetId);
+
+              if (newDataset !== undefined) newDataset.name = name;
+
+              if (datasources !== undefined) {
+                setDatasources([...datasources]);
+              }
+            }}
           />
         ),
       },
@@ -89,7 +97,7 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
 
     useEffect(() => {
       UpdateDatasources();
-    }, [datasetId]);
+    }, [datasetId, UpdateDatasources]);
 
     const onSelect: SelectionSelectFn<IDatasource> = useCallback(
       (record: IDatasource, selected: boolean) => {
