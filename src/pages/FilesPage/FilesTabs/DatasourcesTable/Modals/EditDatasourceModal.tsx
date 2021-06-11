@@ -23,7 +23,6 @@ export const EditDatasourceModal: FC<EditModalProps> = function EditDatasourceMo
   const onFinish = (values: any) => {
     handleOk();
     updateDataSource(values.name, datasource) && onUpdate(values.name, datasource.id);
-    console.log('Success:', values.name);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -31,7 +30,7 @@ export const EditDatasourceModal: FC<EditModalProps> = function EditDatasourceMo
   };
 
   return (
-    <Modal visible={opened} footer={[]} closeIcon={[]}>
+    <Modal closeIcon={[]} footer={[]} visible={opened}>
       <Form name="basic" onFinish={onFinish} onFinishFailed={onFinishFailed}>
         <Typography.Title level={4}>Edit Data Source</Typography.Title>
 
@@ -46,7 +45,7 @@ export const EditDatasourceModal: FC<EditModalProps> = function EditDatasourceMo
         <Row>
           <Col>
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button htmlType="submit" type="primary">
                 Submit
               </Button>
             </Form.Item>

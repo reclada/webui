@@ -6,6 +6,8 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
+    "@testing-library/react": "^10.4.5",
+    "@testing-library/jest-dom": "^5.11.0",
     "antd": "^4.15.0",
     "axios": "^0.19.2",
     "filesize": "^6.3.0",
@@ -24,8 +26,6 @@
     "web-vitals": "^0.2.4"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.11.0",
-    "@testing-library/react": "^10.4.5",
     "@testing-library/user-event": "^12.0.11",
     "@types/jest": "^26.0.15",
     "@types/node": "^14.11.2",

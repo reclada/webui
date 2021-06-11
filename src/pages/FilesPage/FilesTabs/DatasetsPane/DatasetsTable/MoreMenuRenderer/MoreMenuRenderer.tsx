@@ -38,15 +38,15 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
       </Menu.Item>
       <EditDataSetModal
         dataSetId={dataSetId}
-        opened={isEditModalOpen.isOpen}
-        onUpdate={(name, datasetId) => onUpdate && onUpdate(name, datasetId)}
+        datasetId={dataSetId}
+        handleCancel={isEditModalOpen.close}
         handleOk={() => {
           isEditModalOpen.close();
         }}
-        handleCancel={isEditModalOpen.close}
         isCreationType={false}
-        datasetId={dataSetId}
+        opened={isEditModalOpen.isOpen}
         prevName={prevName}
+        onUpdate={(name, datasetId) => onUpdate && onUpdate(name, datasetId)}
       />
     </Menu>
   );

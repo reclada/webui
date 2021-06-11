@@ -43,7 +43,6 @@ export const SearchInput: FC<SearchInputProps> = function SearchInput({
       if (!Array.isArray(option) && option.key !== undefined) {
         // it is onSelect event
 
-        console.info('onSelect', text, option);
         const suggestion = data[Number(option.key)]!;
 
         setValue(suggestion.text);

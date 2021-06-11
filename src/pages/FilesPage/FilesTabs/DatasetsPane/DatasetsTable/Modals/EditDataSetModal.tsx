@@ -38,7 +38,7 @@ export const EditDataSetModal: FC<EditModalProps> = function EditModalRenderer({
   };
 
   return (
-    <Modal visible={opened} footer={[]} closeIcon={[]}>
+    <Modal closeIcon={[]} footer={[]} visible={opened}>
       <Form name="basic" onFinish={onFinish} onFinishFailed={onFinishFailed}>
         <Typography.Title level={4}>
           {isCreationType ? 'Create' : 'Edit'} Data Set
@@ -55,7 +55,7 @@ export const EditDataSetModal: FC<EditModalProps> = function EditModalRenderer({
         <Row>
           <Col>
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button htmlType="submit" type="primary">
                 Submit
               </Button>
             </Form.Item>

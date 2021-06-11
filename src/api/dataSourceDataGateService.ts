@@ -92,7 +92,5 @@ export async function updateDataSource(
     },
   };
 
-  console.log(dataSource);
-
   return apiService.callRpcPost(rpcUrls.updateRecladaObject, ds);
 }

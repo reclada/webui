@@ -70,12 +70,12 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
         <span>Delete</span>
       </Menu.Item>
       <EditDatasourceModal
-        opened={isEditModalOpen.isOpen}
-        handleOk={handleEditOk}
-        handleCancel={handleEditCancel}
         datasource={datasource}
-        onUpdate={(name, datasourceId) => onUpdate && onUpdate(name, datasourceId)}
+        handleCancel={handleEditCancel}
+        handleOk={handleEditOk}
         name={datasource.name}
+        opened={isEditModalOpen.isOpen}
+        onUpdate={(name, datasourceId) => onUpdate && onUpdate(name, datasourceId)}
       />
     </Menu>
   );

@@ -73,10 +73,10 @@ export const FilesTabsActions: FC = observer(function FilesTabsActions() {
         onClose={addDatasourceToDatasetModal.close}
       />
       <EditDataSetModal
-        opened={createDatasetModal.isOpen}
-        isCreationType={true}
         handleCancel={closeCreateDataSetModal}
         handleOk={createDatasetModal.close}
+        isCreationType={true}
+        opened={createDatasetModal.isOpen}
       />
     </>
   );

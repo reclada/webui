@@ -19,6 +19,8 @@ type DatasourcesTableProps = {
 
 export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
   function DatasourcesTable({ datasetId }) {
+    const [datasources, setDatasources] = useState<IDatasource[] | undefined>(undefined);
+
     const columns: TableColumnType<IDatasource>[] = [
       {
         dataIndex: 'type',
@@ -73,7 +75,6 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
       },
     ];
 
-    const [datasources, setDatasources] = useState<IDatasource[] | undefined>(undefined);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
