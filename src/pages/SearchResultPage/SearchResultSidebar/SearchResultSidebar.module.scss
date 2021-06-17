@@ -3,17 +3,16 @@
 $entry-padding-x: 30px;
 
 .root {
-  width: 30px;
+  width: 100px;
   height: 100%;
   background-color: $sidebar-background;
   color: $sidebar-color;
-  position: relative;
-
+  left: 0;
   transition-property: width;
   transition-duration: 0.2s;
   transition-timing-function: ease-out;
-
 }
+
 .root.opened {
   width: 300px;
 }
@@ -23,41 +22,66 @@ $entry-padding-x: 30px;
   height: 100vh;
 }
 
-.content {
-  height: 100vh;
-  padding: 40px $entry-padding-x;
+.jnjlogo {
+  background: #D51900;
+  padding: 19px;
 }
 
-
-.toggle {
-  position: absolute;
-  top: 30px;
-  right: -15px;
+.menuItem {
+  padding: 34px 34px 0;
+  cursor: pointer;
 }
 
-.title {
-  color: $sidebar-header;
-  white-space: nowrap;
-  font-size: 18px;
-  line-height: 21px;
-  margin-bottom: 24px;
+.menuItem:hover {
+  filter: brightness(200%);
+}
+
+.sidebarcontainer {
+  display: flex;
+}
+
+.sidemenucontainter {
+  width: 216px;
+  padding-top: 36px;
+  background-color: #536D85;
+}
+
+.sidemenuinnercontainter {
+  padding-left: 33px;
+  padding-right: 33px;
+}
+
+.sidemenuheader {
+  font-family: Arial;
+  font-style: normal;
   font-weight: bold;
+  font-size: 24px;
+  line-height: 28px;
+  color: #FFFFFF;
+  margin-bottom: 32px;
 }
 
-.label {
-  display: block;
-  white-space: nowrap;
-  font-size: 16px;
-  line-height: 150%;
-
-  input {
-    margin-right: 14px;
-  }
+.sidebarlink, .sidebarlink:active, .sidebarlink:visited {
+  color: white;
 }
 
-.hr {
-  border: 1px solid $dark-blue-1;
-  margin: 30px 0;
-  margin-left: -$entry-padding-x;
-  margin-right: -$entry-padding-x;
+.sidebarlink:hover {
+  color: #0A93F5;
+}
+
+.sidebarlink {
+  margin-left: 14px;
+  position: relative;
+  bottom: 3px
+}
+
+.divider {
+  width: 153px;
+  border: 1px solid #90B3C7;
+  margin-top: 24px;
+}
+
+.buttonscontainer {
+  height: 100vh;
+  position: fixed;
 }

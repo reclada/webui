@@ -3,11 +3,11 @@ import { Button } from 'antd';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback } from 'react';
 
-import { createDataset } from 'src/api/datasetsDataGateService';
 import { AddDatasourceToDatasetModal } from 'src/pages/FilesPage/FilesTabs/AddDatasourceToDatasetModal/AddDatasourceToDatasetModal';
 import { datasourceTableService } from 'src/pages/FilesPage/FilesTabs/DatasourcesTable/datasourceTable.service';
 import { useOpen } from 'src/utils/useOpen';
 
+import { EditDataSetModal } from '../DatasetsPane/DatasetsTable/Modals/EditDataSetModal';
 import { UploadDatasourceModal } from '../UploadDatasourceModal/UploadDatasourceModal';
 
 import style from './FilesTabsActions.module.scss';
@@ -15,14 +15,19 @@ import style from './FilesTabsActions.module.scss';
 export const FilesTabsActions: FC = observer(function FilesTabsActions() {
   const uploadDatasourceModal = useOpen();
   const addDatasourceToDatasetModal = useOpen();
+  const createDatasetModal = useOpen(false);
 
   const selectedDataSources = datasourceTableService.selectedRows;
 
   const isSourcesSelected = Boolean(selectedDataSources.length);
 
   const handleDatasetCreate = useCallback(() => {
-    createDataset('test-test2');
-  }, []);
+    createDatasetModal.open();
+  }, [createDatasetModal]);
+
+  const closeCreateDataSetModal = useCallback(() => {
+    createDatasetModal.close();
+  }, [createDatasetModal]);
 
   return (
     <>
@@ -66,6 +71,12 @@ export const FilesTabsActions: FC = observer(function FilesTabsActions() {
         isOpen={addDatasourceToDatasetModal.isOpen}
         selectedDataSources={selectedDataSources}
         onClose={addDatasourceToDatasetModal.close}
+      />
+      <EditDataSetModal
+        handleCancel={closeCreateDataSetModal}
+        handleOk={createDatasetModal.close}
+        isCreationType={true}
+        opened={createDatasetModal.isOpen}
       />
     </>
   );

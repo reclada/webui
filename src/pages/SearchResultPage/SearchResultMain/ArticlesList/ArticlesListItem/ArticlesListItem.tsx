@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 
 import { IArticle } from '../../../../../api/articleService';
-import { ReactComponent as DictIcon } from '../../../../../resources/dictionaries.svg';
 import { classNames } from '../../../../../utils/classNames';
 
 import style from './ArticlesListItem.module.scss';

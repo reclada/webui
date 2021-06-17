@@ -29,6 +29,19 @@ export async function createDataset(name: string) {
   return apiService.callRpcPost(rpcUrls.createRecladaObject, dataSet);
 }
 
+export async function updateDataset(name: string, datasetId: string) {
+  const dataSet: RecladaPartialObject<IRecladaDataset> = {
+    id: datasetId,
+    class: RecladaObjectClass.DataSet,
+    attrs: {
+      name,
+      dataSources: [],
+    },
+  };
+
+  return apiService.callRpcPost(rpcUrls.updateRecladaObject, dataSet);
+}
+
 export async function addDataSourcesToDataset(datasetId: string, ids: string[]) {
   const payload = {
     id: datasetId,

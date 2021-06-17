@@ -1,4 +1,4 @@
-import { User, UserManager, UserManagerSettings, Log } from 'oidc-client';
+import { User, UserManager, UserManagerSettings } from 'oidc-client';
 
 import { UserModel } from '../models/UserModel';
 
@@ -30,8 +30,6 @@ class AuthService {
   async init() {
     try {
       const user = await this.userManager.getUser();
-
-      console.log('user', user);
 
       if (user) {
         this.loginUser(user);

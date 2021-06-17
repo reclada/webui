@@ -4,21 +4,23 @@ import React, { FC, useMemo } from 'react';
 import { IDataset } from 'src/api/datasetsDataGateService';
 import { Table } from 'src/shared/Table/Table';
 
-import { MoreMenuRenderer } from '../../DatasourcesTable/MoreMenuRenderer/MoreMenuRenderer';
 import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';
 
 import { DatasetNameRenderer } from './DatasetNameRenderer/DatasetNameRenderer';
+import { MoreMenuRenderer } from './MoreMenuRenderer/MoreMenuRenderer';
 
 type DatasetsTableProps = {
   datasets: IDataset[] | undefined;
   isLoading: boolean;
   onSelectDataset: (dataset: IDataset) => void;
+  onUpdate: (name: string, datasetId: string) => void;
 };
 
 export const DatasetsTable: FC<DatasetsTableProps> = function DatasetsTable({
   datasets,
   isLoading,
   onSelectDataset,
+  onUpdate,
 }) {
   const columns: TableColumnType<IDataset>[] = useMemo(
     () => [
@@ -56,11 +58,15 @@ export const DatasetsTable: FC<DatasetsTableProps> = function DatasetsTable({
       },
       {
         render: (_, dataset) => (
-          <MoreMenuRenderer datasourceId={dataset.id} title={dataset.title} />
+          <MoreMenuRenderer
+            dataSetId={dataset.id}
+            prevName={dataset.title}
+            onUpdate={onUpdate}
+          />
         ),
       },
     ],
-    [onSelectDataset]
+    [onSelectDataset, onUpdate]
   );
 
   return (

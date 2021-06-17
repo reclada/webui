@@ -1,7 +1,8 @@
 import { axiosCall, CancelToken } from 'src/utils/ajaxCall';
 
 import { apiService } from './apiService';
-import { IRecladaFile } from './IRecladaObject';
+import { IRecladaFile, RecladaObjectClass, RecladaPartialObject } from './IRecladaObject';
+import { rpcUrls } from './rpcUrls';
 
 interface IS3PathResponse {
   object: IRecladaFile;
@@ -75,4 +76,21 @@ export async function getDatasourceDownloadLink(id: string): Promise<string> {
       objectId: id,
     })
     .then(res => res.url);
+}
+
+export async function updateDataSource(
+  name: string,
+  dataSource: { id: string; checksum: string; mimeType: string }
+) {
+  const ds: RecladaPartialObject<IRecladaFile> = {
+    id: dataSource.id,
+    class: RecladaObjectClass.File,
+    attrs: {
+      name: name,
+      checksum: dataSource.checksum,
+      mimeType: dataSource.mimeType,
+    },
+  };
+
+  return apiService.callRpcPost(rpcUrls.updateRecladaObject, ds);
 }

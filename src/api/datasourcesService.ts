@@ -12,6 +12,8 @@ export interface IDatasource {
   lastUpdate: Date;
   whoUpdated: string;
   owners: string[];
+  checksum: string;
+  mimeType: string;
 }
 
 export async function fetchDatasources(datasetId?: string): Promise<IDatasource[]> {
@@ -29,6 +31,8 @@ export async function fetchDatasources(datasetId?: string): Promise<IDatasource[
       lastUpdate: new Date(),
       whoUpdated: 'unknown',
       owners: ['me', 'other'],
+      checksum: '',
+      mimeType: '',
     };
 
     return datasource;
