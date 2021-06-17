@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { ReactComponent as Logotype } from '../../resources/reclada.svg';
 import { UserBadge } from '../../shared/Navigation/UserBadge/UserBadge';
 import { SearchResultSidebar } from '../SearchResultPage/SearchResultSidebar/SearchResultSidebar';
 
@@ -14,7 +13,6 @@ export const FilesPage: React.FC = function FilesPage() {
       <div className={style.main}>
         <div className={style.search}>
           <div className={style.searchMain}>
-            <Logotype />
             <FileSearch />
           </div>
           <UserBadge />
