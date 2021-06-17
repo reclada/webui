@@ -6,12 +6,14 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.js"></script>
   <script>
-    var mgr = new Oidc.UserManager({
-      response_type: 'code'
-    });
-    mgr.signinSilentCallback().catch(error => {
-      console.error(error);
-    });
+    var mgr = new Oidc.UserManager();
+    console.log(window.location)
+    mgr.signinSilentCallback().then(user => {
+        console.log('SIGNIN_SILENT_CALLBACK', user);
+      },
+      error => {
+        console.error('SIGNIN_SILENT_CALLBACK', error);
+      });
   </script>
 </head>
 <body>
