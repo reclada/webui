@@ -3,6 +3,8 @@
 .root {
   background-color: $page-background;
   overflow-x: hidden;
+  padding-top: 32px;
+  padding-right: 32px;
 }
 
 .header {
@@ -29,7 +31,6 @@
 .search{
   display: flex;
   padding-bottom: 20px;
-  padding-left: 54px;
   align-items: center;
   padding-right: 32px;
 }

@@ -30,7 +30,7 @@ export const FilesTabsActions: FC = observer(function FilesTabsActions() {
   }, [createDatasetModal]);
 
   return (
-    <>
+    <div className={style.buttonContainer}>
       <Button
         className={style.actionBtn}
         disabled={!isSourcesSelected}
@@ -78,6 +78,6 @@ export const FilesTabsActions: FC = observer(function FilesTabsActions() {
         isCreationType={true}
         opened={createDatasetModal.isOpen}
       />
-    </>
+    </div>
   );
 });

@@ -5,7 +5,7 @@ import style from './SearchResultSidebar.module.scss';
 export type SideBarSubMenuProps = {
   name: string;
   position: number;
-  items: {
+  items?: {
     name: string;
     icon: any;
     link: string;
@@ -33,9 +33,9 @@ export const SubSideMenu: FC<SideBarSubMenuProps> = function SubSideMenu({
       </div>
       <div className={style.sidemenuinnercontainter}>
         <div className={style.sidemenuheader}>{name}</div>
-        {items.map(item => {
+        {items?.map(item => {
           return (
-            <div>
+            <div className={style.menuItemHeader}>
               {item.icon}
               <a href={item.link} className={style.sidebarlink}>
                 {item.name}
