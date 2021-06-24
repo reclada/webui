@@ -1,9 +1,6 @@
 import React, { FC, useMemo, useState } from 'react';
 
 import { IArticle } from '../../../api/articleService';
-import { ReactComponent as BigLogo } from '../../../resources/biglogo.svg';
-import { ReactComponent as Logotype } from '../../../resources/reclada.svg';
-import { AccountMenu } from '../../../shared/AccountMenu/AccountMenu';
 import { SearchPanel } from '../../../shared/SearchPanel/SearchPanel';
 import { classNames } from '../../../utils/classNames';
 
@@ -31,11 +28,8 @@ export const SearchResultMain: FC<SearchResultMainProps> = function SearchResult
 
   return (
     <div className={classNames(className, style.root)}>
-      <header className={style.header}>{!searchResults && <BigLogo />}</header>
       <div className={style.search}>
-        {searchResults && <Logotype />}
         <SearchPanel className={style.searchPanel} setSearchResults={setSearchResults} />
-        <AccountMenu className={style.accountMenu} />
       </div>
       {searchResults && (
         <>

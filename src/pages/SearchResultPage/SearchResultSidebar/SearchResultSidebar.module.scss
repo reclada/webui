@@ -4,7 +4,6 @@ $entry-padding-x: 30px;
 
 .root {
   width: 100px;
-  height: 100%;
   background-color: $sidebar-background;
   color: $sidebar-color;
   left: 0;
@@ -47,8 +46,8 @@ $entry-padding-x: 30px;
 }
 
 .sidemenuinnercontainter {
-  padding-left: 33px;
-  padding-right: 33px;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 .sidemenuheader {
@@ -84,4 +83,37 @@ $entry-padding-x: 30px;
 .buttonscontainer {
   height: 100vh;
   position: fixed;
+}
+
+.activeSvg > svg {
+  fill: white !important;
+}
+
+.menuItem > svg {
+  fill: #90B3C7;
+}
+
+.menuItem > svg:hover {
+  fill: #90B3C7;
+  opacity: 0.9;
+}
+.menuItemHeader {
+  margin-bottom: 20px;
+
+}
+.menuItemHeader, .menuItemHeader > a {
+  font-family: Arial;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 21px;
+  /* identical to box height */
+
+  /* White */
+
+  color: #FFFFFF;
+}
+
+.menuItemHeader > a:hover{
+  color: #90B3C7;
 }

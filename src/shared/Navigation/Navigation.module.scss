@@ -1,5 +1,14 @@
-.root {
-  padding: 24px;
+.avatar {
   display: flex;
-  justify-content: flex-end;
+  width: 100px;
+  justify-content: center;
+  padding-top: 32px;
+}
+
+.loginBtn > span > svg {
+  fill: white;
+}
+
+.loginBtn {
+  cursor: pointer;
 }

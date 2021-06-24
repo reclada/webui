@@ -1,5 +1,4 @@
-import Icon from '@ant-design/icons';
-import { Button } from 'antd';
+import { Avatar } from 'antd';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback } from 'react';
 
@@ -20,18 +19,19 @@ export const Navigation: FC = observer(function Navigation() {
   }, []);
 
   return (
-    <div className={style.root}>
+    <div className={style.avatar}>
       {!isLogged && (
-        <Button
-          ghost
-          icon={<Icon component={LoginIcon} />}
-          shape="round"
-          size="large"
-          type="primary"
-          onClick={login}
-        >
-          Login
-        </Button>
+        <div onClick={login} className={style.loginBtn}>
+          <Avatar
+            icon={<LoginIcon />}
+            style={{
+              backgroundColor: '#90B3C7',
+              width: '40px',
+              height: '40px',
+              padding: '7px',
+            }}
+          />
+        </div>
       )}
 
       {isLogged && <UserBadge />}
