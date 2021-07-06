@@ -7,53 +7,61 @@ import { UserModel } from '../models/UserModel';
 
 // const url = await fetchLoginUrl(); todo to be discussed with Andrey
 
-const userManagerSettings: UserManagerSettings = {
-  authority: 'http://keycloak:8080/auth/realms/reclada-users',
-  client_id: 'reclada-client',
-  redirect_uri: window.location.origin + '/signin-callback.html',
-  popup_redirect_uri: window.location.origin + '/signin-popup-callback.html',
-  silent_redirect_uri: window.location.origin + '/silent-callback.html',
-  popup_post_logout_redirect_uri: window.location.origin + '/logout-callback.html',
-  post_logout_redirect_uri: window.location.origin,
-  response_type: 'code', // or "code" for "Authorization code flow"
-  popupWindowFeatures: 'location=no,toolbar=no,width=800,height=600,left=100,top=100',
-  automaticSilentRenew: true,
-  // popupWindowTarget: '_self',
-};
-
 class AuthService {
   readonly user = new UserModel();
-  private userManager = new UserManager(userManagerSettings);
+  private hardcodedUser = {
+    expires_at: 19219129192219,
+    profile: {
+      acr: '1',
+      auth_time: 1625555617,
+      azp: 'reclada-client',
+      email_verified: false,
+      family_name: 'admin1',
+      given_name: 'admin1',
+      jti: 'b0041b6f-6f49-4289-8d1a-6bf6db8ced96',
+      name: 'admin1 admin1',
+      preferred_username: 'admin1',
+      session_state: '3ccb4a1a-bdfd-4934-bffb-9d356f8d0c19',
+      sub: '944cee0b-038d-48bf-95a5-50a2a6a1e487',
+      typ: 'ID',
+      iss: 'trst5',
+      exp: 1129129,
+      aud: '',
+      iat: 213123312,
+      alg: 'HS256',
+    },
+    expired: false,
+    scope: 'openid email profile',
+    session_state: '3ccb4a1a-bdfd-4934-bffb-9d356f8d0c19',
+    state: undefined,
+    token_type: 'Bearer',
+    expires_in: 23838283,
+    scopes: ['openid', 'email', 'profile'],
+    toStorageString: () => this.hardcodedUser.toString(),
+    access_token:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+    id_token:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+    refresh_token:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+  };
 
   private oidcUser: User | null = null;
 
   async init() {
-    try {
-      const user = await this.userManager.getUser();
-
-      if (user) {
-        this.loginUser(user);
-      }
-    } catch (err) {
-      console.error(err);
-      this.user.logout();
-    }
+    this.loginUser(this.hardcodedUser);
   }
 
   login() {
-    this.userManager.signinPopup().then(user => this.loginUser(user));
+    this.loginUser(this.hardcodedUser);
   }
 
   async logout() {
-    await this.userManager.signoutPopup();
-    this.userManager.removeUser();
     this.user.logout();
   }
 
   async getAccessToken(): Promise<string | undefined> {
-    const user = await this.userManager.getUser();
-
-    return user?.access_token;
+    return this.hardcodedUser.access_token;
   }
 
   private loginUser(user: User) {
