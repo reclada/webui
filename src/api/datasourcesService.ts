@@ -43,14 +43,22 @@ async function fetchFilesListForDataset(datasetId: string) {
   return apiService.callRpcPost<IRecladaFile[]>(rpcUrls.getRecladaObjectsFromList, {
     id: datasetId,
     class: RecladaObjectClass.DataSet,
-    relatedClass: RecladaObjectClass.File,
+    relatedClass: RecladaObjectClass.DataSource,
     field: 'dataSources',
   });
 }
 
 async function fetchFilesList() {
   return apiService.callRpcPost<IRecladaFile[]>(rpcUrls.getRecladaObjectList, {
-    class: RecladaObjectClass.File,
+    class: RecladaObjectClass.DataSource,
+    attrs: {},
+  });
+}
+
+export async function fetchSourceById(id: string, objectClass: RecladaObjectClass) {
+  return apiService.callRpcPost<IRecladaFile[] | null>(rpcUrls.getRecladaObjectList, {
+    class: objectClass,
+    id,
     attrs: {},
   });
 }

@@ -18,6 +18,7 @@ export type RecladaPartialObject<T extends IRecladaObject> = {
 export enum RecladaObjectClass {
   File = 'File',
   DataSet = 'DataSet',
+  DataSource = 'DataSource',
 }
 
 export interface IRecladaFile extends IRecladaObject {

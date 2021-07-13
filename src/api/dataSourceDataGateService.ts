@@ -1,3 +1,4 @@
+import { fetchSourceById } from 'src/api/datasourcesService';
 import { axiosCall, CancelToken } from 'src/utils/ajaxCall';
 
 import { apiService } from './apiService';
@@ -71,11 +72,19 @@ export async function createFileDataSource(
 }
 
 export async function getDatasourceDownloadLink(id: string): Promise<string> {
-  return apiService
-    .callRpcPost<{ url: string }>('/api/rpc/storage_generate_presigned_get', {
-      objectId: id,
-    })
-    .then(res => res.url);
+  // return apiService
+  //   .callRpcPost<{ url: string }>('/api/rpc/storage_generate_presigned_get', {
+  //     objectId: id,
+  //   })
+  //   .then(res => res.url);
+  return fetchSourceById(id, RecladaObjectClass.DataSource).then(res => {
+    const uri = res?.[0]?.attrs?.uri;
+
+    if (uri) {
+      return uri;
+    }
+    throw new Error(`id not found: ${id}`);
+  });
 }
 
 export async function updateDataSource(
