@@ -26,14 +26,11 @@ interface getS3PathParams {
 }
 
 async function getS3Path(params: getS3PathParams) {
-  return apiService.callRpcPost<IS3PathResponse>(
-    '/api/rpc/storage_generate_presigned_post',
-    {
-      fileType: params.fileType,
-      fileSize: params.fileSize,
-      objectName: params.name,
-    }
-  );
+  return apiService.callRpcPost<IS3PathResponse>(rpcUrls.generatePresignPost, {
+    fileType: params.fileType,
+    fileSize: params.fileSize,
+    objectName: params.name,
+  });
 }
 
 interface UploadDatasourceOptions {
@@ -73,7 +70,7 @@ export async function createFileDataSource(
 
 export async function getDatasourceDownloadLink(id: string): Promise<string> {
   // return apiService
-  //   .callRpcPost<{ url: string }>('/api/rpc/storage_generate_presigned_get', {
+  //   .callRpcPost<{ url: string }>(rpcUrls.generatePresignGet, {
   //     objectId: id,
   //   })
   //   .then(res => res.url);
