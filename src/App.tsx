@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 
 import { AuthGuard } from 'src/pages/AuthGuard';
 import { routes } from 'src/pages/routes';
@@ -22,7 +22,7 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Switch>
         <Route path="/viewer" render={routeProps => <TemporaryPdfView />} />
         <Route
@@ -49,7 +49,7 @@ function App() {
         </Route>
         <Route path={routes.root} exact={true} render={routeProps => <SearchPage />} />
       </Switch>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
