@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { NavLink } from 'react-router-dom';
 
 import style from './SearchResultSidebar.module.scss';
 
@@ -37,9 +38,9 @@ export const SubSideMenu: FC<SideBarSubMenuProps> = function SubSideMenu({
           return (
             <div className={style.menuItemHeader}>
               {item.icon}
-              <a href={item.link} className={style.sidebarlink}>
+              <NavLink className={style.sidebarlink} to={item.link}>
                 {item.name}
-              </a>
+              </NavLink>
               {item.divider ? <div className={style.divider} /> : <></>}
             </div>
           );
