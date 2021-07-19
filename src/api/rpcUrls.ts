@@ -1,8 +1,10 @@
+const prefix = process.env.PUBLIC_URL || '';
+
 export const rpcUrls = {
-  createRecladaObject: '/api/rpc/reclada_object_create',
-  getRecladaObjectList: '/api/rpc/reclada_object_list',
-  getRecladaObjectsFromList: '/api/rpc/reclada_object_list_related',
-  addToList: '/api/rpc/reclada_object_list_add',
-  removeFromList: '/api/rpc/reclada_object_list_drop',
-  updateRecladaObject: '/api/rpc/reclada_object_update',
+  createRecladaObject: `${prefix}/api/rpc/reclada_object_create`,
+  getRecladaObjectList: `${prefix}/api/rpc/reclada_object_list`,
+  getRecladaObjectsFromList: `${prefix}/api/rpc/reclada_object_list_related`,
+  addToList: `${prefix}/api/rpc/reclada_object_list_add`,
+  removeFromList: `${prefix}/api/rpc/reclada_object_list_drop`,
+  updateRecladaObject: `${prefix}/api/rpc/reclada_object_update`,
 };
