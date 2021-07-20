@@ -48,6 +48,16 @@ function App() {
           </AuthGuard>
         </Route>
         <Route path={routes.root} exact={true} render={routeProps => <SearchPage />} />
+        <Route path={routes.tasks}>
+          <AuthGuard>
+            <FilesPage pageType={FilePageType.Tasks} />
+          </AuthGuard>
+        </Route>
+        <Route path={routes.jobs}>
+          <AuthGuard>
+            <FilesPage pageType={FilePageType.Jobs} />
+          </AuthGuard>
+        </Route>
       </Switch>
     </BrowserRouter>
   );

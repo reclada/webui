@@ -7,4 +7,6 @@ export const routes = {
   available: '/available',
   search: '/search',
   authCallback: '/callback',
+  tasks: '/tasks',
+  jobs: '/jobs'
 };

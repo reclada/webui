@@ -13,6 +13,8 @@ export enum FilePageType {
   Datasources = 'datasources',
   Assets = 'assets',
   Available = 'available',
+  Jobs = 'jobs',
+  Tasks = 'tasks',
 }
 
 type FilesPageProps = {
@@ -33,6 +35,8 @@ export const FilesPage: FC<FilesPageProps> = function FilesPage({ pageType }) {
         {pageType === FilePageType.Datasources ? <DatasourcesTable /> : ''}
         {pageType === FilePageType.Assets ? 'Assets' : ''}
         {pageType === FilePageType.Available ? 'Available to me' : ''}
+        {pageType === FilePageType.Jobs ? 'Jobs' : ''}
+        {pageType === FilePageType.Tasks ? 'Tasks' : ''}
       </div>
       <SearchResultSidebar className={style.sidebar} />
     </div>
