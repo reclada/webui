@@ -72,7 +72,6 @@ export const SearchResultSidebar: FC<SearchResultSidebarProps> = observer(
                 onClick={() => console.log('MenuItem7')}
               />
             )}
-            <Navigation />
           </div>
         </div>
         {isOpen ? (
