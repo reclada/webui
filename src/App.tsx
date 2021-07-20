@@ -3,7 +3,6 @@ import { HashRouter, Route, Switch } from 'react-router-dom';
 
 import { AuthGuard } from 'src/pages/AuthGuard';
 import { routes } from 'src/pages/routes';
-import { SearchPage } from 'src/pages/SearchPage/SearchPage';
 
 import { FilePageType, FilesPage } from './pages/FilesPage/FilesPage';
 import { SearchResultPage } from './pages/SearchResultPage/SearchResultPage';
@@ -47,7 +46,11 @@ function App() {
             <FilesPage pageType={FilePageType.Available} />
           </AuthGuard>
         </Route>
-        <Route path={routes.root} exact={true} render={routeProps => <SearchPage />} />
+        <Route
+          path={routes.root}
+          exact={true}
+          render={routeProps => <SearchResultPage query={routeProps.location.search} />}
+        />
       </Switch>
     </HashRouter>
   );
