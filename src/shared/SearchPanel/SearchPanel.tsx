@@ -1,4 +1,5 @@
 import React, { FC, useCallback, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { fetchArticles, IArticle } from '../../api/articleService';
 import { classNames } from '../../utils/classNames';
@@ -17,8 +18,9 @@ export const SearchPanel: FC<SearchPanelProps> = function SearchPanel({
   setSearchResults,
 }) {
   const [currentSearchQuery, setCurrentSearchQuery] = useState<string | null>(null);
+  const history = useHistory();
   const onSearch = useCallback(() => {
-    window.location.hash = '/search?=test';
+    //window.location.hash = '/search?=test';
 
     currentSearchQuery &&
       fetchArticles(currentSearchQuery).then(data => {
@@ -50,7 +52,14 @@ export const SearchPanel: FC<SearchPanelProps> = function SearchPanel({
         className={style.searchField}
         provideSearchData={setCurrentSearchQuery}
       />
-      <Button className={style.searchButton} size="l" onClick={onSearch}>
+      <Button
+        className={style.searchButton}
+        size="l"
+        onClick={() => {
+          history.push('/search?=test');
+          onSearch();
+        }}
+      >
         Search
       </Button>
     </div>
