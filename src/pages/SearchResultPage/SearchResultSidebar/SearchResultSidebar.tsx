@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { ReactComponent as MenuItem2 } from '../../../resources/1.svg';
 import { ReactComponent as MenuItem3 } from '../../../resources/2.svg';
@@ -26,6 +27,7 @@ export const SearchResultSidebar: FC<SearchResultSidebarProps> = observer(
   function SearchResultSidebar({ className }) {
     const [isOpen, setIsOpen] = useState(false);
     const isLogged = authService.user.isLogged;
+    const history = useHistory();
 
     const toggleOpen = useCallback(() => setIsOpen(val => !val), []);
 
@@ -38,7 +40,7 @@ export const SearchResultSidebar: FC<SearchResultSidebarProps> = observer(
             </div>
             <SideMenuItem
               icon={<SearchIcon />}
-              onClick={() => window.location.replace(routes.search)}
+              onClick={() => history.push(routes.search)}
               isActive={window.location.href.includes(routes.search)}
             />
             {isLogged && (
