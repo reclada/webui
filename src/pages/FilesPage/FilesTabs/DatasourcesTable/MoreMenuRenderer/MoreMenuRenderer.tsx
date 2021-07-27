@@ -27,9 +27,9 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
     const blob = await resp.blob();
     const obj = window.URL.createObjectURL(blob);
 
-    downloadURI(obj, 'fileName.pdf');
+    downloadURI(obj, datasource.name);
     window.URL.revokeObjectURL(obj);
-  }, [datasource.id]);
+  }, [datasource.id, datasource.name]);
 
   const isEditModalOpen = useOpen(false);
 

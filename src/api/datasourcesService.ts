@@ -1,5 +1,5 @@
 import { apiService } from './apiService';
-import { ArticleType } from './articleService';
+import { ArticleType, getArticleTypeByKey } from './articleService';
 import { IRecladaFile, RecladaObjectClass } from './IRecladaObject';
 import { rpcUrls } from './rpcUrls';
 
@@ -22,10 +22,12 @@ export async function fetchDatasources(datasetId?: string): Promise<IDatasource[
     : await fetchFilesList();
 
   return recladaFileObjects.map(fileObject => {
+    const fd = fileObject.attrs.name.split('.');
+
     const datasource: IDatasource = {
       id: fileObject.id,
       name: fileObject.attrs.name,
-      type: ArticleType.PDF,
+      type: getArticleTypeByKey(fd.length ? fd[fd.length - 1].toUpperCase() : ''),
       createDate: new Date(),
       author: 'unknown',
       lastUpdate: new Date(),
