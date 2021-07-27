@@ -80,6 +80,7 @@ export async function getDatasourceDownloadLink(id: string): Promise<string> {
 
     if (uri) {
       const url = new URL(uri);
+
       if (url.protocol === 's3:') {
         url.protocol = 'https:';
         url.hostname += '.s3.amazonaws.com';
