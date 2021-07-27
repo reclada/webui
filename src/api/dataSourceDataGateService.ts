@@ -74,11 +74,18 @@ export async function getDatasourceDownloadLink(id: string): Promise<string> {
   //     objectId: id,
   //   })
   //   .then(res => res.url);
+  //!!!!!!!!!!!!!
   return fetchSourceById(id, RecladaObjectClass.DataSource).then(res => {
     const uri = res?.[0]?.attrs?.uri;
 
     if (uri) {
-      return uri;
+      const url = new URL(uri);
+      if (url.protocol === 's3:') {
+        url.protocol = 'https:';
+        url.hostname += '.s3.amazonaws.com';
+      }
+
+      return url.href;
     }
     throw new Error(`id not found: ${id}`);
   });
