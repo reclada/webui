@@ -1,6 +1,6 @@
 // @ts-ignore
 // eslint-disable-next-line import/no-webpack-loader-syntax
-import pdfjsWorker from 'file-loader!pdfjs-dist/build/pdf.worker';
+import pdfjsWorker from 'file-loader!pdfjs-dist/es5/build/pdf.worker';
 import * as pdfjsLib from 'pdfjs-dist';
 import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import { useEffect, useState } from 'react';
