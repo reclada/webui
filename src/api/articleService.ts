@@ -30,7 +30,6 @@ export function getArticleTypeByKey(key: string): ArticleType {
     default:
       return ArticleType.UDEFINDED;
   }
-
 }
 export interface IArticle {
   id: string;
