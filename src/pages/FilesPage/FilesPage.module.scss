@@ -28,6 +28,7 @@
 .searchMain {
   display: flex;
   width: 100%;
+  justify-content: space-between;
 }
 
 .actionBtn {
@@ -44,7 +45,5 @@
   background: white;
   outline: none;
   margin-top: 4px;
-  position: absolute;
-  right: 0;
-  margin-right: 5%;
+  margin-left: 24px;
 }
