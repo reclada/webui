@@ -21,7 +21,7 @@ export const Navigation: FC = observer(function Navigation() {
   return (
     <div className={style.avatar}>
       {!isLogged && (
-        <div onClick={login} className={style.loginBtn}>
+        <div className={style.loginBtn} onClick={login}>
           <Avatar
             icon={<LoginIcon />}
             style={{

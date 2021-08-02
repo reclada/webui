@@ -29,3 +29,22 @@
   display: flex;
   width: 100%;
 }
+
+.actionBtn {
+  color: #0A93F5;
+  font-size: 16px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
+
+.searchButton {
+  color: #0A93F5;
+  border: #0A93F5 1px solid;
+  background: white;
+  outline: none;
+  margin-top: 4px;
+  position: absolute;
+  right: 0;
+  margin-right: 5%;
+}

@@ -116,16 +116,8 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
       return (
         <Result
           status="error"
-          subTitle={
-            errorMessage.includes('NoneType')
-              ? 'You can create them right now'
-              : 'Please, try again'
-          }
-          title={
-            errorMessage.includes('NoneType')
-              ? 'You have no datasources'
-              : 'Failed to load datasources'
-          }
+          subTitle={'Please, try again'}
+          title={'Failed to load datasources'}
         />
       );
     }

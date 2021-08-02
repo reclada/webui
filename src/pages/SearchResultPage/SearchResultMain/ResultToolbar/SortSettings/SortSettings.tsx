@@ -11,7 +11,8 @@ type SortSettingsProps = {
 
 const sortTypes: SelectOption[] = [
   {
-    label: 'Relevance',
+    label: '' +
+      'Relevance',
     value: 'rel',
   },
   {
