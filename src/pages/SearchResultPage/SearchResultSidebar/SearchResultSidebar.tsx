@@ -40,8 +40,8 @@ export const SearchResultSidebar: FC<SearchResultSidebarProps> = observer(
             </div>
             <SideMenuItem
               icon={<SearchIcon />}
-              onClick={() => history.push(routes.search)}
               isActive={window.location.href.includes(routes.search)}
+              onClick={() => history.push(routes.search)}
             />
             {isLogged && (
               <SideMenuItem

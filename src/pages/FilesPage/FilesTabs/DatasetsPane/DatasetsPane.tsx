@@ -41,16 +41,8 @@ export const DatasetsPane: FC = function DatasetsPane() {
     return (
       <Result
         status="error"
-        subTitle={
-          errorMessage.includes('NoneType')
-            ? 'You can create them right now'
-            : 'Please, try again'
-        }
-        title={
-          errorMessage.includes('NoneType')
-            ? 'You have no datasets'
-            : 'Failed to load datasets'
-        }
+        subTitle={'Please, try again'}
+        title={'Failed to load datasets'}
       />
     );
   }

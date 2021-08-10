@@ -47,8 +47,8 @@ function App() {
           </AuthGuard>
         </Route>
         <Route
-          path={routes.root}
           exact={true}
+          path={routes.root}
           render={routeProps => <SearchResultPage query={routeProps.location.search} />}
         />
       </Switch>

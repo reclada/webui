@@ -23,11 +23,11 @@ export const SubSideMenu: FC<SideBarSubMenuProps> = function SubSideMenu({
     <div className={style.sidemenucontainter}>
       <div style={{ top: 127 + (position - 1) * 72, position: 'absolute', left: '84px' }}>
         <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
+          fill="none"
           height="32"
           viewBox="0 0 16 32"
-          fill="none"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
         >
           <path d="M0 16L16 0V32L0 16Z" fill="#536D85" />
         </svg>

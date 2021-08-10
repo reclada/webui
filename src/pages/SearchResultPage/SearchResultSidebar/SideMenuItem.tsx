@@ -17,8 +17,8 @@ export const SideMenuItem: FC<SideMenuItemProps> = function SideMenuItem({
 }) {
   return (
     <div
-      onClick={onClick}
       className={classNames(style.menuItem, isActive ? style.activeSvg : '')}
+      onClick={onClick}
     >
       {icon}
     </div>

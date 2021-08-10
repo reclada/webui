@@ -68,7 +68,7 @@ export const UploadLocalDatasource: FC<UploadLocalDatasourceProps> = function Up
   return (
     <div>
       <Dragger
-        accept=".pdf,application/pdf"
+        accept=".pdf,application/pdf,.xlsx"
         className={style.dragger}
         customRequest={handleRequest}
         multiple={true}
