@@ -1,12 +1,23 @@
 import { Result, TableColumnType } from 'antd';
 import { SelectionSelectFn, TableRowSelection } from 'antd/lib/table/interface';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState, useMemo } from 'react';
 
+import { ArticleType } from 'src/api/articleService';
 import { datasourceTableService } from 'src/pages/FilesPage/FilesTabs/DatasourcesTable/datasourceTable.service';
+import { useFileUrl } from 'src/pages/FilesPage/FilesTabs/DatasourcesTable/FilePreviewModal/useFileUrl';
+//import { isError } from 'util';
 
-import { fetchDatasources, IDatasource } from '../../../../api/datasourcesService';
+import {
+  fetchDatasources,
+  IDatasource,
+  IOrderBy,
+  OrderType,
+  //OrderType,
+} from '../../../../api/datasourcesService';
 import { Table } from '../../../../shared/Table/Table';
+import { ArticleViewPanel } from '../../../SearchResultPage/SearchResultMain/ArticleViewPanel/ArticleViewPanel';
+import style from '../../../SearchResultPage/SearchResultMain/SearchResultMain.module.scss';
 import { OwnersRenderer } from '../shared/OwnersRenderer/OwnersRenderer';
 
 import { ArticleNameRenderer } from './ArticleNameRenderer/ArticleNameRenderer';
@@ -20,6 +31,10 @@ type DatasourcesTableProps = {
 export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
   function DatasourcesTable({ datasetId }) {
     const [datasources, setDatasources] = useState<IDatasource[] | undefined>(undefined);
+    const [activeRecord, setActiveRecord] = useState<IDatasource | null>(null);
+    const [orderRecords, setOrderRecords] = useState<IOrderBy[]>([]);
+
+    const activeUrl = useFileUrl(activeRecord ? activeRecord.id : '');
 
     const columns: TableColumnType<IDatasource>[] = [
       {
@@ -31,6 +46,35 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
         dataIndex: 'name',
         title: 'Name',
         render: (name: IDatasource['name']) => <ArticleNameRenderer title={name} />,
+        onCell: (record: IDatasource | null, rowIndex: number | undefined) => ({
+          onClick: () => {
+            console.log(record);
+            record && record.type === ArticleType.PDF
+              ? setActiveRecord(record)
+              : setActiveRecord(null);
+          },
+        }),
+        onHeaderCell: column => {
+          return {
+            onClick: () => {
+              setOrderRecords(prevOrder => {
+                if (!prevOrder.length) {
+                  return [{ field: 'name', order: OrderType.ASC }];
+                } else {
+                  return [
+                    {
+                      field: 'name',
+                      order:
+                        prevOrder[0].order === OrderType.ASC
+                          ? OrderType.DESC
+                          : OrderType.ASC,
+                    },
+                  ];
+                }
+              });
+            },
+          };
+        },
       },
       {
         dataIndex: 'createDate',
@@ -84,7 +128,7 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
       setDatasources(undefined);
       setIsError(false);
 
-      fetchDatasources(datasetId)
+      fetchDatasources(datasetId, orderRecords)
         .then(datasources => {
           setDatasources(datasources);
           setIsLoading(false);
@@ -94,7 +138,7 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
           setIsLoading(false);
           setErrorMessage(res.message);
         });
-    }, [datasetId]);
+    }, [datasetId, orderRecords]);
 
     useEffect(() => {
       UpdateDatasources();
@@ -131,13 +175,28 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
     }
 
     return (
-      <Table
-        columns={columns}
-        dataSource={datasources}
-        loading={isLoading}
-        rowKey="id"
-        rowSelection={rowSelection}
-      />
+      <div className={style.main}>
+        <div className={activeRecord ? style.leftPanelSlim : style.leftPanelWide}>
+          <Table
+            columns={columns}
+            dataSource={datasources}
+            loading={isLoading}
+            rowKey="id"
+            rowSelection={rowSelection}
+          />
+        </div>
+        {activeRecord && (
+          <div className={style.rightPanel}>
+            <ArticleViewPanel
+              article={{
+                id: activeRecord.id,
+                url: activeUrl,
+                title: activeRecord.name,
+              }}
+            />
+          </div>
+        )}
+      </div>
     );
   }
 );

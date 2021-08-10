@@ -16,10 +16,23 @@ export interface IDatasource {
   mimeType: string;
 }
 
-export async function fetchDatasources(datasetId?: string): Promise<IDatasource[]> {
+export enum OrderType {
+  ASC = 'ASC',
+  DESC = 'DESC',
+}
+
+export interface IOrderBy {
+  field: string;
+  order: OrderType;
+}
+
+export async function fetchDatasources(
+  datasetId?: string,
+  orderBy?: IOrderBy[]
+): Promise<IDatasource[]> {
   const recladaFileObjects = datasetId
     ? await fetchFilesListForDataset(datasetId)
-    : await fetchFilesList();
+    : await fetchFilesList(orderBy ? orderBy : []);
 
   return recladaFileObjects.map(fileObject => {
     const fd = fileObject.attrs.name.split('.');
@@ -50,10 +63,11 @@ async function fetchFilesListForDataset(datasetId: string) {
   });
 }
 
-async function fetchFilesList() {
+async function fetchFilesList(orderBy: IOrderBy[]) {
   return apiService.callRpcPost<IRecladaFile[]>(rpcUrls.getRecladaObjectList, {
     class: RecladaObjectClass.DataSource,
     attrs: {},
+    orderBy: orderBy,
   });
 }
 
