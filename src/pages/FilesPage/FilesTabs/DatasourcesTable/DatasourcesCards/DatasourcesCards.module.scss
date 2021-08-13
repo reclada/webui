@@ -1,3 +1,4 @@
+@import 'src/styles/variables';
 .card {
   margin: 10px;
   width: 30%;
@@ -27,4 +28,19 @@
 .titleCard {
   display: flex;
   align-items: center;
+}
+
+.checkboxCard {
+  margin: -5px 5px 0 0;
+}
+
+.nameCard {
+  color: $cyan;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 2px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
 }

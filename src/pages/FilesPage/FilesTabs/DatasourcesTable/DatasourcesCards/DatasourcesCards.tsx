@@ -2,6 +2,7 @@ import { Card, Checkbox } from 'antd';
 import React, { FC, useCallback } from 'react';
 
 import { IDatasource } from '../../../../../api/datasourcesService';
+import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';
 import { ArticleNameRenderer } from '../ArticleNameRenderer/ArticleNameRenderer';
 import { ArticleTypeRenderer } from '../ArticleTypeRenderer/ArticleTypeRenderer';
 import { datasourceTableService } from '../datasourceTable.service';
@@ -30,7 +31,7 @@ export const DatasourcesCards: FC<DatasourcesCardsProps> = function DatasourcesT
           title={
             <div className={style.titleCard}>
               <Checkbox
-                style={{ marginRight: '5px' }}
+                className={style.checkboxCard}
                 onChange={event => {
                   onCheckbox(el, event.target.checked);
                 }}
@@ -58,7 +59,7 @@ export const DatasourcesCards: FC<DatasourcesCardsProps> = function DatasourcesT
             />
           }
         >
-          <ArticleNameRenderer title={el.name} />
+          <ArticleNameRenderer title={el.name} className={style.nameCard} />
           <div className={style.cardContent}>
             <div className={style.captionCard}>Create date</div>
             <div>
@@ -86,6 +87,15 @@ export const DatasourcesCards: FC<DatasourcesCardsProps> = function DatasourcesT
             </div>
           </div>
           <div className={style.divider} />
+          <div className={style.cardContent}>
+            <div className={style.captionCard}>Who updated</div>
+            <div>{el.whoUpdated}</div>
+          </div>
+          <div className={style.divider} />
+          <div className={style.cardContent}>
+            <div className={style.captionCard}>Owner</div>
+            <OwnersRenderer owners={el.owners} />
+          </div>
         </Card>
       ))}
     </div>
