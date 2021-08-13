@@ -1,40 +1,54 @@
 import { Result, TableColumnType } from 'antd';
 import { SelectionSelectFn, TableRowSelection } from 'antd/lib/table/interface';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useCallback, useEffect, useState, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useState, useMemo, useReducer } from 'react';
 
 import { ArticleType } from 'src/api/articleService';
 import { datasourceTableService } from 'src/pages/FilesPage/FilesTabs/DatasourcesTable/datasourceTable.service';
 import { useFileUrl } from 'src/pages/FilesPage/FilesTabs/DatasourcesTable/FilePreviewModal/useFileUrl';
+import { DisplayingTypes } from 'src/pages/SearchResultPage/SearchResultMain/ResultToolbar/ResultToolbar';
+import {
+  ResultToolbar,
+  ToolbarContext,
+} from 'src/pages/SearchResultPage/SearchResultMain/ResultToolbar/ResultToolbar';
+import { useOpen } from 'src/utils/useOpen';
 //import { isError } from 'util';
 
 import {
   fetchDatasources,
   IDatasource,
-  IOrderBy,
-  OrderType,
-  //OrderType,
+  OrderBy,
 } from '../../../../api/datasourcesService';
 import { Table } from '../../../../shared/Table/Table';
 import { ArticleViewPanel } from '../../../SearchResultPage/SearchResultMain/ArticleViewPanel/ArticleViewPanel';
 import style from '../../../SearchResultPage/SearchResultMain/SearchResultMain.module.scss';
+import { AddDatasourceToDatasetModal } from '../AddDatasourceToDatasetModal/AddDatasourceToDatasetModal';
 import { OwnersRenderer } from '../shared/OwnersRenderer/OwnersRenderer';
 
 import { ArticleNameRenderer } from './ArticleNameRenderer/ArticleNameRenderer';
 import { ArticleTypeRenderer } from './ArticleTypeRenderer/ArticleTypeRenderer';
+import { DatasourcesCards } from './DatasourcesCards/DatasourcesCards';
 import { MoreMenuRenderer } from './MoreMenuRenderer/MoreMenuRenderer';
 
 type DatasourcesTableProps = {
   datasetId?: string;
 };
 
+const initialState = {
+  displayingType: DisplayingTypes.TABLE,
+  activeRecord: null,
+  order: new Array<OrderBy>(),
+};
+
 export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
   function DatasourcesTable({ datasetId }) {
     const [datasources, setDatasources] = useState<IDatasource[] | undefined>(undefined);
-    const [activeRecord, setActiveRecord] = useState<IDatasource | null>(null);
-    const [orderRecords, setOrderRecords] = useState<IOrderBy[]>([]);
 
-    const activeUrl = useFileUrl(activeRecord ? activeRecord.id : '');
+    const addDatasourceToDatasetModal = useOpen();
+
+    const activeUrl = useFileUrl(
+      datasourceTableService.ActiveRecord ? datasourceTableService.ActiveRecord.id : ''
+    );
 
     const columns: TableColumnType<IDatasource>[] = [
       {
@@ -50,31 +64,31 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
           onClick: () => {
             console.log(record);
             record && record.type === ArticleType.PDF
-              ? setActiveRecord(record)
-              : setActiveRecord(null);
+              ? datasourceTableService.setActiveRecord(record)
+              : datasourceTableService.setActiveRecord(undefined);
           },
         }),
-        onHeaderCell: column => {
-          return {
-            onClick: () => {
-              setOrderRecords(prevOrder => {
-                if (!prevOrder.length) {
-                  return [{ field: 'name', order: OrderType.ASC }];
-                } else {
-                  return [
-                    {
-                      field: 'name',
-                      order:
-                        prevOrder[0].order === OrderType.ASC
-                          ? OrderType.DESC
-                          : OrderType.ASC,
-                    },
-                  ];
-                }
-              });
-            },
-          };
-        },
+        // onHeaderCell: column => {
+        //   return {
+        //     onClick: () => {
+        //       setOrderRecords(prevOrder => {
+        //         if (!prevOrder.length) {
+        //           return [{ field: 'name', order: OrderType.ASC }];
+        //         } else {
+        //           return [
+        //             {
+        //               field: 'name',
+        //               order:
+        //                 prevOrder[0].order === OrderType.ASC
+        //                   ? OrderType.DESC
+        //                   : OrderType.ASC,
+        //             },
+        //           ];
+        //         }
+        //       });
+        //     },
+        //   };
+        // },
       },
       {
         dataIndex: 'createDate',
@@ -128,7 +142,7 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
       setDatasources(undefined);
       setIsError(false);
 
-      fetchDatasources(datasetId, orderRecords)
+      fetchDatasources(datasetId, [])
         .then(datasources => {
           setDatasources(datasources);
           setIsLoading(false);
@@ -138,7 +152,7 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
           setIsLoading(false);
           setErrorMessage(res.message);
         });
-    }, [datasetId, orderRecords]);
+    }, [datasetId]);
 
     useEffect(() => {
       UpdateDatasources();
@@ -150,6 +164,10 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
       },
       []
     );
+
+    const onChange = useCallback((record: IDatasource, selected: boolean) => {
+      datasourceTableService.selectDataSource(record, selected);
+    }, []);
 
     const rowSelection: TableRowSelection<any> = {
       selectedRowKeys: datasourceTableService.selectedRows,
@@ -167,28 +185,51 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
     }
 
     return (
-      <div className={style.main}>
-        <div className={activeRecord ? style.leftPanelSlim : style.leftPanelWide}>
-          <Table
-            columns={columns}
-            dataSource={datasources}
-            loading={isLoading}
-            rowKey="id"
-            rowSelection={rowSelection}
-          />
+      <>
+        <div className={style.toolbar}>
+          <ToolbarContext.Provider value={datasourceTableService}>
+            <ResultToolbar />
+          </ToolbarContext.Provider>
         </div>
-        {activeRecord && (
-          <div className={style.rightPanel}>
-            <ArticleViewPanel
-              article={{
-                id: activeRecord.id,
-                url: activeUrl,
-                title: activeRecord.name,
-              }}
-            />
-          </div>
-        )}
-      </div>
+        <div className={style.main}>
+          {datasourceTableService.DisplaingType === DisplayingTypes.TABLE ? (
+            <div
+              className={
+                datasourceTableService.ActiveRecord
+                  ? style.leftPanelSlim
+                  : style.leftPanelWide
+              }
+            >
+              <Table
+                columns={columns}
+                dataSource={datasources}
+                loading={isLoading}
+                rowKey="id"
+                rowSelection={rowSelection}
+              />
+            </div>
+          ) : (
+            <DatasourcesCards datasources={datasources} setDataSources={setDatasources} />
+          )}
+          {datasourceTableService.ActiveRecord && (
+            <div className={style.rightPanel}>
+              <ArticleViewPanel
+                article={{
+                  id: datasourceTableService.ActiveRecord.id,
+                  url: activeUrl,
+                  title: datasourceTableService.ActiveRecord.name,
+                }}
+              />
+            </div>
+          )}
+        </div>
+
+        <AddDatasourceToDatasetModal
+          isOpen={addDatasourceToDatasetModal.isOpen}
+          selectedDataSources={datasourceTableService.selectedRows}
+          onClose={addDatasourceToDatasetModal.close}
+        />
+      </>
     );
   }
 );

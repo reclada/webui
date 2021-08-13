@@ -60,7 +60,8 @@ export const FilesPage: FC<FilesPageProps> = function FilesPage({ pageType }) {
             </Popover>
           </div>
         </div>
-        <FilesTabsActions />
+        <div className={style.emptyContainer}></div>
+        {/* <FilesTabsActions /> */}
         {pageType === FilePageType.Datasets ? <DatasetsPane /> : ''}
         {pageType === FilePageType.Datasources ? <DatasourcesTable /> : ''}
         {pageType === FilePageType.Assets ? 'Assets' : ''}

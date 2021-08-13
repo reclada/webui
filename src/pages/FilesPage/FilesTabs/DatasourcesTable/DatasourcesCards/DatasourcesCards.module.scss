@@ -1,0 +1,30 @@
+.card {
+  margin: 10px;
+  width: 30%;
+  border-radius: 1em;
+}
+.cardContent {
+  display: flex;
+  justify-content: space-between;
+}
+
+.captionCard {
+  color: #536d85;
+}
+
+.divider {
+  width: 100%;
+  border: 1px solid #eeeeee;
+  margin-top: 5px;
+}
+
+.tableCard {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.titleCard {
+  display: flex;
+  align-items: center;
+}

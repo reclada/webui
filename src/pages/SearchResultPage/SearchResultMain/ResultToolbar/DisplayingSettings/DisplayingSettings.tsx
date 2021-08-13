@@ -1,51 +1,60 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext } from 'react';
 
 import { ReactComponent as CardViewIcon } from '../../../../../resources/card-view.svg';
 import { ReactComponent as ListViewIcon } from '../../../../../resources/list-view.svg';
 import { ReactComponent as TableViewIcon } from '../../../../../resources/table-view.svg';
 import { classNames } from '../../../../../utils/classNames';
+import { DisplayingTypes, ToolbarContext } from '../ResultToolbar';
 
 import style from './DisplayingSettings.module.scss';
 
 type DisplayingSettingsProps = {
   className?: string;
+  activeDisplayingType?: DisplayingTypes;
+  setActiveDisplayingType?: any;
 };
 
-enum DisplayingTypes {
-  LIST = 'list',
-  CARD = 'card',
-  TABLE = 'table',
-}
+// export enum DisplayingTypes {
+//   LIST = 'list',
+//   CARD = 'card',
+//   TABLE = 'table',
+// }
 
 export const DisplayingSettings: FC<DisplayingSettingsProps> = function DisplayingSettings({
   className,
 }) {
-  const defaultDisplayingType = DisplayingTypes.LIST;
-  const [activeDisplayingType, setActiveDisplayingType] = useState(defaultDisplayingType);
+  const displaingService = useContext(ToolbarContext);
 
   return (
     <div className={classNames(className, style.root)}>
       <button
         className={classNames(style.iconButton, {
-          [style.active]: activeDisplayingType === DisplayingTypes.LIST,
+          //[style.active]: activeDisplayingType === DisplayingTypes.LIST,
+          [style.active]: displaingService.DisplaingType === DisplayingTypes.LIST,
         })}
-        onClick={() => setActiveDisplayingType(DisplayingTypes.LIST)}
+        onClick={() => {
+          displaingService.setDisplaingType(DisplayingTypes.LIST);
+        }}
       >
         <ListViewIcon />
       </button>
       <button
         className={classNames(style.iconButton, {
-          [style.active]: activeDisplayingType === DisplayingTypes.CARD,
+          [style.active]: displaingService.DisplaingType === DisplayingTypes.CARD,
         })}
-        onClick={() => setActiveDisplayingType(DisplayingTypes.CARD)}
+        onClick={() => {
+          displaingService.setDisplaingType(DisplayingTypes.CARD);
+        }}
       >
         <CardViewIcon />
       </button>
       <button
         className={classNames(style.iconButton, {
-          [style.active]: activeDisplayingType === DisplayingTypes.TABLE,
+          [style.active]: displaingService.DisplaingType === DisplayingTypes.TABLE,
         })}
-        onClick={() => setActiveDisplayingType(DisplayingTypes.TABLE)}
+        onClick={() => {
+          displaingService.setDisplaingType(DisplayingTypes.TABLE);
+        }}
       >
         <TableViewIcon />
       </button>

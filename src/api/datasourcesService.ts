@@ -21,14 +21,14 @@ export enum OrderType {
   DESC = 'DESC',
 }
 
-export interface IOrderBy {
+export type OrderBy = {
   field: string;
   order: OrderType;
-}
+};
 
 export async function fetchDatasources(
   datasetId?: string,
-  orderBy?: IOrderBy[]
+  orderBy?: OrderBy[]
 ): Promise<IDatasource[]> {
   const recladaFileObjects = datasetId
     ? await fetchFilesListForDataset(datasetId)
@@ -63,7 +63,7 @@ async function fetchFilesListForDataset(datasetId: string) {
   });
 }
 
-async function fetchFilesList(orderBy: IOrderBy[]) {
+async function fetchFilesList(orderBy: OrderBy[]) {
   return apiService.callRpcPost<IRecladaFile[]>(rpcUrls.getRecladaObjectList, {
     class: RecladaObjectClass.DataSource,
     attrs: {},

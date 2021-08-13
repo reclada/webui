@@ -44,7 +44,7 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
   const filePreviewModal = useOpen();
 
   const moreMenu = (
-    <Menu>
+    <Menu theme="dark">
       <Menu.Item key={0} onClick={downloadDatasource}>
         <span>Download</span>
       </Menu.Item>
