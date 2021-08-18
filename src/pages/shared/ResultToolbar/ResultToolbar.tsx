@@ -5,11 +5,11 @@ import React, { FC, createContext } from 'react';
 
 import { AddDatasourceToDatasetModal } from 'src/pages/FilesPage/FilesTabs/AddDatasourceToDatasetModal/AddDatasourceToDatasetModal';
 import { datasourceTableService } from 'src/pages/FilesPage/FilesTabs/DatasourcesTable/datasourceTable.service';
+import { ReactComponent as Settings } from 'src/resources/settings.svg';
+import { Paginator } from 'src/shared/Paginator/Paginator';
+import { DisplayingTypes } from 'src/Sorting';
+import { classNames } from 'src/utils/classNames';
 import { useOpen } from 'src/utils/useOpen';
-
-import { ReactComponent as Settings } from '../../../../resources/settings.svg';
-import { Paginator } from '../../../../shared/Paginator/Paginator';
-import { classNames } from '../../../../utils/classNames';
 
 import { DisplayingSettings } from './DisplayingSettings/DisplayingSettings';
 import style from './ResultToolbar.module.scss';
@@ -19,18 +19,13 @@ type ResultToolbarProps = {
   className?: string;
 };
 
-export enum DisplayingTypes {
-  LIST = 'list',
-  CARD = 'card',
-  TABLE = 'table',
-}
 export interface IServiceToolbar {
-  DisplaingType: DisplayingTypes;
+  displaingType: DisplayingTypes;
   setDisplaingType(displaingType: DisplayingTypes): void;
 }
 
 const defaultStateToolbar: IServiceToolbar = {
-  DisplaingType: DisplayingTypes.TABLE,
+  displaingType: DisplayingTypes.TABLE,
   setDisplaingType: (displaingType: DisplayingTypes) => {},
 };
 

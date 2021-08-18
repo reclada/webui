@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
-import { Select, SelectOption } from '../../../../../shared/Select/Select';
-import { classNames } from '../../../../../utils/classNames';
+import { Select, SelectOption } from 'src/shared/Select/Select';
+import { classNames } from 'src/utils/classNames';
 
 import style from './SortSettings.module.scss';
 

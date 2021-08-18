@@ -1,45 +1,24 @@
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 
-import { IDatasource } from 'src/api/datasourcesService';
+import { IDataset } from 'src/api/datasetsDataGateService';
 import { DisplayingTypes } from 'src/Sorting';
 import { OrderBy } from 'src/Sorting';
 
-class DatasourceTableService {
-  private selectedRowKeys = observable.set<string>();
-
+class DatasetsDataService {
   @observable private dispType: DisplayingTypes = DisplayingTypes.TABLE;
-  @observable private aRecord: IDatasource | undefined;
+  @observable private aRecord: IDataset | undefined;
 
   private orderList = observable.set<OrderBy>();
 
-  @computed
-  get selectedRows(): string[] {
-    return Array.from(this.selectedRowKeys.values());
-  }
-
   constructor() {
     makeObservable(this);
-  }
-
-  @action
-  cleanup() {
-    this.selectedRowKeys.clear();
-  }
-
-  @action
-  selectDataSource(dataSource: IDatasource, selected: boolean) {
-    if (selected) {
-      this.selectedRowKeys.add(dataSource.id);
-    } else {
-      this.selectedRowKeys.delete(dataSource.id);
-    }
   }
 
   get displaingType(): DisplayingTypes {
     return this.dispType;
   }
 
-  get ActiveRecord(): IDatasource | undefined {
+  get activeRecord(): IDataset | undefined {
     return this.aRecord;
   }
 
@@ -49,7 +28,7 @@ class DatasourceTableService {
   }
 
   @action
-  setActiveRecord(activeRecord: IDatasource | undefined) {
+  setActiveRecord(activeRecord: IDataset | undefined) {
     if (this.aRecord && activeRecord && this.aRecord.id === activeRecord.id) {
       this.aRecord = undefined;
     } else {
@@ -72,4 +51,4 @@ class DatasourceTableService {
   }
 }
 
-export const datasourceTableService = new DatasourceTableService();
+export const datasetsDataService = new DatasetsDataService();

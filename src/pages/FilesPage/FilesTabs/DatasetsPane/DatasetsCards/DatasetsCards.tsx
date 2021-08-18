@@ -1,65 +1,53 @@
-import { Card, Checkbox } from 'antd';
-import React, { FC, useCallback } from 'react';
+import { Card } from 'antd';
+import React, { FC } from 'react';
 
-import { IDatasource } from '../../../../../api/datasourcesService';
+import { IDataset } from 'src/api/datasetsDataGateService';
+
 import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';
-import { ArticleNameRenderer } from '../ArticleNameRenderer/ArticleNameRenderer';
-import { ArticleTypeRenderer } from '../ArticleTypeRenderer/ArticleTypeRenderer';
-import { datasourceTableService } from '../datasourceTable.service';
-import { MoreMenuRenderer } from '../MoreMenuRenderer/MoreMenuRenderer';
+import { DatasetNameRenderer } from '../DatasetsTable/DatasetNameRenderer/DatasetNameRenderer';
+import { MoreMenuRenderer } from '../DatasetsTable/MoreMenuRenderer/MoreMenuRenderer';
 
-import style from './DatasourcesCards.module.scss';
+import style from './DatasetsCards.module.scss';
 
-type DatasourcesCardsProps = {
-  datasources: IDatasource[] | undefined;
-  setDataSources: any;
+type DatasetsCardsProps = {
+  datasets: IDataset[] | undefined;
+  setDataSources?: any;
+  onSelect: (record: IDataset) => void;
+  onUpdate: (name: string, id: string) => void;
 };
 
-export const DatasourcesCards: FC<DatasourcesCardsProps> = function DatasourcesTable({
-  datasources,
+export const DatasetsCards: FC<DatasetsCardsProps> = function DatasourcesTable({
+  datasets,
   setDataSources,
+  onSelect,
+  onUpdate,
 }) {
-  const onCheckbox = useCallback((record: IDatasource, selected: boolean) => {
-    datasourceTableService.selectDataSource(record, selected);
-  }, []);
-
   return (
     <div className={style.tableCard}>
-      {datasources?.map(el => (
+      {datasets?.map(el => (
         <Card
           key={el.id}
-          className={style.card}
-          extra={
-            <MoreMenuRenderer
-              datasource={el}
-              onUpdate={(name, datasetId) => {
-                const newDataset = datasources?.find(foo => foo.id === datasetId);
-
-                if (newDataset !== undefined) newDataset.name = name;
-
-                if (datasources !== undefined) {
-                  setDataSources([...datasources]);
-                }
-              }}
-            />
-          }
           title={
             <div className={style.titleCard}>
-              <Checkbox
-                checked={
-                  datasourceTableService.selectedRows.filter(chel => el.id === chel)
-                    .length > 0
-                }
+              {/* <Checkbox
                 className={style.checkboxCard}
                 onChange={event => {
                   onCheckbox(el, event.target.checked);
                 }}
-              />
-              <ArticleTypeRenderer articleType={el.type} />
+                checked={
+                  datasourceTableService.selectedRows.filter(chel => el.id === chel)
+                    .length > 0
+                }
+              /> */}
+              <DatasetNameRenderer dataset={el} onSelect={onSelect} />
             </div>
           }
+          className={style.card}
+          extra={
+            <MoreMenuRenderer dataSetId={el.id} prevName={el.title} onUpdate={onUpdate} />
+          }
         >
-          <ArticleNameRenderer title={el.name} className={style.nameCard} />
+          {/* <ArticleNameRenderer title={el.name} className={style.nameCard} /> */}
           <div className={style.cardContent}>
             <div className={style.captionCard}>Create date</div>
             <div>

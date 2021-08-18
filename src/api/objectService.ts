@@ -1,10 +1,11 @@
 import { OrderBy } from 'src/Sorting';
-
 import { apiService } from './apiService';
 import { ArticleType, getArticleTypeByKey } from './articleService';
+import { IDatasource } from './datasourcesService';
 import { IRecladaFile, RecladaObjectClass } from './IRecladaObject';
 import { rpcUrls } from './rpcUrls';
-export interface IDatasource {
+
+export interface IRecladaObject {
   id: string;
   name: string;
   type: ArticleType;
@@ -15,12 +16,19 @@ export interface IDatasource {
   owners: string[];
   checksum: string;
   mimeType: string;
+  attrs?: CustomAttibute
 }
 
-export async function fetchDatasources(
+type CustomAttibute ={
+    [key: string]: string
+}
+
+
+
+export async function fetchObject(
   datasetId?: string,
   orderBy?: OrderBy[]
-): Promise<IDatasource[]> {
+): Promise<IRecladaObject[]> {
   const recladaFileObjects = datasetId
     ? await fetchFilesListForDataset(datasetId)
     : await fetchFilesList(orderBy ? orderBy : []);
@@ -28,7 +36,7 @@ export async function fetchDatasources(
   return recladaFileObjects.map(fileObject => {
     const fd = fileObject.attrs.name.split('.');
 
-    const datasource: IDatasource = {
+    const robject: IRecladaObject = {
       id: fileObject.id,
       name: fileObject.attrs.name,
       type: getArticleTypeByKey(fd.length ? fd[fd.length - 1].toUpperCase() : ''),
@@ -41,7 +49,7 @@ export async function fetchDatasources(
       mimeType: '',
     };
 
-    return datasource;
+    return robject;
   });
 }
 

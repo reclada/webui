@@ -1,24 +1,21 @@
 import { Result, TableColumnType } from 'antd';
 import { SelectionSelectFn, TableRowSelection } from 'antd/lib/table/interface';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useCallback, useEffect, useState, useMemo, useReducer } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 
 import { ArticleType } from 'src/api/articleService';
 import { datasourceTableService } from 'src/pages/FilesPage/FilesTabs/DatasourcesTable/datasourceTable.service';
 import { useFileUrl } from 'src/pages/FilesPage/FilesTabs/DatasourcesTable/FilePreviewModal/useFileUrl';
-import { DisplayingTypes } from 'src/pages/SearchResultPage/SearchResultMain/ResultToolbar/ResultToolbar';
 import {
   ResultToolbar,
   ToolbarContext,
-} from 'src/pages/SearchResultPage/SearchResultMain/ResultToolbar/ResultToolbar';
+} from 'src/pages/shared/ResultToolbar/ResultToolbar';
+import { DisplayingTypes } from 'src/Sorting';
+import { OrderBy } from 'src/Sorting';
 import { useOpen } from 'src/utils/useOpen';
 //import { isError } from 'util';
 
-import {
-  fetchDatasources,
-  IDatasource,
-  OrderBy,
-} from '../../../../api/datasourcesService';
+import { fetchDatasources, IDatasource } from '../../../../api/datasourcesService';
 import { Table } from '../../../../shared/Table/Table';
 import { ArticleViewPanel } from '../../../SearchResultPage/SearchResultMain/ArticleViewPanel/ArticleViewPanel';
 import style from '../../../SearchResultPage/SearchResultMain/SearchResultMain.module.scss';
@@ -32,12 +29,6 @@ import { MoreMenuRenderer } from './MoreMenuRenderer/MoreMenuRenderer';
 
 type DatasourcesTableProps = {
   datasetId?: string;
-};
-
-const initialState = {
-  displayingType: DisplayingTypes.TABLE,
-  activeRecord: null,
-  order: new Array<OrderBy>(),
 };
 
 export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
@@ -165,10 +156,6 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
       []
     );
 
-    const onChange = useCallback((record: IDatasource, selected: boolean) => {
-      datasourceTableService.selectDataSource(record, selected);
-    }, []);
-
     const rowSelection: TableRowSelection<any> = {
       selectedRowKeys: datasourceTableService.selectedRows,
       onSelect,
@@ -192,7 +179,7 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
           </ToolbarContext.Provider>
         </div>
         <div className={style.main}>
-          {datasourceTableService.DisplaingType === DisplayingTypes.TABLE ? (
+          {datasourceTableService.displaingType === DisplayingTypes.TABLE ? (
             <div
               className={
                 datasourceTableService.ActiveRecord

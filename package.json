@@ -6,8 +6,9 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
-    "@testing-library/react": "^10.4.5",
     "@testing-library/jest-dom": "^5.11.0",
+    "@testing-library/react": "^10.4.5",
+    "@types/react-window": "^1.8.5",
     "antd": "^4.16.9",
     "axios": "^0.19.2",
     "filesize": "^6.3.0",
@@ -22,6 +23,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
+    "react-window": "^1.8.6",
     "uuid": "^8.3.2",
     "web-vitals": "^0.2.4"
   },

@@ -4,7 +4,7 @@ $entry-padding-x: 30px;
 
 .root {
   width: 100px;
-  background-color: $sidebar-background;
+  //background-color: $sidebar-background;
   color: $sidebar-color;
   left: 0;
   transition-property: width;
@@ -22,7 +22,7 @@ $entry-padding-x: 30px;
 }
 
 .jnjlogo {
-  background: #D51900;
+  background: #d51900;
   padding: 19px;
 }
 
@@ -42,7 +42,7 @@ $entry-padding-x: 30px;
 .sidemenucontainter {
   width: 216px;
   padding-top: 36px;
-  background-color: #536D85;
+  background-color: #536d85;
 }
 
 .sidemenuinnercontainter {
@@ -56,33 +56,36 @@ $entry-padding-x: 30px;
   font-weight: bold;
   font-size: 24px;
   line-height: 28px;
-  color: #FFFFFF;
+  color: #ffffff;
   margin-bottom: 32px;
 }
 
-.sidebarlink, .sidebarlink:active, .sidebarlink:visited {
+.sidebarlink,
+.sidebarlink:active,
+.sidebarlink:visited {
   color: white;
 }
 
 .sidebarlink:hover {
-  color: #0A93F5;
+  color: #0a93f5;
 }
 
 .sidebarlink {
   margin-left: 14px;
   position: relative;
-  bottom: 3px
+  bottom: 3px;
 }
 
 .divider {
   width: 153px;
-  border: 1px solid #90B3C7;
+  border: 1px solid #90b3c7;
   margin-top: 24px;
 }
 
 .buttonscontainer {
   height: 100vh;
   position: fixed;
+  background-color: $sidebar-background;
 }
 
 .activeSvg > svg {
@@ -90,18 +93,18 @@ $entry-padding-x: 30px;
 }
 
 .menuItem > svg {
-  fill: #90B3C7;
+  fill: #90b3c7;
 }
 
 .menuItem > svg:hover {
-  fill: #90B3C7;
+  fill: #90b3c7;
   opacity: 0.9;
 }
 .menuItemHeader {
   margin-bottom: 20px;
-
 }
-.menuItemHeader, .menuItemHeader > a {
+.menuItemHeader,
+.menuItemHeader > a {
   font-family: Arial;
   font-style: normal;
   font-weight: normal;
@@ -111,9 +114,9 @@ $entry-padding-x: 30px;
 
   /* White */
 
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
-.menuItemHeader > a:hover{
-  color: #90B3C7;
+.menuItemHeader > a:hover {
+  color: #90b3c7;
 }

@@ -2,13 +2,8 @@ import { TableColumnType } from 'antd';
 import React, { FC, useMemo } from 'react';
 
 import { IDataset } from 'src/api/datasetsDataGateService';
-import {
-  ToolbarContext,
-  ResultToolbar,
-} from 'src/pages/SearchResultPage/SearchResultMain/ResultToolbar/ResultToolbar';
 import { Table } from 'src/shared/Table/Table';
 
-import style from '../../../../SearchResultPage/SearchResultMain/SearchResultMain.module.scss';
 import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';
 
 import { DatasetNameRenderer } from './DatasetNameRenderer/DatasetNameRenderer';
@@ -75,13 +70,6 @@ export const DatasetsTable: FC<DatasetsTableProps> = function DatasetsTable({
   );
 
   return (
-    <>
-      <div className={style.toolbar}>
-        {/* <ToolbarContext.Provider value={datasourceTableService}> */}
-        <ResultToolbar />
-        {/* </ToolbarContext.Provider> */}
-      </div>
-      <Table columns={columns} dataSource={datasets} loading={isLoading} rowKey="id" />
-    </>
+    <Table columns={columns} dataSource={datasets} loading={isLoading} rowKey="id" />
   );
 };

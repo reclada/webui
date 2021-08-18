@@ -3,11 +3,11 @@ import React, { FC, useMemo, useState } from 'react';
 import { IArticle } from '../../../api/articleService';
 import { SearchPanel } from '../../../shared/SearchPanel/SearchPanel';
 import { classNames } from '../../../utils/classNames';
+import { ResultToolbar } from '../../shared/ResultToolbar/ResultToolbar';
 
 import { ArticlesList } from './ArticlesList/ArticlesList';
 import { ArticleViewPanel } from './ArticleViewPanel/ArticleViewPanel';
 import { ResultTabs } from './ResultTabs/ResultTabs';
-import { ResultToolbar } from './ResultToolbar/ResultToolbar';
 import style from './SearchResultMain.module.scss';
 
 type SearchResultMainProps = {
