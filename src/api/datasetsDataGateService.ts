@@ -17,6 +17,11 @@ export interface IDataset {
   owners: string[];
 }
 
+type DataSetResponse = {
+  number: number;
+  objects: IRecladaDataset[];
+};
+
 export async function createDataset(name: string) {
   const dataSet: RecladaPartialObject<IRecladaDataset> = {
     class: RecladaObjectClass.DataSet,
@@ -54,9 +59,9 @@ export async function addDataSourcesToDataset(datasetId: string, ids: string[]) 
 }
 
 export async function fetchDatasets(): Promise<IDataset[]> {
-  const objects = await fetchRecladaDatasets();
+  const resp = await fetchRecladaDatasets();
 
-  return objects.map(object => {
+  return resp.objects.map(object => {
     const dataset: IDataset = {
       id: object.id,
       title: object.attrs.name,
@@ -73,7 +78,7 @@ export async function fetchDatasets(): Promise<IDataset[]> {
 }
 
 async function fetchRecladaDatasets() {
-  return apiService.callRpcPost<IRecladaDataset[]>(rpcUrls.getRecladaObjectList, {
+  return apiService.callRpcPost<DataSetResponse>(rpcUrls.getRecladaObjectList, {
     class: RecladaObjectClass.DataSet,
     attrs: {},
   });
