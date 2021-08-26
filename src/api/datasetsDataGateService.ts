@@ -70,7 +70,7 @@ export async function fetchDatasets(
   limit: number | string,
   offset?: number
 ): Promise<DatasetResponse> {
-  const resp = await fetchRecladaDatasets(order, offset, limit);
+  const resp = await fetchRecladaDatasets(order, limit, offset);
 
   return {
     objects: resp.objects.map(object => {
@@ -93,14 +93,14 @@ export async function fetchDatasets(
 
 async function fetchRecladaDatasets(
   order: OrderBy[],
-  offset?: number,
-  limit?: number | string
+  limit: number | string,
+  offset?: number
 ) {
   return apiService.callRpcPost<DatasetRecladaResponse>(rpcUrls.getRecladaObjectList, {
     class: RecladaObjectClass.DataSet,
     attrs: {},
     orderBy: order,
     offset: !offset ? 0 : offset,
-    limit: !limit ? 20 : limit,
+    limit: limit,
   });
 }

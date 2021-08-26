@@ -5,8 +5,8 @@ import { IDataset } from 'src/api/datasetsDataGateService';
 import { Table } from 'src/shared/Table/Table';
 
 import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';
-
 import { DatasetNameRenderer } from '../DatasetNameRenderer/DatasetNameRenderer';
+
 import { MoreMenuRenderer } from './MoreMenuRenderer/MoreMenuRenderer';
 
 type DatasetsTableProps = {
@@ -77,7 +77,7 @@ export const DatasetsTable: FC<DatasetsTableProps> = function DatasetsTable({
         ),
       },
     ],
-    [onSelectDataset, onUpdate]
+    [onSelectDataset, onUpdate, onClickHeader]
   );
 
   return (

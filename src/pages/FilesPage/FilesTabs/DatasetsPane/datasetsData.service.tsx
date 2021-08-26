@@ -81,7 +81,7 @@ class DatasetsDataService {
   }
 
   async setOffset(value: number) {
-    const resp = await fetchDatasets(this.orderList ? this.orderList : [], 20, value);
+    const resp = await fetchDatasets(this.orderList ? this.orderList : [], 30, value);
 
     this.offset = value;
     runInAction(() => {
@@ -94,7 +94,7 @@ class DatasetsDataService {
     runInAction(() => {
       this.loading = true;
     });
-    fetchDatasets(this.orderList ? this.orderList : [], 20, this.offset)
+    fetchDatasets(this.orderList ? this.orderList : [], 30, this.offset)
       .then(datasets => {
         runInAction(() => {
           this.datasetsList = datasets.objects;

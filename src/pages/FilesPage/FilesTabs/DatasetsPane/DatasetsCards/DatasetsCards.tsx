@@ -23,16 +23,14 @@ export const DatasetsCards: FC<DatasetsCardsProps> = function DatasourcesCards({
   onUpdate,
 }) {
   var tId = 0;
+
   const serviceCards = {
     getRow: (rowIndex: number, setLoading: (value: boolean) => void) => {
-      //const offest = service.getgetOffsetValue();
-      //const elemNumber = service.getElemNumber
       new Promise((resolve, reject) => {
         if (
-          rowIndex * 3 > service.getOffsetValue() + 20 ||
+          rowIndex * 3 >= service.getOffsetValue() + 30 ||
           rowIndex * 3 < service.getOffsetValue()
         ) {
-          console.log(service.getOffsetValue(), rowIndex);
           setLoading(true);
 
           if (tId > 0) {
@@ -40,7 +38,7 @@ export const DatasetsCards: FC<DatasetsCardsProps> = function DatasourcesCards({
           }
 
           tId = window.setTimeout(async () => {
-            await service.setOffset(rowIndex * 3 - 18 >= 0 ? rowIndex * 3 - 18 : 0);
+            await service.setOffset(rowIndex * 3 - 27 >= 0 ? rowIndex * 3 - 27 : 0);
             resolve(true);
           }, 1000);
         } else {
@@ -55,46 +53,48 @@ export const DatasetsCards: FC<DatasetsCardsProps> = function DatasourcesCards({
           <div className={style.tableCard}>
             <>
               {rowIndex * 3 - service.getOffsetValue() < service.datasets().length &&
-              service.datasets()[rowIndex - service.getOffsetValue()] ? (
+              service.datasets()[rowIndex * 3 - service.getOffsetValue()] ? (
                 <DatasetsCard
+                  dataset={service.datasets()[rowIndex * 3 - service.getOffsetValue()]}
                   loading={false}
                   onSelect={onSelect}
                   onUpdate={onUpdate}
-                  dataset={service.datasets()[rowIndex * 3 - service.getOffsetValue()]}
                 />
-              ) : rowIndex * 3 >= 26 ? null : (
+              ) : rowIndex * 3 + 1 > service.getElemNumber() ? null : (
                 <DatasetsCard
                   loading={true}
                   onSelect={onSelect}
                   onUpdate={onUpdate}
                 ></DatasetsCard>
               )}
-              {rowIndex * 3 + 1 - service.getOffsetValue() < service.datasets().length ? (
+              {rowIndex * 3 + 1 - service.getOffsetValue() < service.datasets().length &&
+              service.datasets()[rowIndex * 3 + 1 - service.getOffsetValue()] ? (
                 <DatasetsCard
-                  loading={false}
-                  onSelect={onSelect}
-                  onUpdate={onUpdate}
                   dataset={
                     service.datasets()[rowIndex * 3 + 1 - service.getOffsetValue()]
                   }
+                  loading={false}
+                  onSelect={onSelect}
+                  onUpdate={onUpdate}
                 />
-              ) : rowIndex * 3 + 1 >= 26 ? null : (
+              ) : rowIndex * 3 + 2 > service.getElemNumber() ? null : (
                 <DatasetsCard
                   loading={true}
                   onSelect={onSelect}
                   onUpdate={onUpdate}
                 ></DatasetsCard>
               )}
-              {rowIndex * 3 + 2 - service.getOffsetValue() < service.datasets().length ? (
+              {rowIndex * 3 + 2 - service.getOffsetValue() < service.datasets().length &&
+              service.datasets()[rowIndex * 3 + 2 - service.getOffsetValue()] ? (
                 <DatasetsCard
-                  loading={false}
-                  onSelect={onSelect}
-                  onUpdate={onUpdate}
                   dataset={
                     service.datasets()[rowIndex * 3 + 2 - service.getOffsetValue()]
                   }
+                  loading={false}
+                  onSelect={onSelect}
+                  onUpdate={onUpdate}
                 />
-              ) : rowIndex * 3 + 2 >= 26 ? null : (
+              ) : rowIndex * 3 + 3 > service.getElemNumber() ? null : (
                 <DatasetsCard
                   loading={true}
                   onSelect={onSelect}
@@ -106,7 +106,10 @@ export const DatasetsCards: FC<DatasetsCardsProps> = function DatasourcesCards({
         </>
       );
     },
-    rowCount: 9,
+    rowCount:
+      service.getElemNumber() % 3 > 0
+        ? Math.floor(service.getElemNumber() / 3) + 1
+        : service.getElemNumber() / 3,
   };
 
   return (

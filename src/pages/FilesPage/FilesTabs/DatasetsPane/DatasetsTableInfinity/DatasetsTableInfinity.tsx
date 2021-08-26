@@ -32,7 +32,7 @@ export const DatasetsTableInfinity: FC<DatasetsTableInfinityProps> = function Da
     getRow: (rowIndex: number, setLoading: (value: boolean) => void) => {
       new Promise((resolve, reject) => {
         if (
-          rowIndex > service.getOffsetValue() + 20 ||
+          rowIndex >= service.getOffsetValue() + 30 ||
           rowIndex < service.getOffsetValue()
         ) {
           setLoading(true);
@@ -42,7 +42,7 @@ export const DatasetsTableInfinity: FC<DatasetsTableInfinityProps> = function Da
           }
 
           tId = window.setTimeout(async () => {
-            await service.setOffset(rowIndex - 20 >= 0 ? rowIndex - 20 : 0);
+            await service.setOffset(rowIndex - 29 >= 0 ? rowIndex - 29 : 0);
             resolve(true);
           }, 1000);
         } else {
@@ -55,14 +55,7 @@ export const DatasetsTableInfinity: FC<DatasetsTableInfinityProps> = function Da
           }
         })
         .catch(err => console.log(err));
-      // console.log(
-      //   service.getOffsetValue(),
-      //   rowIndex,
-      //   //service.datasets()[rowIndex - service.getOffsetValue()],
-      //   service.datasets().length
-      // );
 
-      //const dataset = service.datasets()[rowIndex - service.getOffsetValue() - 1];
       return (
         <>
           {rowIndex - service.getOffsetValue() < service.datasets().length &&
@@ -124,7 +117,7 @@ export const DatasetsTableInfinity: FC<DatasetsTableInfinityProps> = function Da
       );
       //return <AntTable columns={columns} loading={false} rowKey="id" />;
     },
-    rowCount: 26,
+    rowCount: service.getElemNumber(),
   };
 
   return (
