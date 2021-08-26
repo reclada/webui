@@ -12,7 +12,7 @@ export enum ArticleType {
   XLSX = 'XLSX',
   HTML = 'HTML',
   CSV = 'CSV',
-  UDEFINDED = 'UDEFINDED',
+  UDEFINDED = '',
 }
 
 export function getArticleTypeByKey(key: string): ArticleType {

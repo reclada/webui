@@ -1,7 +1,7 @@
 import { Result, TableColumnType } from 'antd';
 import { SelectionSelectFn, TableRowSelection } from 'antd/lib/table/interface';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ArticleType } from 'src/api/articleService';
 import { datasourceTableService } from 'src/pages/FilesPage/FilesTabs/DatasourcesTable/datasourceTable.service';
@@ -10,10 +10,9 @@ import {
   ResultToolbar,
   ToolbarContext,
 } from 'src/pages/shared/ResultToolbar/ResultToolbar';
-import { DisplayingTypes } from 'src/Sorting';
-import { OrderBy } from 'src/Sorting';
+import { ReactComponent as MenuArrowIcon } from 'src/resources/menu-arrow.svg';
+import { DisplayingTypes, OrderType } from 'src/Sorting';
 import { useOpen } from 'src/utils/useOpen';
-//import { isError } from 'util';
 
 import { fetchDatasources, IDatasource } from '../../../../api/datasourcesService';
 import { Table } from '../../../../shared/Table/Table';
@@ -33,13 +32,28 @@ type DatasourcesTableProps = {
 
 export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
   function DatasourcesTable({ datasetId }) {
-    const [datasources, setDatasources] = useState<IDatasource[] | undefined>(undefined);
+    //const [datasources, setDatasources] = useState<IDatasource[] | undefined>(undefined);
+    //const [orderList, setOrderRecords] = useState<OrderBy[]>([]);
+
+    useEffect(() => {
+      datasourceTableService.setDataSet(datasetId);
+    }, [datasetId]);
 
     const addDatasourceToDatasetModal = useOpen();
 
     const activeUrl = useFileUrl(
       datasourceTableService.ActiveRecord ? datasourceTableService.ActiveRecord.id : ''
     );
+
+    const getTypeSort = (key: string) => {
+      const dk = datasourceTableService.orders?.filter(el => el.field === key);
+
+      if (dk && dk.length) {
+        return dk[0].order;
+      }
+
+      return undefined;
+    };
 
     const columns: TableColumnType<IDatasource>[] = [
       {
@@ -49,7 +63,11 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
       },
       {
         dataIndex: 'name',
-        title: 'Name',
+        title: (
+          <>
+            {getTypeSort('attrs, name') === OrderType.ASC ? <MenuArrowIcon /> : null} Name
+          </>
+        ),
         render: (name: IDatasource['name']) => <ArticleNameRenderer title={name} />,
         onCell: (record: IDatasource | null, rowIndex: number | undefined) => ({
           onClick: () => {
@@ -59,27 +77,22 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
               : datasourceTableService.setActiveRecord(undefined);
           },
         }),
-        // onHeaderCell: column => {
-        //   return {
-        //     onClick: () => {
-        //       setOrderRecords(prevOrder => {
-        //         if (!prevOrder.length) {
-        //           return [{ field: 'name', order: OrderType.ASC }];
-        //         } else {
-        //           return [
-        //             {
-        //               field: 'name',
-        //               order:
-        //                 prevOrder[0].order === OrderType.ASC
-        //                   ? OrderType.DESC
-        //                   : OrderType.ASC,
-        //             },
-        //           ];
-        //         }
-        //       });
-        //     },
-        //   };
-        // },
+        onHeaderCell: column => {
+          return {
+            onClick: () => {
+              datasourceTableService.setOrder([
+                {
+                  field: 'attrs, name',
+                  order:
+                    datasourceTableService.orders &&
+                    datasourceTableService.orders[0].order === OrderType.ASC
+                      ? OrderType.DESC
+                      : OrderType.ASC,
+                },
+              ]);
+            },
+          };
+        },
       },
       {
         dataIndex: 'createDate',
@@ -111,43 +124,49 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
           <MoreMenuRenderer
             datasource={datasource}
             onUpdate={(name, datasetId) => {
-              const newDataset = datasources?.find(foo => foo.id === datasetId);
+              const newDataset = datasourceTableService.datasources?.find(
+                foo => foo.id === datasetId
+              );
 
               if (newDataset !== undefined) newDataset.name = name;
 
-              if (datasources !== undefined) {
-                setDatasources([...datasources]);
-              }
+              // if (datasourceTableService.datasources !== undefined) {
+              //   setDatasources([...datasources]);
+              // }
             }}
           />
         ),
       },
     ];
 
-    const [isLoading, setIsLoading] = useState(true);
-    const [isError, setIsError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
+    //const [isLoading, setIsLoading] = useState(true);
+    //const [isError, setIsError] = useState(false);
+    //const [errorMessage, setErrorMessage] = useState('');
 
-    const UpdateDatasources = useCallback(() => {
-      setIsLoading(true);
-      setDatasources(undefined);
-      setIsError(false);
+    // const updateDataSetId = useMemo(() => {
+    //   console.log('tut');
+    //   //   setIsLoading(true);
+    //   //   datasourceTableService.setDatasources(undefined);
+    //   //   //setDatasources(undefined);
+    //   //   setIsError(false);
 
-      fetchDatasources(datasetId, [])
-        .then(datasources => {
-          setDatasources(datasources);
-          setIsLoading(false);
-        })
-        .catch(res => {
-          setIsError(true);
-          setIsLoading(false);
-          setErrorMessage(res.message);
-        });
-    }, [datasetId]);
+    //   //   fetchDatasources(datasetId, datasourceTableService.orders)
+    //   //     .then(datasources => {
+    //   //       datasourceTableService.setDatasources(datasources);
+    //   //       setIsLoading(false);
+    //   //     })
+    //   //     .catch(res => {
+    //   //       setIsError(true);
+    //   //       setIsLoading(false);
+    //   //       setErrorMessage(res.message);
+    //   //     });
+    //   // }, [datasetId, datasourceTableService.orders]);
 
-    useEffect(() => {
-      UpdateDatasources();
-    }, [datasetId, UpdateDatasources]);
+    //   // useEffect(() => {
+    //   //   UpdateDatasources();
+    //   datasourceTableService.setDataSet(datasetId);
+    //   //datasourceTableService.updateDatasources(datasetId);
+    // }, [datasetId]);
 
     const onSelect: SelectionSelectFn<IDatasource> = useCallback(
       (record: IDatasource, selected: boolean) => {
@@ -161,7 +180,7 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
       onSelect,
     };
 
-    if (isError) {
+    if (datasourceTableService.isError) {
       return (
         <Result
           status="error"
@@ -189,14 +208,17 @@ export const DatasourcesTable: FC<DatasourcesTableProps> = observer(
             >
               <Table
                 columns={columns}
-                dataSource={datasources}
-                loading={isLoading}
+                dataSource={datasourceTableService.datasources}
+                loading={datasourceTableService.isLoading}
                 rowKey="id"
                 rowSelection={rowSelection}
               />
             </div>
           ) : (
-            <DatasourcesCards datasources={datasources} setDataSources={setDatasources} />
+            <DatasourcesCards
+              datasources={datasourceTableService.datasources}
+              // setDataSources={datasourceTableService.setDatasources}
+            />
           )}
           {datasourceTableService.ActiveRecord && (
             <div className={style.rightPanel}>

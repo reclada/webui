@@ -18,6 +18,10 @@ const sortTypes: SelectOption[] = [
     label: 'Date',
     value: 'date',
   },
+  {
+    label: 'Name',
+    value: 'name',
+  },
 ];
 
 export const SortSettings: FC<SortSettingsProps> = function SortSettings({ className }) {

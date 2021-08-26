@@ -1,14 +1,14 @@
 import { Result } from 'antd';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 
-import { fetchDatasets, IDataset } from 'src/api/datasetsDataGateService';
+import { IDataset } from 'src/api/datasetsDataGateService';
 import style from 'src/pages/SearchResultPage/SearchResultMain/SearchResultMain.module.scss';
 import {
   ResultToolbar,
   ToolbarContext,
 } from 'src/pages/shared/ResultToolbar/ResultToolbar';
-import { DisplayingTypes } from 'src/Sorting';
+import { DisplayingTypes, OrderType } from 'src/Sorting';
 
 import { DatasourcesTable } from '../DatasourcesTable/DatasourcesTable';
 
@@ -16,15 +16,9 @@ import { DatasetsCards } from './DatasetsCards/DatasetsCards';
 import { datasetsDataService } from './datasetsData.service';
 import { DatasetsPaneBreadcrumbs } from './DatasetsPaneBreadcrumbs/DatasetsPaneBreadcrumbs';
 import { DatasetsTable } from './DatasetsTable/DatasetsTable';
+import { DatasetsTableInfinity } from './DatasetsTableInfinity/DatasetsTableInfinity';
 
 export const DatasetsPane: FC = observer(function DatasetsPane() {
-  const [datasets, setDatasets] = useState<IDataset[] | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-
-  //const [selectedDataset, setSelectedDataset] = useState<IDataset | undefined>(undefined);
-
   const handleUnselectDataset = useCallback(() => {
     datasetsDataService.setActiveRecord(undefined);
     //setSelectedDataset(undefined);
@@ -35,23 +29,41 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
   }, []);
 
   useEffect(() => {
-    setIsLoading(true);
-    setDatasets(undefined);
-    setIsError(false);
-
-    fetchDatasets()
-      .then(datasets => {
-        setDatasets(datasets);
-        setIsLoading(false);
-      })
-      .catch(res => {
-        setIsError(true);
-        setIsLoading(false);
-        setErrorMessage(res);
-      });
+    datasetsDataService.updateDatasets();
   }, []);
 
-  if (isError) {
+  const service = {
+    datasets: () => {
+      return datasetsDataService.datasets ? datasetsDataService.datasets : [];
+    },
+    setOffset: async (value: number) => {
+      await datasetsDataService.setOffset(value);
+    },
+    getOffsetValue: () => datasetsDataService.offsetValue,
+    getElemNumber: () => datasetsDataService.elemNumber,
+  };
+
+  const onClickHeader = (key: string) => {
+    const dk = datasetsDataService.orders?.filter(el => el.field === key);
+
+    if (dk && dk.length) {
+      datasetsDataService.setOrder([
+        {
+          field: key,
+          order: dk[0].order === OrderType.ASC ? OrderType.DESC : OrderType.ASC,
+        },
+      ]);
+    } else {
+      datasetsDataService.setOrder([
+        {
+          field: key,
+          order: OrderType.DESC,
+        },
+      ]);
+    }
+  };
+
+  if (datasetsDataService.isError) {
     return (
       <Result
         status="error"
@@ -60,6 +72,53 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
       />
     );
   }
+
+  const content =
+    datasetsDataService.displaingType === DisplayingTypes.TABLE ? (
+      // <DatasetsTable
+      //   datasets={datasetsDataService.datasets}
+      //   isLoading={datasetsDataService.isLoading}
+      //   onClickHeader={onClickHeader}
+      //   onSelectDataset={onSelect}
+      //   onUpdate={(name, datasetId) => {
+      //     const newDataset = datasetsDataService.datasets?.find(
+      //       dataset => dataset.id === datasetId
+      //     );
+
+      //     if (newDataset !== undefined) newDataset.title = name;
+
+      //     //if (datasets !== undefined) setDatasets([...datasets]);
+      //   }}
+      // />
+      <DatasetsTableInfinity
+        service={service}
+        onSelect={onSelect}
+        onUpdate={(name, datasetId) => {
+          const newDataset = datasetsDataService.datasets?.find(
+            dataset => dataset.id === datasetId
+          );
+
+          if (newDataset !== undefined) newDataset.title = name;
+
+          //if (datasets !== undefined) setDatasets([...datasets]);
+        }}
+      ></DatasetsTableInfinity>
+    ) : (
+      <DatasetsCards
+        service={service}
+        onSelect={onSelect}
+        onUpdate={(name, datasetId) => {
+          const newDataset = datasetsDataService.datasets?.find(
+            dataset => dataset.id === datasetId
+          );
+
+          if (newDataset !== undefined) newDataset.title = name;
+
+          if (datasetsDataService.datasets !== undefined)
+            datasetsDataService.setDatasets([...datasetsDataService.datasets]);
+        }}
+      ></DatasetsCards>
+    );
 
   return (
     <>
@@ -78,32 +137,11 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
               <ResultToolbar />
             </ToolbarContext.Provider>
           </div>
-          {datasetsDataService.displaingType === DisplayingTypes.TABLE ? (
-            <DatasetsTable
-              datasets={datasets}
-              isLoading={isLoading}
-              onSelectDataset={onSelect}
-              onUpdate={(name, datasetId) => {
-                const newDataset = datasets?.find(dataset => dataset.id === datasetId);
-
-                if (newDataset !== undefined) newDataset.title = name;
-
-                if (datasets !== undefined) setDatasets([...datasets]);
-              }}
-            />
-          ) : (
-            <DatasetsCards
-              datasets={datasets}
-              onSelect={onSelect}
-              onUpdate={(name, datasetId) => {
-                const newDataset = datasets?.find(dataset => dataset.id === datasetId);
-
-                if (newDataset !== undefined) newDataset.title = name;
-
-                if (datasets !== undefined) setDatasets([...datasets]);
-              }}
-            ></DatasetsCards>
-          )}
+          <div className={style.main}>
+            <div className={style.leftPanelWide}>
+              {datasetsDataService.isLoading ? null : content}
+            </div>
+          </div>
         </>
       )}
     </>

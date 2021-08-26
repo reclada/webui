@@ -26,9 +26,9 @@ export const AddDatasourceToDatasetModal: FC<AddDatasourceToDatasetModalProps> =
   const [selectedDataSet, setSelectedDataSet] = useState<string>('');
 
   useEffect(() => {
-    fetchDatasets()
+    fetchDatasets([], 'ALL', 0)
       .then(datasets => {
-        setDatasets(datasets);
+        setDatasets(datasets.objects);
         setIsLoading(false);
       })
       .catch(() => {

@@ -7,7 +7,7 @@ import { AddDatasourceToDatasetModal } from 'src/pages/FilesPage/FilesTabs/AddDa
 import { datasourceTableService } from 'src/pages/FilesPage/FilesTabs/DatasourcesTable/datasourceTable.service';
 import { ReactComponent as Settings } from 'src/resources/settings.svg';
 import { Paginator } from 'src/shared/Paginator/Paginator';
-import { DisplayingTypes } from 'src/Sorting';
+import { DisplayingTypes, OrderBy } from 'src/Sorting';
 import { classNames } from 'src/utils/classNames';
 import { useOpen } from 'src/utils/useOpen';
 
@@ -21,12 +21,14 @@ type ResultToolbarProps = {
 
 export interface IServiceToolbar {
   displaingType: DisplayingTypes;
-  setDisplaingType(displaingType: DisplayingTypes): void;
+  setDisplaingType: (displaingType: DisplayingTypes) => void;
+  setOrder: (order: OrderBy[] | undefined) => void;
 }
 
 const defaultStateToolbar: IServiceToolbar = {
   displaingType: DisplayingTypes.TABLE,
   setDisplaingType: (displaingType: DisplayingTypes) => {},
+  setOrder: (order: OrderBy[] | undefined) => {},
 };
 
 export const ToolbarContext = createContext(defaultStateToolbar);

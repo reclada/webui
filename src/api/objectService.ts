@@ -27,11 +27,13 @@ type CustomAttibute ={
 
 export async function fetchObject(
   datasetId?: string,
-  orderBy?: OrderBy[]
+  orderBy?: OrderBy[],
+  limit?: number,
+  offset?: number
 ): Promise<IRecladaObject[]> {
   const recladaFileObjects = datasetId
     ? await fetchFilesListForDataset(datasetId)
-    : await fetchFilesList(orderBy ? orderBy : []);
+    : await fetchFilesList(orderBy ? orderBy : [], limit ? limit : 'ALL', offset ? offset : 0);
 
   return recladaFileObjects.map(fileObject => {
     const fd = fileObject.attrs.name.split('.');
@@ -62,11 +64,13 @@ async function fetchFilesListForDataset(datasetId: string) {
   });
 }
 
-async function fetchFilesList(orderBy: OrderBy[]) {
+async function fetchFilesList(orderBy: OrderBy[], limit: number | string, offset: number) {
   return apiService.callRpcPost<IRecladaFile[]>(rpcUrls.getRecladaObjectList, {
     class: RecladaObjectClass.DataSource,
     attrs: {},
     orderBy: orderBy,
+    limit: limit,
+    offset: offset
   });
 }
 

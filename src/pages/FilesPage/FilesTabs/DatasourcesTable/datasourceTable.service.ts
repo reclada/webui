@@ -1,6 +1,6 @@
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 
-import { IDatasource } from 'src/api/datasourcesService';
+import { fetchDatasources, IDatasource } from 'src/api/datasourcesService';
 import { DisplayingTypes } from 'src/Sorting';
 import { OrderBy } from 'src/Sorting';
 
@@ -9,12 +9,45 @@ class DatasourceTableService {
 
   @observable private dispType: DisplayingTypes = DisplayingTypes.TABLE;
   @observable private aRecord: IDatasource | undefined;
+  @observable private loading: boolean = false;
+  @observable private error: boolean = false;
+  @observable private dataSetId: string | undefined = '';
 
-  private orderList = observable.set<OrderBy>();
+  @observable private orderList: OrderBy[] | undefined;
+  @observable private datasourcesList: IDatasource[] | undefined;
+
+  private errMsg: string = '';
 
   @computed
   get selectedRows(): string[] {
     return Array.from(this.selectedRowKeys.values());
+  }
+
+  get orders(): OrderBy[] | undefined {
+    return this.orderList;
+  }
+
+  get datasources(): IDatasource[] | undefined {
+    return this.datasourcesList;
+  }
+
+  get isLoading(): boolean {
+    return this.loading;
+  }
+  get isError(): boolean {
+    return this.error;
+  }
+
+  get errorMessage(): string {
+    return this.errMsg;
+  }
+
+  get displaingType(): DisplayingTypes {
+    return this.dispType;
+  }
+
+  get ActiveRecord(): IDatasource | undefined {
+    return this.aRecord;
   }
 
   constructor() {
@@ -35,17 +68,15 @@ class DatasourceTableService {
     }
   }
 
-  get displaingType(): DisplayingTypes {
-    return this.dispType;
-  }
-
-  get ActiveRecord(): IDatasource | undefined {
-    return this.aRecord;
-  }
-
   @action
   setDisplaingType(displaingType: DisplayingTypes) {
     this.dispType = displaingType;
+  }
+
+  @action
+  setDataSet(value: string | undefined) {
+    this.dataSetId = value;
+    this.updateDatasources();
   }
 
   @action
@@ -58,17 +89,30 @@ class DatasourceTableService {
   }
 
   @action
-  setOrderList(order: OrderBy, remove: boolean) {
-    if (remove) {
-      this.orderList.delete(order);
-    } else {
-      this.orderList.add(order);
-    }
+  setOrder(order: OrderBy[] | undefined) {
+    this.orderList = order;
+    this.updateDatasources();
   }
 
-  @action
-  cleanupOrder() {
-    this.orderList.clear();
+  updateDatasources() {
+    runInAction(() => {
+      this.loading = true;
+    });
+    fetchDatasources(this.dataSetId, this.orders ? this.orders : [])
+      .then(datasources => {
+        runInAction(() => {
+          this.datasourcesList = datasources;
+          this.loading = false;
+          this.error = false;
+        });
+      })
+      .catch(res => {
+        runInAction(() => {
+          this.error = true;
+          this.loading = false;
+          this.errMsg = res.message;
+        });
+      });
   }
 }
 

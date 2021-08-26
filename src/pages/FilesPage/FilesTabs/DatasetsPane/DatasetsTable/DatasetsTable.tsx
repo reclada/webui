@@ -6,7 +6,7 @@ import { Table } from 'src/shared/Table/Table';
 
 import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';
 
-import { DatasetNameRenderer } from './DatasetNameRenderer/DatasetNameRenderer';
+import { DatasetNameRenderer } from '../DatasetNameRenderer/DatasetNameRenderer';
 import { MoreMenuRenderer } from './MoreMenuRenderer/MoreMenuRenderer';
 
 type DatasetsTableProps = {
@@ -14,6 +14,7 @@ type DatasetsTableProps = {
   isLoading: boolean;
   onSelectDataset: (dataset: IDataset) => void;
   onUpdate: (name: string, datasetId: string) => void;
+  onClickHeader: (key: string) => void;
 };
 
 export const DatasetsTable: FC<DatasetsTableProps> = function DatasetsTable({
@@ -21,6 +22,7 @@ export const DatasetsTable: FC<DatasetsTableProps> = function DatasetsTable({
   isLoading,
   onSelectDataset,
   onUpdate,
+  onClickHeader,
 }) {
   const columns: TableColumnType<IDataset>[] = useMemo(
     () => [
@@ -30,6 +32,15 @@ export const DatasetsTable: FC<DatasetsTableProps> = function DatasetsTable({
         render: (_, dataset: IDataset) => (
           <DatasetNameRenderer dataset={dataset} onSelect={onSelectDataset} />
         ),
+
+        onHeaderCell: column => {
+          return {
+            onClick: () => {
+              console.log('onHeaderCell');
+              onClickHeader('attrs, name');
+            },
+          };
+        },
       },
       {
         dataIndex: 'createDate',

@@ -12,7 +12,7 @@ import style from './DatasourcesCards.module.scss';
 
 type DatasourcesCardsProps = {
   datasources: IDatasource[] | undefined;
-  setDataSources: any;
+  setDataSources?: any;
 };
 
 export const DatasourcesCards: FC<DatasourcesCardsProps> = function DatasourcesTable({
@@ -37,9 +37,9 @@ export const DatasourcesCards: FC<DatasourcesCardsProps> = function DatasourcesT
 
                 if (newDataset !== undefined) newDataset.name = name;
 
-                if (datasources !== undefined) {
-                  setDataSources([...datasources]);
-                }
+                // if (datasources !== undefined) {
+                //   setDataSources([...datasources]);
+                // }
               }}
             />
           }
