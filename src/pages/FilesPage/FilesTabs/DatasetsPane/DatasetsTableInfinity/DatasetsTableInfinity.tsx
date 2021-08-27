@@ -19,12 +19,14 @@ type DatasetsTableInfinityProps = {
   };
   onSelect: (record: IDataset) => void;
   onUpdate: (name: string, id: string) => void;
+  onClickHeader: (key: string) => void;
 };
 
 export const DatasetsTableInfinity: FC<DatasetsTableInfinityProps> = function DatasetsTableInfinity({
   service,
   onUpdate,
   onSelect,
+  onClickHeader,
 }) {
   var tId = 0;
 
@@ -124,7 +126,11 @@ export const DatasetsTableInfinity: FC<DatasetsTableInfinityProps> = function Da
     <div className={style.table}>
       <div className={style.headTable}>
         <Row>
-          <Col span={3}>
+          <Col
+            className={style.columnTable}
+            span={3}
+            onClick={() => onClickHeader('attrs, name')}
+          >
             Name <Divider className={style.dividerHeader} type="vertical" />
           </Col>
           <Col span={4}>

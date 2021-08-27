@@ -77,6 +77,7 @@ class DatasetsDataService {
   @action
   setOrder(order: OrderBy[] | undefined) {
     this.orderList = order;
+    this.offset = 0;
     this.updateDatasets();
   }
 

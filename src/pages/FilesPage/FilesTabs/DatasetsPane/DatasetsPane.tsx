@@ -24,25 +24,6 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
     //setSelectedDataset(undefined);
   }, []);
 
-  const onSelect = useCallback((record: IDataset) => {
-    datasetsDataService.setActiveRecord(record);
-  }, []);
-
-  useEffect(() => {
-    datasetsDataService.updateDatasets();
-  }, []);
-
-  const service = {
-    datasets: () => {
-      return datasetsDataService.datasets ? datasetsDataService.datasets : [];
-    },
-    setOffset: async (value: number) => {
-      await datasetsDataService.setOffset(value);
-    },
-    getOffsetValue: () => datasetsDataService.offsetValue,
-    getElemNumber: () => datasetsDataService.elemNumber,
-  };
-
   const onClickHeader = (key: string) => {
     const dk = datasetsDataService.orders?.filter(el => el.field === key);
 
@@ -61,6 +42,25 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
         },
       ]);
     }
+  };
+
+  const onSelect = useCallback((record: IDataset) => {
+    datasetsDataService.setActiveRecord(record);
+  }, []);
+
+  useEffect(() => {
+    datasetsDataService.updateDatasets();
+  }, []);
+
+  const service = {
+    datasets: () => {
+      return datasetsDataService.datasets ? datasetsDataService.datasets : [];
+    },
+    setOffset: async (value: number) => {
+      await datasetsDataService.setOffset(value);
+    },
+    getOffsetValue: () => datasetsDataService.offsetValue,
+    getElemNumber: () => datasetsDataService.elemNumber,
   };
 
   if (datasetsDataService.isError) {
@@ -92,6 +92,7 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
       // />
       <DatasetsTableInfinity
         service={service}
+        onClickHeader={onClickHeader}
         onSelect={onSelect}
         onUpdate={(name, datasetId) => {
           const newDataset = datasetsDataService.datasets?.find(
