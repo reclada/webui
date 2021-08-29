@@ -11,9 +11,10 @@ class DatasetsDataService {
   @observable private error: boolean = false;
   private errMsg: string = '';
   private offset: number = 0;
+  private timerId: number | undefined;
 
   @observable private orderList: OrderBy[] | undefined;
-  @observable private datasetsList: IDataset[] | undefined;
+  private datasetsList: IDataset[] | undefined;
   private count: number = 0;
 
   constructor() {
@@ -81,21 +82,26 @@ class DatasetsDataService {
     this.updateDatasets();
   }
 
-  async setOffset(value: number) {
-    const resp = await fetchDatasets(this.orderList ? this.orderList : [], 30, value);
+  getRowByIndex(index: number): IDataset | undefined {
+    return this.datasetsList && index < this.datasetsList.length
+      ? this.datasetsList[index]
+      : undefined;
+  }
+
+  async setOffset(value: number): Promise<void> {
+    const resp = await fetchDatasets(this.orderList ? this.orderList : [], 1000, value);
 
     this.offset = value;
-    runInAction(() => {
-      this.datasetsList = resp.objects;
-      this.count = resp.number;
-    });
+    this.datasetsList = resp.objects;
+    this.count = resp.number;
   }
 
   updateDatasets() {
     runInAction(() => {
       this.loading = true;
     });
-    fetchDatasets(this.orderList ? this.orderList : [], 30, this.offset)
+    this.offset = 0;
+    fetchDatasets(this.orderList ? this.orderList : [], 1000, this.offset)
       .then(datasets => {
         runInAction(() => {
           this.datasetsList = datasets.objects;
@@ -110,6 +116,30 @@ class DatasetsDataService {
           this.errMsg = res.message;
         });
       });
+  }
+
+  prepareNewData(index: number, forward: boolean): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      if (index > this.offset + 800 || index < this.offset) {
+        if (this.timerId) {
+          this.clearTimer();
+        }
+
+        this.timerId = window.setTimeout(async () => {
+          await this.setOffset(index - 200 < 0 ? 0 : index - 200);
+          resolve(false);
+        }, 1000);
+      }
+    });
+  }
+
+  checkData(index: number): boolean {
+    return index > this.offset + 800 || index < this.offset;
+  }
+
+  clearTimer() {
+    clearTimeout(this.timerId);
+    this.timerId = undefined;
   }
 }
 

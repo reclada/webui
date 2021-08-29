@@ -6,9 +6,11 @@ import { InfiniteList } from 'src/shared/InfiniteList/InfiniteList';
 
 import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';
 import { DatasetNameRenderer } from '../DatasetNameRenderer/DatasetNameRenderer';
+import { datasetsDataService } from '../datasetsData.service';
 import { MoreMenuRenderer } from '../DatasetsTable/MoreMenuRenderer/MoreMenuRenderer';
 
 import style from './DatasetsTableInfinity.module.scss';
+import { DatasetsTableInfRow } from './DatasetsTableInfRow/DatasetsTableInfRow';
 
 type DatasetsTableInfinityProps = {
   service: {
@@ -31,95 +33,36 @@ export const DatasetsTableInfinity: FC<DatasetsTableInfinityProps> = function Da
   var tId = 0;
 
   const serviceCards = {
-    getRow: (rowIndex: number, setLoading: (value: boolean) => void) => {
+    //getRow: () => datasetsDataService.getRowByIndex,
+    prepareData: (
+      startIndex: number,
+      stopIndex: number,
+      setLoading: (value: boolean) => void
+    ) => {
+      if (
+        stopIndex < datasetsDataService.offsetValue + 800 &&
+        startIndex >= datasetsDataService.offsetValue
+      ) {
+        return;
+      }
       new Promise((resolve, reject) => {
-        if (
-          rowIndex >= service.getOffsetValue() + 30 ||
-          rowIndex < service.getOffsetValue()
-        ) {
-          setLoading(true);
+        setLoading(true);
 
-          if (tId > 0) {
-            clearTimeout(tId);
-          }
-
-          tId = window.setTimeout(async () => {
-            await service.setOffset(rowIndex - 29 >= 0 ? rowIndex - 29 : 0);
-            resolve(true);
-          }, 1000);
-        } else {
-          resolve(false);
+        if (tId > 0) {
+          clearTimeout(tId);
         }
-      })
-        .then(value => {
-          if (value) {
-            setLoading(false);
-          }
-        })
-        .catch(err => console.log(err));
 
-      return (
-        <>
-          {rowIndex - service.getOffsetValue() < service.datasets().length &&
-          service.datasets()[rowIndex - service.getOffsetValue()] ? (
-            <Row className={style.rowTable}>
-              <Col span={3}>
-                <DatasetNameRenderer
-                  dataset={service.datasets()[rowIndex - service.getOffsetValue()]}
-                  onSelect={onSelect}
-                />
-              </Col>
-              <Col span={4}>
-                {service
-                  .datasets()
-                  [rowIndex - service.getOffsetValue()].createDate.getDate() +
-                  '-' +
-                  service
-                    .datasets()
-                    [rowIndex - service.getOffsetValue()].createDate.getMonth() +
-                  '-' +
-                  service
-                    .datasets()
-                    [rowIndex - service.getOffsetValue()].createDate.getFullYear()}
-              </Col>
-              <Col span={4}>
-                {service.datasets()[rowIndex - service.getOffsetValue()].author}
-              </Col>
-              <Col span={4}>
-                {service
-                  .datasets()
-                  [rowIndex - service.getOffsetValue()].lastUpdate.getDate() +
-                  '-' +
-                  service
-                    .datasets()
-                    [rowIndex - service.getOffsetValue()].lastUpdate.getMonth() +
-                  '-' +
-                  service
-                    .datasets()
-                    [rowIndex - service.getOffsetValue()].lastUpdate.getFullYear()}
-              </Col>
-              <Col span={4}>
-                {service.datasets()[rowIndex - service.getOffsetValue()].whoUpdated}
-              </Col>
-              <Col span={4}>
-                <OwnersRenderer
-                  owners={service.datasets()[rowIndex - service.getOffsetValue()].owners}
-                />
-              </Col>
-              <Col span={1}>
-                <MoreMenuRenderer
-                  dataSetId={service.datasets()[rowIndex - service.getOffsetValue()].id}
-                  prevName={service.datasets()[rowIndex - service.getOffsetValue()].title}
-                  onUpdate={onUpdate}
-                />
-              </Col>
-            </Row>
-          ) : null}
-        </>
-      );
-      //return <AntTable columns={columns} loading={false} rowKey="id" />;
+        tId = window.setTimeout(async () => {
+          await datasetsDataService.setOffset(
+            startIndex - 300 >= 0 ? startIndex - 300 : 0
+          );
+          resolve(true);
+        }, 1000);
+      }).then(value => {
+        if (value) setLoading(false);
+      });
     },
-    rowCount: service.getElemNumber(),
+    rowCount: datasetsDataService.elemNumber,
   };
 
   return (
@@ -151,7 +94,15 @@ export const DatasetsTableInfinity: FC<DatasetsTableInfinityProps> = function Da
           <Col span={1}></Col>
         </Row>
       </div>
-      <InfiniteList className={''} itemSize={55} serviceData={serviceCards} />
+      {/* <InfiniteList className={''} itemSize={55} serviceData={serviceCards}>
+        <DatasetsTableInfRow
+          index={0}
+          isLoading={false}
+          service={datasetsDataService}
+          onSelect={onSelect}
+          onUpdate={onUpdate}
+        />
+      </InfiniteList> */}
     </div>
   );
 };
