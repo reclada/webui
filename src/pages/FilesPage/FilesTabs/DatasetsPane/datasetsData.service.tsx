@@ -118,9 +118,9 @@ class DatasetsDataService {
       });
   }
 
-  prepareNewData(index: number, forward: boolean): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      if (index > this.offset + 800 || index < this.offset) {
+  prepareNewPage(index: number): Promise<boolean> | null {
+    if (index > this.offset + 800 || index < this.offset) {
+      return new Promise((resolve, reject) => {
         if (this.timerId) {
           this.clearTimer();
         }
@@ -129,12 +129,10 @@ class DatasetsDataService {
           await this.setOffset(index - 200 < 0 ? 0 : index - 200);
           resolve(false);
         }, 1000);
-      }
-    });
-  }
+      });
+    }
 
-  checkData(index: number): boolean {
-    return index > this.offset + 800 || index < this.offset;
+    return null;
   }
 
   clearTimer() {

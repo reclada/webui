@@ -1,5 +1,5 @@
 import { Row, Col, Divider } from 'antd';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 
 import { IDataset } from 'src/api/datasetsDataGateService';
 
@@ -22,10 +22,9 @@ export const DatasetsTableInfRow: FC<DatasetsTableInfRowProp> = function Dataset
   isLoading,
   onSelect,
   onUpdate,
-  elemNumber,
   getRowByIndex,
 }) {
-  const dataset = getRowByIndex(index);
+  const dataset = useMemo(() => getRowByIndex(index), [index, getRowByIndex]);
 
   //console.log(index, isLoading, dataset, offsetValue);
 

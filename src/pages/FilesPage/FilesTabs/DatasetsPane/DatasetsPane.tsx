@@ -97,14 +97,9 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
           </Row>
         </div>
         <InfiniteList
-          checkData={(index: number) => {
-            return datasetsDataService.checkData(index);
-          }}
           className={''}
           itemSize={55}
-          prepareNewData={(index: number, forward: boolean) =>
-            datasetsDataService.prepareNewData(index, forward)
-          }
+          prepareNewPage={(index: number) => datasetsDataService.prepareNewPage(index)}
           rowCount={datasetsDataService.elemNumber}
         >
           <DatasetsTableInfRow
@@ -132,14 +127,9 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
       </>
     ) : (
       <InfiniteList
-        checkData={(index: number) => {
-          return datasetsDataService.checkData(index * 3);
-        }}
         className={''}
         itemSize={270}
-        prepareNewData={(index: number, forward: boolean) =>
-          datasetsDataService.prepareNewData(index * 3, forward)
-        }
+        prepareNewPage={(index: number) => datasetsDataService.prepareNewPage(index * 3)}
         rowCount={
           datasetsDataService.elemNumber % 3 > 0
             ? Math.floor(datasetsDataService.elemNumber / 3) + 1

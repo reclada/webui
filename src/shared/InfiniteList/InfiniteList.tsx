@@ -2,26 +2,17 @@ import React, { FC, useState, Children, useEffect } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList as List, ListOnItemsRenderedProps } from 'react-window';
 
-interface IListService {
-  //getRow: (rowIndex: number, setLoading: (value: boolean) => void) => JSX.Element;
-  rowCount: number;
-  prepareNewData: (index: number, forward: boolean) => Promise<boolean>;
-  //checkReadyData: (index: number) => boolean;
-}
-
 type InfiniteListProps = {
   className: string;
   rowCount: number;
-  prepareNewData: (index: number, forward: boolean) => Promise<boolean>;
-  checkData: (index: number) => boolean;
+  prepareNewPage: (index: number) => Promise<boolean> | null;
   itemSize: number;
 };
 
 export const InfiniteList: FC<InfiniteListProps> = function InfiniteList({
   className,
   rowCount,
-  prepareNewData,
-  checkData,
+  prepareNewPage,
   itemSize,
   children,
 }) {
@@ -38,11 +29,11 @@ export const InfiniteList: FC<InfiniteListProps> = function InfiniteList({
           itemSize={itemSize}
           width={width}
           onItemsRendered={(props: ListOnItemsRenderedProps) => {
-            const dataNotReady = checkData(props.overscanStartIndex);
+            const result = prepareNewPage(props.overscanStartIndex);
 
-            if (dataNotReady) {
-              setLoading(dataNotReady);
-              prepareNewData(props.overscanStartIndex, true).then(val => setLoading(val));
+            if (result) {
+              setLoading(true);
+              result.then(val => setLoading(val));
             }
           }}
           // onScroll={props => {

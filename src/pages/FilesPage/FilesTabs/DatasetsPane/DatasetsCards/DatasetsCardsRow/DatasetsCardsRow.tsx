@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 
 import { IDataset } from 'src/api/datasetsDataGateService';
 
@@ -23,9 +23,9 @@ export const DatasetsCardsRow: FC<DatasetsCardsRowProp> = function DatasetsCards
   elemNumber,
   getRowByIndex,
 }) {
-  const dataset1 = getRowByIndex(index * 3);
-  const dataset2 = getRowByIndex(index * 3 + 1);
-  const dataset3 = getRowByIndex(index * 3 + 2);
+  const dataset1 = useMemo(() => getRowByIndex(index * 3), [index, getRowByIndex]);
+  const dataset2 = useMemo(() => getRowByIndex(index * 3 + 1), [index, getRowByIndex]);
+  const dataset3 = useMemo(() => getRowByIndex(index * 3 + 2), [index, getRowByIndex]);
 
   return (
     <div className={style.tableCard}>
