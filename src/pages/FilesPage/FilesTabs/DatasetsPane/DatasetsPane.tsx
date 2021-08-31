@@ -1,4 +1,4 @@
-import { Col, Divider, Result, Row } from 'antd';
+import { Col, Divider, Result, Row, Spin } from 'antd';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useEffect } from 'react';
 
@@ -13,13 +13,10 @@ import { DisplayingTypes, OrderType } from 'src/Sorting';
 
 import { DatasourcesTable } from '../DatasourcesTable/DatasourcesTable';
 
-import { DatasetsCards } from './DatasetsCards/DatasetsCards';
 import { DatasetsCardsRow } from './DatasetsCards/DatasetsCardsRow/DatasetsCardsRow';
 import { datasetsDataService } from './datasetsData.service';
 import style from './DatasetsPane.module.scss';
 import { DatasetsPaneBreadcrumbs } from './DatasetsPaneBreadcrumbs/DatasetsPaneBreadcrumbs';
-import { DatasetsTable } from './DatasetsTable/DatasetsTable';
-import { DatasetsTableInfinity } from './DatasetsTableInfinity/DatasetsTableInfinity';
 import { DatasetsTableInfRow } from './DatasetsTableInfinity/DatasetsTableInfRow/DatasetsTableInfRow';
 
 export const DatasetsPane: FC = observer(function DatasetsPane() {
@@ -99,18 +96,11 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
         <InfiniteList
           className={''}
           itemSize={55}
-          prepareNewPage={(index: number) => datasetsDataService.prepareNewPage(index)}
           rowCount={datasetsDataService.elemNumber}
         >
           <DatasetsTableInfRow
             elemNumber={datasetsDataService.elemNumber}
-            getRowByIndex={(index: number) => {
-              return datasetsDataService.getRowByIndex(
-                index - datasetsDataService.offsetValue
-              );
-            }}
             index={0}
-            isLoading={false}
             onSelect={onSelect}
             onUpdate={(name, datasetId) => {
               const newDataset = datasetsDataService.datasets?.find(
@@ -129,7 +119,6 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
       <InfiniteList
         className={''}
         itemSize={270}
-        prepareNewPage={(index: number) => datasetsDataService.prepareNewPage(index * 3)}
         rowCount={
           datasetsDataService.elemNumber % 3 > 0
             ? Math.floor(datasetsDataService.elemNumber / 3) + 1
@@ -137,14 +126,7 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
         }
       >
         <DatasetsCardsRow
-          elemNumber={datasetsDataService.elemNumber}
-          getRowByIndex={(index: number) => {
-            return datasetsDataService.getRowByIndex(
-              index - datasetsDataService.offsetValue
-            );
-          }}
           index={0}
-          isLoading={false}
           onSelect={onSelect}
           onUpdate={(name, datasetId) => {
             const newDataset = datasetsDataService.datasets?.find(
@@ -179,7 +161,14 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
           </div>
           <div className={styleTool.main}>
             <div className={styleTool.leftPanelWide}>
-              {datasetsDataService.isLoading ? null : content}
+              {datasetsDataService.isLoading ? (
+                <Spin
+                  size="large"
+                  style={{ position: 'absolute', width: '100%', height: '500px' }}
+                />
+              ) : (
+                content
+              )}
             </div>
           </div>
         </>

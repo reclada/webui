@@ -1,4 +1,5 @@
 import { action, makeObservable, observable, runInAction } from 'mobx';
+import { computedFn } from 'mobx-utils';
 
 import { fetchDatasets, IDataset } from 'src/api/datasetsDataGateService';
 import { DisplayingTypes } from 'src/Sorting';
@@ -10,7 +11,7 @@ class DatasetsDataService {
   @observable private loading: boolean = false;
   @observable private error: boolean = false;
   private errMsg: string = '';
-  private offset: number = 0;
+  @observable private offset: number = 0;
   private timerId: number | undefined;
 
   @observable private orderList: OrderBy[] | undefined;
@@ -82,18 +83,35 @@ class DatasetsDataService {
     this.updateDatasets();
   }
 
-  getRowByIndex(index: number): IDataset | undefined {
-    return this.datasetsList && index < this.datasetsList.length
-      ? this.datasetsList[index]
-      : undefined;
-  }
+  getRowByIndex = computedFn((index: number): IDataset | undefined => {
+    if (
+      this.datasetsList &&
+      index >= this.offset &&
+      index - this.offset < this.datasetsList.length
+    ) {
+      return this.datasetsList[index - this.offset];
+    }
 
-  async setOffset(value: number): Promise<void> {
-    const resp = await fetchDatasets(this.orderList ? this.orderList : [], 1000, value);
+    if (this.timerId) {
+      this.clearTimer();
+    }
 
-    this.offset = value;
-    this.datasetsList = resp.objects;
-    this.count = resp.number;
+    this.timerId = window.setTimeout(() => {
+      this.setOffset(index - 200 < 0 ? 0 : index - 200);
+    }, 1000);
+
+    return undefined;
+  });
+
+  setOffset(value: number): any {
+    fetchDatasets(this.orderList ? this.orderList : [], 1000, value).then(resp => {
+      runInAction(() => {
+        this.offset = value;
+      });
+
+      this.datasetsList = resp.objects;
+      this.count = resp.number;
+    });
   }
 
   updateDatasets() {
@@ -116,23 +134,6 @@ class DatasetsDataService {
           this.errMsg = res.message;
         });
       });
-  }
-
-  prepareNewPage(index: number): Promise<boolean> | null {
-    if (index > this.offset + 800 || index < this.offset) {
-      return new Promise((resolve, reject) => {
-        if (this.timerId) {
-          this.clearTimer();
-        }
-
-        this.timerId = window.setTimeout(async () => {
-          await this.setOffset(index - 200 < 0 ? 0 : index - 200);
-          resolve(false);
-        }, 1000);
-      });
-    }
-
-    return null;
   }
 
   clearTimer() {
