@@ -1,12 +1,6 @@
 import React, { FC, useState, Children, useEffect, useRef, createRef } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import {
-  FixedSizeList,
-  FixedSizeList as List,
-  ListOnItemsRenderedProps,
-} from 'react-window';
-
-import { datasetsDataService } from 'src/pages/FilesPage/FilesTabs/DatasetsPane/datasetsData.service';
+import { FixedSizeList as List } from 'react-window';
 
 type InfiniteListProps = {
   className: string;
@@ -22,8 +16,6 @@ export const InfiniteList: FC<InfiniteListProps> = function InfiniteList({
 }) {
   const listRef = createRef<List>();
 
-  var rendered = false;
-
   return (
     <AutoSizer>
       {({ height, width }) => (
@@ -33,14 +25,15 @@ export const InfiniteList: FC<InfiniteListProps> = function InfiniteList({
           height={height}
           itemCount={rowCount}
           itemSize={itemSize}
+          useIsScrolling={true}
           width={width}
         >
-          {({ index, style }) => {
+          {({ index, isScrolling, style }) => {
             return (
               <div key={index} style={style}>
                 {Children.map(children, child => {
                   if (React.isValidElement(child)) {
-                    return React.cloneElement(child, { index });
+                    return React.cloneElement(child, { index, isScrolling });
                   }
                 })}
               </div>

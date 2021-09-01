@@ -1,6 +1,3 @@
-import { clear } from 'console';
-
-import { Result } from 'antd';
 import { observable, action, makeObservable } from 'mobx';
 import { computedFn } from 'mobx-utils';
 
@@ -83,6 +80,23 @@ export default class BaseListStore<TListItem extends IIdentifiable> {
     this._currentPage = val;
   }
 
+  updateList(index: number) {
+    const page = Math.floor(index / this.rowInPage);
+
+    console.log(index);
+
+    if (!this.pageLoding.has(page) && !this._results.has(index)) {
+      //this.isLoading = true;
+      this.pageLoding.add(page);
+      window.setTimeout(() => {
+        this.fetchData(page * this.rowInPage).then(result => {
+          this.pageLoding.delete(page);
+          this.addToList(result.objects, page * 1000);
+        });
+      }, 1000);
+    }
+  }
+
   getRow = computedFn((index: number): TListItem | undefined => {
     const page = Math.floor(index / this.rowInPage);
 
@@ -93,22 +107,21 @@ export default class BaseListStore<TListItem extends IIdentifiable> {
       return this._results.get(index);
     }
 
-    if (!this.pageLoding.has(page)) {
-      //this.isLoading = true;
-      this.pageLoding.add(page);
-      window.setTimeout(() => {
-        this.fetchData(page * this.rowInPage).then(result => {
-          this.pageLoding.delete(page);
-          this.addToList(result.objects, page * 1000);
-        });
-      }, 1000);
-    }
+    // if (!this.pageLoding.has(page)) {
+    //   //this.isLoading = true;
+    //   this.pageLoding.add(page);
+    //   window.setTimeout(() => {
+    //     this.fetchData(page * this.rowInPage).then(result => {
+    //       this.pageLoding.delete(page);
+    //       this.addToList(result.objects, page * 1000);
+    //     });
+    //   }, 1000);
+    // }
 
     return undefined;
   });
 
   cashProcess() {
-    console.log(this.casher);
     const time = new Date().getTime();
     const afd: number[] = [];
 
@@ -119,7 +132,6 @@ export default class BaseListStore<TListItem extends IIdentifiable> {
     });
 
     afd.forEach(el => {
-      console.log(el);
       for (var i = 0; i < 1000; i++) {
         this._results.delete(el * this.rowInPage + i);
       }

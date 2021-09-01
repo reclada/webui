@@ -106,14 +106,6 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
             onUpdate={(name, dataSet, datasetIndex) => {
               dataSet.title = name;
               datasetsDataService.listStore.updateRow(datasetIndex, dataSet);
-              // const newDataset = datasetsDataService.listStore.?.find(
-              //   dataset => dataset.id === datasetId
-              // );
-
-              // if (newDataset !== undefined) newDataset.title = name;
-
-              // if (datasetsDataService.datasets !== undefined)
-              //   datasetsDataService.setDatasets([...datasetsDataService.datasets]);
             }}
           />
         </InfiniteList>
@@ -134,14 +126,6 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
           onUpdate={(name, dataSet, datasetIndex) => {
             dataSet.title = name;
             datasetsDataService.listStore.updateRow(datasetIndex, dataSet);
-            // const newDataset = datasetsDataService.listStore.?.find(
-            //   dataset => dataset.id === datasetId
-            // );
-
-            // if (newDataset !== undefined) newDataset.title = name;
-
-            // if (datasetsDataService.datasets !== undefined)
-            //   datasetsDataService.setDatasets([...datasetsDataService.datasets]);
           }}
         />
       </InfiniteList>
