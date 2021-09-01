@@ -1,4 +1,4 @@
-import { Col, Divider, Result, Row, Spin } from 'antd';
+import { Affix, Col, Divider, Result, Row, Spin } from 'antd';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useEffect } from 'react';
 
@@ -11,6 +11,7 @@ import {
 import { InfiniteList } from 'src/shared/InfiniteList/InfiniteList';
 import { DisplayingTypes, OrderType } from 'src/Sorting';
 
+import { Pager } from '../../../shared/Pager/Pager';
 import { DatasourcesTable } from '../DatasourcesTable/DatasourcesTable';
 
 import { DatasetsCardsRow } from './DatasetsCards/DatasetsCardsRow/DatasetsCardsRow';
@@ -50,7 +51,7 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
   }, []);
 
   useEffect(() => {
-    datasetsDataService.updateDatasets();
+    datasetsDataService.listStore.initList();
   }, []);
 
   if (datasetsDataService.isError) {
@@ -96,21 +97,23 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
         <InfiniteList
           className={''}
           itemSize={55}
-          rowCount={datasetsDataService.elemNumber}
+          rowCount={datasetsDataService.listStore.count}
         >
           <DatasetsTableInfRow
-            elemNumber={datasetsDataService.elemNumber}
+            elemNumber={datasetsDataService.listStore.count}
             index={0}
             onSelect={onSelect}
-            onUpdate={(name, datasetId) => {
-              const newDataset = datasetsDataService.datasets?.find(
-                dataset => dataset.id === datasetId
-              );
+            onUpdate={(name, dataSet, datasetIndex) => {
+              dataSet.title = name;
+              datasetsDataService.listStore.updateRow(datasetIndex, dataSet);
+              // const newDataset = datasetsDataService.listStore.?.find(
+              //   dataset => dataset.id === datasetId
+              // );
 
-              if (newDataset !== undefined) newDataset.title = name;
+              // if (newDataset !== undefined) newDataset.title = name;
 
-              if (datasetsDataService.datasets !== undefined)
-                datasetsDataService.setDatasets([...datasetsDataService.datasets]);
+              // if (datasetsDataService.datasets !== undefined)
+              //   datasetsDataService.setDatasets([...datasetsDataService.datasets]);
             }}
           />
         </InfiniteList>
@@ -120,23 +123,25 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
         className={''}
         itemSize={270}
         rowCount={
-          datasetsDataService.elemNumber % 3 > 0
-            ? Math.floor(datasetsDataService.elemNumber / 3) + 1
-            : datasetsDataService.elemNumber / 3
+          datasetsDataService.listStore.count % 3 > 0
+            ? Math.floor(datasetsDataService.listStore.count / 3) + 1
+            : datasetsDataService.listStore.count / 3
         }
       >
         <DatasetsCardsRow
           index={0}
           onSelect={onSelect}
-          onUpdate={(name, datasetId) => {
-            const newDataset = datasetsDataService.datasets?.find(
-              dataset => dataset.id === datasetId
-            );
+          onUpdate={(name, dataSet, datasetIndex) => {
+            dataSet.title = name;
+            datasetsDataService.listStore.updateRow(datasetIndex, dataSet);
+            // const newDataset = datasetsDataService.listStore.?.find(
+            //   dataset => dataset.id === datasetId
+            // );
 
-            if (newDataset !== undefined) newDataset.title = name;
+            // if (newDataset !== undefined) newDataset.title = name;
 
-            if (datasetsDataService.datasets !== undefined)
-              datasetsDataService.setDatasets([...datasetsDataService.datasets]);
+            // if (datasetsDataService.datasets !== undefined)
+            //   datasetsDataService.setDatasets([...datasetsDataService.datasets]);
           }}
         />
       </InfiniteList>
@@ -170,6 +175,7 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
                 content
               )}
             </div>
+            <Pager service={datasetsDataService.listStore} />
           </div>
         </>
       )}

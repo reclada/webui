@@ -1,20 +1,23 @@
 import { Menu } from 'antd';
 import React, { FC } from 'react';
 
+import { IDataset } from 'src/api/datasetsDataGateService';
 import { useOpen } from 'src/utils/useOpen';
 
 import { MoreDropdown } from '../../../../../../shared/MoreDropdown/MoreDropdown';
 import { EditDataSetModal } from '../Modals/EditDataSetModal';
 
 export type MoreMenuRendererProps = {
-  dataSetId: string;
-  prevName: string;
-  onUpdate?: (name: string, datasetId: string) => void;
+  datasetIndex: number;
+  dataSet: IDataset;
+  // dataSetId: string;
+  // prevName: string;
+  onUpdate?: (name: string, dataset: IDataset, datasetInde: number) => void;
 };
 
 export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRenderer({
-  dataSetId,
-  prevName,
+  datasetIndex,
+  dataSet,
   onUpdate,
 }) {
   const isEditModalOpen = useOpen(false);
@@ -37,16 +40,16 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
         <span>Delete</span>
       </Menu.Item>
       <EditDataSetModal
-        dataSetId={dataSetId}
-        datasetId={dataSetId}
+        dataSetId={dataSet.id}
+        datasetId={dataSet.id}
         handleCancel={isEditModalOpen.close}
         handleOk={() => {
           isEditModalOpen.close();
         }}
         isCreationType={false}
         opened={isEditModalOpen.isOpen}
-        prevName={prevName}
-        onUpdate={(name, datasetId) => onUpdate && onUpdate(name, datasetId)}
+        prevName={dataSet.title}
+        onUpdate={(name, datasetId) => onUpdate && onUpdate(name, dataSet, datasetIndex)}
       />
     </Menu>
   );

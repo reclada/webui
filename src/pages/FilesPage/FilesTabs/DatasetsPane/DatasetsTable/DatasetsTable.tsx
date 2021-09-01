@@ -13,7 +13,7 @@ type DatasetsTableProps = {
   datasets: IDataset[] | undefined;
   isLoading: boolean;
   onSelectDataset: (dataset: IDataset) => void;
-  onUpdate: (name: string, datasetId: string) => void;
+  onUpdate: (name: string, dataSet: IDataset, index: number) => void;
   onClickHeader: (key: string) => void;
 };
 
@@ -69,11 +69,7 @@ export const DatasetsTable: FC<DatasetsTableProps> = function DatasetsTable({
       },
       {
         render: (_, dataset) => (
-          <MoreMenuRenderer
-            dataSetId={dataset.id}
-            prevName={dataset.title}
-            onUpdate={onUpdate}
-          />
+          <MoreMenuRenderer dataSet={dataset} datasetIndex={0} onUpdate={onUpdate} />
         ),
       },
     ],

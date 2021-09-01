@@ -1,6 +1,12 @@
-import React, { FC, useState, Children, useEffect } from 'react';
+import React, { FC, useState, Children, useEffect, useRef, createRef } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { FixedSizeList as List, ListOnItemsRenderedProps } from 'react-window';
+import {
+  FixedSizeList,
+  FixedSizeList as List,
+  ListOnItemsRenderedProps,
+} from 'react-window';
+
+import { datasetsDataService } from 'src/pages/FilesPage/FilesTabs/DatasetsPane/datasetsData.service';
 
 type InfiniteListProps = {
   className: string;
@@ -14,13 +20,15 @@ export const InfiniteList: FC<InfiniteListProps> = function InfiniteList({
   itemSize,
   children,
 }) {
-  //const [isLoading, setLoading] = useState(false);
-  //console.log('render infinite list');
+  const listRef = createRef<List>();
+
+  var rendered = false;
 
   return (
     <AutoSizer>
       {({ height, width }) => (
         <List
+          ref={listRef}
           className={className}
           height={height}
           itemCount={rowCount}

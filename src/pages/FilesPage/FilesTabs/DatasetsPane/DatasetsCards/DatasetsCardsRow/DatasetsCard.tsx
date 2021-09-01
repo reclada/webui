@@ -11,14 +11,16 @@ import style from '../DatasetsCards.module.scss';
 type DatasetCardProps = {
   loading: boolean;
   className?: string;
+  index: number;
   dataset?: IDataset;
   onSelect: (record: IDataset) => void;
-  onUpdate: (name: string, id: string) => void;
+  onUpdate: (name: string, dataSet: IDataset, index: number) => void;
 };
 
 export const DatasetsCard: FC<DatasetCardProps> = function DatasetsCard({
   className,
   dataset,
+  index,
   loading,
   onSelect,
   onUpdate,
@@ -33,8 +35,10 @@ export const DatasetsCard: FC<DatasetCardProps> = function DatasetsCard({
           className={style.card}
           extra={
             <MoreMenuRenderer
-              dataSetId={dataset.id}
-              prevName={dataset.title}
+              dataSet={dataset}
+              datasetIndex={index}
+              //dataSetId={dataset.id}
+              //prevName={dataset.title}
               onUpdate={onUpdate}
             />
           }

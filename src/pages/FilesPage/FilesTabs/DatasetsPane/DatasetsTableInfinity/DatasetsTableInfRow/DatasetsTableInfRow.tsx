@@ -15,7 +15,7 @@ type DatasetsTableInfRowProp = {
   index: number;
   //isLoading: boolean;
   onSelect: (record: IDataset) => void;
-  onUpdate: (name: string, id: string) => void;
+  onUpdate: (name: string, dataSet: IDataset, index: number) => void;
   elemNumber: number;
   //getRowByIndex: (index: number) => IDataset | undefined;
 };
@@ -24,7 +24,7 @@ export const DatasetsTableInfRow: FC<DatasetsTableInfRowProp> = observer(
   function DatasetsTableInfRow({ index, onSelect, onUpdate }) {
     //const dataset = useMemo(() => getRowByIndex(index), [index, getRowByIndex]);
 
-    const dataset = datasetsDataService.getRowByIndex(index);
+    const dataset = datasetsDataService.listStore.getRow(index) as IDataset;
 
     //console.log(index, dataset);
 
@@ -58,8 +58,10 @@ export const DatasetsTableInfRow: FC<DatasetsTableInfRowProp> = observer(
             </Col>
             <Col span={1}>
               <MoreMenuRenderer
-                dataSetId={dataset.id}
-                prevName={dataset.title}
+                dataSet={dataset}
+                //dataSetId={dataset.id}
+                datasetIndex={index}
+                //prevName={dataset.title}
                 onUpdate={onUpdate}
               />
             </Col>
