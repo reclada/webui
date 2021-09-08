@@ -1,9 +1,12 @@
-import { action, makeObservable, observable, runInAction } from 'mobx';
-import { computedFn } from 'mobx-utils';
+import { action, makeObservable, observable } from 'mobx';
 
 import { fetchDatasets, IDataset } from 'src/api/datasetsDataGateService';
-import { DisplayingTypes } from 'src/Sorting';
-import { OrderBy } from 'src/Sorting';
+import {
+  DisplayingTypes,
+  OrderBy,
+  OrderType,
+  RecladaOrder,
+} from 'src/shared/Sorting/Sorting';
 import BaseListStore, { BaseListStoreType } from 'src/stores/BaseListStore';
 
 class DatasetsDataService {
@@ -15,16 +18,40 @@ class DatasetsDataService {
   @observable private aRecord: IDataset | undefined;
   @observable private loading: boolean = false;
   @observable private error: boolean = false;
+  @observable private sortopen: boolean = false;
   private errMsg: string = '';
 
-  @observable private orderList: OrderBy[] | undefined;
+  @observable private orderList: RecladaOrder[] | undefined;
+
+  private get orderBy(): OrderBy[] {
+    const result = new Array<OrderBy>();
+
+    if (this.orderList) {
+      this.orderList.map(value =>
+        result.push({ field: value.field, order: value.order })
+      );
+    }
+
+    return result;
+  }
 
   constructor() {
     makeObservable(this);
   }
 
-  get orders(): OrderBy[] | undefined {
+  get orders(): RecladaOrder[] | undefined {
     return this.orderList;
+  }
+
+  get enableOrders(): RecladaOrder[] {
+    return [
+      { name: 'Name', field: 'attrs, name', order: OrderType.ASC },
+      { name: 'Created date', field: 'attrs, SomeDate', order: OrderType.ASC },
+    ];
+  }
+
+  get sortOpen(): boolean {
+    return this.sortopen;
   }
 
   get displaingType(): DisplayingTypes {
@@ -50,6 +77,26 @@ class DatasetsDataService {
     return this._listStore;
   }
 
+  get count(): number {
+    return this._listStore.count;
+  }
+
+  get updateRow() {
+    return this._listStore.updateRow.bind(this._listStore);
+  }
+
+  getRow(index: number): IDataset | undefined {
+    return this._listStore.getRow(index) as IDataset;
+  }
+
+  updateList(index: number) {
+    this._listStore.updateList(index);
+  }
+
+  initList() {
+    this._listStore.initList();
+  }
+
   @action
   setDatasets(datasets: IDataset[]) {
     //this.datasetsList = datasets;
@@ -71,14 +118,19 @@ class DatasetsDataService {
   }
 
   @action
-  setOrder(order: OrderBy[] | undefined) {
+  setOrder(order: RecladaOrder[] | undefined) {
     this.orderList = order;
     this._listStore.clear();
     this._listStore.initList();
   }
 
-  fetchData(index: number) {
-    return fetchDatasets(this.orderList ? this.orderList : [], 1000, index);
+  @action
+  setSortOpen(value: boolean) {
+    this.sortopen = value;
+  }
+
+  fetchData(index: number, limit: number) {
+    return fetchDatasets(this.orderBy, limit, index);
   }
 }
 

@@ -1,7 +1,7 @@
 import { action, computed, makeObservable, observable } from 'mobx';
 
-import { DisplayingTypes } from 'src/Sorting';
-import { OrderBy } from 'src/Sorting';
+import { OrderBy, DisplayingTypes } from 'src/shared/Sorting/Sorting';
+
 import { IDatasource } from '../../../../api/datasourcesService';
 
 class ObjectDataService {

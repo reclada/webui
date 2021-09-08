@@ -1,24 +1,23 @@
-import { Affix, Col, Divider, Result, Row, Spin } from 'antd';
+import { Col, Divider, Result, Row, Spin } from 'antd';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useEffect } from 'react';
 
-import { IDataset } from 'src/api/datasetsDataGateService';
 import styleTool from 'src/pages/SearchResultPage/SearchResultMain/SearchResultMain.module.scss';
 import {
   ResultToolbar,
   ToolbarContext,
 } from 'src/pages/shared/ResultToolbar/ResultToolbar';
 import { InfiniteList } from 'src/shared/InfiniteList/InfiniteList';
-import { DisplayingTypes, OrderType } from 'src/Sorting';
+import { DisplayingTypes, OrderType } from 'src/shared/Sorting/Sorting';
 
 import { Pager } from '../../../shared/Pager/Pager';
-import { DatasourcesTable } from '../DatasourcesTable/DatasourcesTable';
+import { DatasourcesPane } from '../DatasourcesPane/DatasourcesPane';
 
-import { DatasetsCardsRow } from './DatasetsCards/DatasetsCardsRow/DatasetsCardsRow';
+import { DatasetsCardsRow } from './DatasetsCardsRow/DatasetsCardsRow';
 import { datasetsDataService } from './datasetsData.service';
 import style from './DatasetsPane.module.scss';
 import { DatasetsPaneBreadcrumbs } from './DatasetsPaneBreadcrumbs/DatasetsPaneBreadcrumbs';
-import { DatasetsTableInfRow } from './DatasetsTableInfinity/DatasetsTableInfRow/DatasetsTableInfRow';
+import { DatasetsTableInfRow } from './DatasetsTableInfRow/DatasetsTableInfRow';
 
 export const DatasetsPane: FC = observer(function DatasetsPane() {
   const handleUnselectDataset = useCallback(() => {
@@ -27,31 +26,26 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
   }, []);
 
   const onClickHeader = (key: string) => {
-    const dk = datasetsDataService.orders?.filter(el => el.field === key);
-
-    if (dk && dk.length) {
-      datasetsDataService.setOrder([
-        {
-          field: key,
-          order: dk[0].order === OrderType.ASC ? OrderType.DESC : OrderType.ASC,
-        },
-      ]);
-    } else {
-      datasetsDataService.setOrder([
-        {
-          field: key,
-          order: OrderType.DESC,
-        },
-      ]);
-    }
+    // const dk = datasetsDataService.orders?.filter(el => el.field === key);
+    // if (dk && dk.length) {
+    //   datasetsDataService.setOrder([
+    //     {
+    //       field: key,
+    //       order: dk[0].order === OrderType.ASC ? OrderType.DESC : OrderType.ASC,
+    //     },
+    //   ]);
+    // } else {
+    //   datasetsDataService.setOrder([
+    //     {
+    //       field: key,
+    //       order: OrderType.DESC,
+    //     },
+    //   ]);
+    // }
   };
 
-  const onSelect = useCallback((record: IDataset) => {
-    datasetsDataService.setActiveRecord(record);
-  }, []);
-
   useEffect(() => {
-    datasetsDataService.listStore.initList();
+    datasetsDataService.initList();
   }, []);
 
   if (datasetsDataService.isError) {
@@ -94,20 +88,8 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
             <Col span={1}></Col>
           </Row>
         </div>
-        <InfiniteList
-          className={''}
-          itemSize={55}
-          rowCount={datasetsDataService.listStore.count}
-        >
-          <DatasetsTableInfRow
-            elemNumber={datasetsDataService.listStore.count}
-            index={0}
-            onSelect={onSelect}
-            onUpdate={(name, dataSet, datasetIndex) => {
-              dataSet.title = name;
-              datasetsDataService.listStore.updateRow(datasetIndex, dataSet);
-            }}
-          />
+        <InfiniteList className={''} itemSize={55} rowCount={datasetsDataService.count}>
+          <DatasetsTableInfRow index={0} />
         </InfiniteList>
       </>
     ) : (
@@ -115,19 +97,12 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
         className={''}
         itemSize={270}
         rowCount={
-          datasetsDataService.listStore.count % 3 > 0
-            ? Math.floor(datasetsDataService.listStore.count / 3) + 1
-            : datasetsDataService.listStore.count / 3
+          datasetsDataService.count % 3 > 0
+            ? Math.floor(datasetsDataService.count / 3) + 1
+            : datasetsDataService.count / 3
         }
       >
-        <DatasetsCardsRow
-          index={0}
-          onSelect={onSelect}
-          onUpdate={(name, dataSet, datasetIndex) => {
-            dataSet.title = name;
-            datasetsDataService.listStore.updateRow(datasetIndex, dataSet);
-          }}
-        />
+        <DatasetsCardsRow index={0} />
       </InfiniteList>
     );
 
@@ -139,7 +114,7 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
             selectedDataset={datasetsDataService.activeRecord}
             onUnselectDataset={handleUnselectDataset}
           />
-          <DatasourcesTable datasetId={datasetsDataService.activeRecord.id} />
+          <DatasourcesPane datasetId={datasetsDataService.activeRecord.id} />
         </>
       ) : (
         <>

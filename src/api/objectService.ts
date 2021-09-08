@@ -1,7 +1,7 @@
-import { OrderBy } from 'src/Sorting';
+import { OrderBy } from 'src/shared/Sorting/Sorting';
+
 import { apiService } from './apiService';
 import { ArticleType, getArticleTypeByKey } from './articleService';
-import { IDatasource } from './datasourcesService';
 import { IRecladaFile, RecladaObjectClass } from './IRecladaObject';
 import { rpcUrls } from './rpcUrls';
 
@@ -16,14 +16,12 @@ export interface IRecladaObject {
   owners: string[];
   checksum: string;
   mimeType: string;
-  attrs?: CustomAttibute
+  attrs?: CustomAttibute;
 }
 
-type CustomAttibute ={
-    [key: string]: string
-}
-
-
+type CustomAttibute = {
+  [key: string]: string;
+};
 
 export async function fetchObject(
   datasetId?: string,
@@ -33,7 +31,11 @@ export async function fetchObject(
 ): Promise<IRecladaObject[]> {
   const recladaFileObjects = datasetId
     ? await fetchFilesListForDataset(datasetId)
-    : await fetchFilesList(orderBy ? orderBy : [], limit ? limit : 'ALL', offset ? offset : 0);
+    : await fetchFilesList(
+        orderBy ? orderBy : [],
+        limit ? limit : 'ALL',
+        offset ? offset : 0
+      );
 
   return recladaFileObjects.map(fileObject => {
     const fd = fileObject.attrs.name.split('.');
@@ -64,13 +66,17 @@ async function fetchFilesListForDataset(datasetId: string) {
   });
 }
 
-async function fetchFilesList(orderBy: OrderBy[], limit: number | string, offset: number) {
+async function fetchFilesList(
+  orderBy: OrderBy[],
+  limit: number | string,
+  offset: number
+) {
   return apiService.callRpcPost<IRecladaFile[]>(rpcUrls.getRecladaObjectList, {
     class: RecladaObjectClass.DataSource,
     attrs: {},
     orderBy: orderBy,
     limit: limit,
-    offset: offset
+    offset: offset,
   });
 }
 

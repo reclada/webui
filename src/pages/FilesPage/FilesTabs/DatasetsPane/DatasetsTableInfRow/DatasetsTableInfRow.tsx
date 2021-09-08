@@ -1,37 +1,39 @@
-import { Row, Col, Divider } from 'antd';
-import { computed } from 'mobx';
+import { Row, Col } from 'antd';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 
 import { IDataset } from 'src/api/datasetsDataGateService';
 
-import { OwnersRenderer } from '../../../shared/OwnersRenderer/OwnersRenderer';
-import { DatasetNameRenderer } from '../../DatasetNameRenderer/DatasetNameRenderer';
-import { datasetsDataService } from '../../datasetsData.service';
-import { MoreMenuRenderer } from '../../DatasetsTable/MoreMenuRenderer/MoreMenuRenderer';
-import style from '../DatasetsTableInfinity.module.scss';
+import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';
+import { DatasetNameRenderer } from '../DatasetNameRenderer/DatasetNameRenderer';
+import { datasetsDataService } from '../datasetsData.service';
+import { MoreMenuRenderer } from '../DatasetsTable/MoreMenuRenderer/MoreMenuRenderer';
+
+import style from './DatasetsTableInfRow.module.scss';
 
 type DatasetsTableInfRowProp = {
   index: number;
   isScrolling?: boolean;
-  onSelect: (record: IDataset) => void;
-  onUpdate: (name: string, dataSet: IDataset, index: number) => void;
-  elemNumber: number;
-  //getRowByIndex: (index: number) => IDataset | undefined;
 };
 
 export const DatasetsTableInfRow: FC<DatasetsTableInfRowProp> = observer(
-  function DatasetsTableInfRow({ index, onSelect, onUpdate, isScrolling }) {
-    // if (isScrolling) {
-    //   return <Row className={style.rowTable}></Row>;
-    // }
-
-    const dataset = datasetsDataService.listStore.getRow(index) as IDataset;
+  function DatasetsTableInfRow({ index, isScrolling }) {
+    const dataset = datasetsDataService.getRow(index);
 
     if (!dataset && !isScrolling) {
-      datasetsDataService.listStore.updateList(index);
+      datasetsDataService.updateList(index);
     }
-    //console.log(index, dataset);
+
+    const onSelect = () => {
+      datasetsDataService.setActiveRecord(dataset);
+    };
+
+    const onUpdate = (name: string) => {
+      if (dataset) {
+        dataset.title = name;
+        datasetsDataService.updateRow(index, dataset);
+      }
+    };
 
     return (
       <>

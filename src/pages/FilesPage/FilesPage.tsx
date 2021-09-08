@@ -10,8 +10,9 @@ import { FileSearch } from './FileSearch/FileSearch';
 import style from './FilesPage.module.scss';
 import { DatasetsPane } from './FilesTabs/DatasetsPane/DatasetsPane';
 import { EditDataSetModal } from './FilesTabs/DatasetsPane/DatasetsTable/Modals/EditDataSetModal';
-import { DatasourcesTable } from './FilesTabs/DatasourcesTable/DatasourcesTable';
-import { FilesTabsActions } from './FilesTabs/FilesTabsActions/FilesTabsActions';
+import { DatasourcesPane } from './FilesTabs/DatasourcesPane/DatasourcesPane';
+// import { DatasourcesTable } from './FilesTabs/DatasourcesTable/DatasourcesTable';
+// import { FilesTabsActions } from './FilesTabs/FilesTabsActions/FilesTabsActions';
 import { UploadDatasourceModal } from './FilesTabs/UploadDatasourceModal/UploadDatasourceModal';
 
 export enum FilePageType {
@@ -63,7 +64,8 @@ export const FilesPage: FC<FilesPageProps> = function FilesPage({ pageType }) {
         <div className={style.emptyContainer}></div>
         {/* <FilesTabsActions /> */}
         {pageType === FilePageType.Datasets ? <DatasetsPane /> : ''}
-        {pageType === FilePageType.Datasources ? <DatasourcesTable /> : ''}
+        {/* {pageType === FilePageType.Datasources ? <DatasourcesTable /> : ''} */}
+        {pageType === FilePageType.Datasources ? <DatasourcesPane /> : ''}
         {pageType === FilePageType.Assets ? 'Assets' : ''}
         {pageType === FilePageType.Available ? 'Available to me' : ''}
       </div>

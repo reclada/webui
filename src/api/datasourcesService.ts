@@ -1,5 +1,5 @@
 import { UserBadge } from 'src/shared/Navigation/UserBadge/UserBadge';
-import { OrderBy } from 'src/Sorting';
+import { OrderBy } from 'src/shared/Sorting/Sorting';
 
 import { apiService } from './apiService';
 import { ArticleType, getArticleTypeByKey } from './articleService';
@@ -18,9 +18,14 @@ export interface IDatasource {
   mimeType: string;
 }
 
-type DatasourcesResponse = {
+type RecladaFileResponse = {
   number: number;
   objects: IRecladaFile[];
+};
+
+type DatasourcesResponse = {
+  number: number;
+  objects: IDatasource[];
 };
 
 export async function fetchDatasources(
@@ -28,7 +33,7 @@ export async function fetchDatasources(
   orderBy?: OrderBy[],
   limit?: number,
   offset?: number
-): Promise<IDatasource[]> {
+): Promise<DatasourcesResponse> {
   const recladaFileObjects = datasetId
     ? await fetchFilesListForDataset(
         datasetId,
@@ -42,24 +47,27 @@ export async function fetchDatasources(
         offset === undefined ? 0 : offset
       );
 
-  return recladaFileObjects.objects.map(fileObject => {
-    const fd = fileObject.attrs.name.split('.');
+  return {
+    objects: recladaFileObjects.objects.map(fileObject => {
+      const fd = fileObject.attrs.name.split('.');
 
-    const datasource: IDatasource = {
-      id: fileObject.id,
-      name: fileObject.attrs.name,
-      type: getArticleTypeByKey(fd.length ? fd[fd.length - 1].toUpperCase() : ''),
-      createDate: new Date(),
-      author: 'unknown',
-      lastUpdate: new Date(),
-      whoUpdated: 'unknown',
-      owners: ['me', 'other'],
-      checksum: '',
-      mimeType: '',
-    };
+      const datasource: IDatasource = {
+        id: fileObject.id,
+        name: fileObject.attrs.name,
+        type: getArticleTypeByKey(fd.length ? fd[fd.length - 1].toUpperCase() : ''),
+        createDate: new Date(),
+        author: 'unknown',
+        lastUpdate: new Date(),
+        whoUpdated: 'unknown',
+        owners: ['me', 'other'],
+        checksum: '',
+        mimeType: '',
+      };
 
-    return datasource;
-  });
+      return datasource;
+    }),
+    number: recladaFileObjects.number,
+  };
 }
 
 async function fetchFilesListForDataset(
@@ -68,7 +76,7 @@ async function fetchFilesListForDataset(
   limit: number | string,
   offset: number
 ) {
-  return apiService.callRpcPost<DatasourcesResponse>(rpcUrls.getRecladaObjectsFromList, {
+  return apiService.callRpcPost<RecladaFileResponse>(rpcUrls.getRecladaObjectsFromList, {
     id: datasetId,
     class: RecladaObjectClass.DataSet,
     relatedClass: RecladaObjectClass.DataSource,
@@ -84,7 +92,7 @@ async function fetchFilesList(
   limit: number | string,
   offset: number
 ) {
-  return apiService.callRpcPost<DatasourcesResponse>(rpcUrls.getRecladaObjectList, {
+  return apiService.callRpcPost<RecladaFileResponse>(rpcUrls.getRecladaObjectList, {
     class: RecladaObjectClass.DataSource,
     attrs: {},
     orderBy: orderBy,
@@ -94,7 +102,7 @@ async function fetchFilesList(
 }
 
 export async function fetchSourceById(id: string, objectClass: RecladaObjectClass) {
-  return apiService.callRpcPost<DatasourcesResponse | null>(
+  return apiService.callRpcPost<RecladaFileResponse | null>(
     rpcUrls.getRecladaObjectList,
     {
       class: objectClass,

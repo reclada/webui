@@ -12,7 +12,7 @@ export type MoreMenuRendererProps = {
   dataSet: IDataset;
   // dataSetId: string;
   // prevName: string;
-  onUpdate?: (name: string, dataset: IDataset, datasetInde: number) => void;
+  onUpdate?: (name: string) => void;
 };
 
 export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRenderer({
@@ -49,7 +49,7 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
         isCreationType={false}
         opened={isEditModalOpen.isOpen}
         prevName={dataSet.title}
-        onUpdate={(name, datasetId) => onUpdate && onUpdate(name, dataSet, datasetIndex)}
+        onUpdate={(name, datasetId) => onUpdate && onUpdate(name)}
       />
     </Menu>
   );

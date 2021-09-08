@@ -68,12 +68,10 @@ export const DatasetsTable: FC<DatasetsTableProps> = function DatasetsTable({
         render: (owners: IDataset['owners']) => <OwnersRenderer owners={owners} />,
       },
       {
-        render: (_, dataset) => (
-          <MoreMenuRenderer dataSet={dataset} datasetIndex={0} onUpdate={onUpdate} />
-        ),
+        render: (_, dataset) => <MoreMenuRenderer dataSet={dataset} datasetIndex={0} />,
       },
     ],
-    [onSelectDataset, onUpdate, onClickHeader]
+    [onSelectDataset, onClickHeader]
   );
 
   return (

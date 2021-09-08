@@ -6,7 +6,8 @@ import { ReactComponent as DatasetsIcon } from '../../../resources/datasets.svg'
 import { ReactComponent as DatasourceIcon } from '../../../resources/datasources.svg';
 
 import { DatasetsPane } from './DatasetsPane/DatasetsPane';
-import { DatasourcesTable } from './DatasourcesTable/DatasourcesTable';
+import { DatasourcesPane } from './DatasourcesPane/DatasourcesPane';
+// import { DatasourcesTable } from './DatasourcesTable/DatasourcesTable';
 import style from './FilesTabs.module.scss';
 import { FilesTabsActions } from './FilesTabsActions/FilesTabsActions';
 
@@ -34,7 +35,8 @@ export const FilesTabs: React.FC = function FilesPage() {
             </span>
           }
         >
-          <DatasourcesTable />
+          {/* <DatasourcesTable /> */}
+          <DatasourcesPane />
         </TabPane>
         <TabPane
           key="2"

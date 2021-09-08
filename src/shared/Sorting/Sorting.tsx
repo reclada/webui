@@ -8,6 +8,12 @@ export enum OrderType {
   DESC = 'DESC',
 }
 
+export type RecladaOrder = {
+  name: string;
+  field: string;
+  order: OrderType;
+};
+
 export enum DisplayingTypes {
   LIST = 'list',
   CARD = 'card',

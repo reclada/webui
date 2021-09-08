@@ -1,176 +1,168 @@
-import { Result } from 'antd';
-// import { SelectionSelectFn } from 'antd/lib/table/interface';
-// import { observer } from 'mobx-react-lite';
-// import React, { FC, useCallback, useEffect } from 'react';
+import { Col, Divider, Result, Row, Checkbox } from 'antd';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useEffect } from 'react';
 
-// import { IDataset } from 'src/api/datasetsDataGateService';
-// import style from 'src/pages/SearchResultPage/SearchResultMain/SearchResultMain.module.scss';
-// import {
-//   ResultToolbar,
-//   ToolbarContext,
-// } from 'src/pages/shared/ResultToolbar/ResultToolbar';
-// import { DisplayingTypes, OrderType } from 'src/Sorting';
+import { ArticleViewPanel } from 'src/pages/SearchResultPage/SearchResultMain/ArticleViewPanel/ArticleViewPanel';
+import style from 'src/pages/SearchResultPage/SearchResultMain/SearchResultMain.module.scss';
+import {
+  ResultToolbar,
+  ToolbarContext,
+} from 'src/pages/shared/ResultToolbar/ResultToolbar';
+import { InfiniteList } from 'src/shared/InfiniteList/InfiniteList';
+import { DisplayingTypes, OrderType } from 'src/shared/Sorting/Sorting';
+import { useOpen } from 'src/utils/useOpen';
 
-// import { IDatasource } from '../../../../api/datasourcesService';
-// import { DatasourcesTable } from '../DatasourcesTable/DatasourcesTable';
-// import { datasourceTableService } from '../DatasourcesTable/datasourceTable.service';
+import { DatasourcesCardRow } from './DatasourcesCardsRow/DatasuorcesCardRow';
+import { useFileUrl } from './DatasourcesTable/FilePreviewModal/useFileUrl';
+import { DatasourcesTableRow } from './DatasourcesTableRow/DatasourceTableRow';
+import { datasourceTableService } from './datasourceTable.service';
 
-// import { DatasetsCards } from './DatasetsCards/DatasetsCards';
-// import { datasetsDataService } from './datasetsData.service';
-// import { DatasetsPaneBreadcrumbs } from './DatasetsPaneBreadcrumbs/DatasetsPaneBreadcrumbs';
-// import { DatasetsTable } from './DatasetsTable/DatasetsTable';
-// import { DatasetsTableInfinity } from './DatasetsTableInfinity/DatasetsTableInfinity';
+type DatasourcesPaneProps = {
+  datasetId?: string;
+};
 
-// type DatasourcesPaneProps = {
-//   datasetId?: string;
-// };
+export const DatasourcesPane: FC<DatasourcesPaneProps> = observer(
+  function DatasourcesPane({ datasetId }) {
+    useEffect(() => {
+      datasourceTableService.setDataSet(datasetId);
+    }, [datasetId]);
 
-// export const DatasourcesPane: FC = observer(function DatasourcesPane({ datasetId }) {
-//   useEffect(() => {
-//     datasourceTableService.setDataSet(datasetId);
-//   }, [datasetId]);
+    const addDatasourceToDatasetModal = useOpen();
 
-//   const addDatasourceToDatasetModal = useOpen();
+    const activeUrl = useFileUrl(
+      datasourceTableService.activeRecord ? datasourceTableService.activeRecord.id : '',
+      datasourceTableService.activeRecord !== undefined
+    );
 
-//   const activeUrl = useFileUrl(
-//     datasourceTableService.ActiveRecord ? datasourceTableService.ActiveRecord.id : ''
-//   );
+    const onClickHeader = (key: string) => {
+      //   const dk = datasourceTableService.orders?.filter(el => el.field === key);
+      //   if (dk && dk.length) {
+      //     datasourceTableService.setOrder([
+      //       {
+      //         field: key,
+      //         order: dk[0].order === OrderType.ASC ? OrderType.DESC : OrderType.ASC,
+      //       },
+      //     ]);
+      //   } else {
+      //     datasourceTableService.setOrder([
+      //       {
+      //         field: key,
+      //         order: OrderType.DESC,
+      //       },
+      //     ]);
+      //   }
+    };
 
-//   const handleUnselectDataset = useCallback(() => {
-//     datasetsDataService.setActiveRecord(undefined);
-//     //setSelectedDataset(undefined);
-//   }, []);
+    if (datasourceTableService.isError) {
+      return (
+        <Result
+          status="error"
+          subTitle={'Please, try again'}
+          title={'Failed to load datasources'}
+        />
+      );
+    }
 
-//   const onClickHeader = (key: string) => {
-//     const dk = datasetsDataService.orders?.filter(el => el.field === key);
+    if (datasourceTableService.isError) {
+      return (
+        <Result
+          status="error"
+          subTitle={'Please, try again'}
+          title={'Failed to load datasets'}
+        />
+      );
+    }
 
-//     if (dk && dk.length) {
-//       datasetsDataService.setOrder([
-//         {
-//           field: key,
-//           order: dk[0].order === OrderType.ASC ? OrderType.DESC : OrderType.ASC,
-//         },
-//       ]);
-//     } else {
-//       datasetsDataService.setOrder([
-//         {
-//           field: key,
-//           order: OrderType.DESC,
-//         },
-//       ]);
-//     }
-//   };
+    const content =
+      datasourceTableService.displaingType === DisplayingTypes.TABLE ? (
+        <>
+          <div className={style.headTable}>
+            <Row>
+              <Col span={1}>
+                <Checkbox
+                  checked={datasourceTableService.selectedRows.length > 0}
+                  className={style.checkboxCard}
+                  disabled={true}
+                />
+                <Divider className={style.dividerHeader} type="vertical" />
+              </Col>
+              <Col span={1}>
+                Type <Divider className={style.dividerHeader} type="vertical" />
+              </Col>
+              <Col
+                className={style.columnTable}
+                span={4}
+                onClick={() => onClickHeader('attrs, name')}
+              >
+                Name <Divider className={style.dividerHeader} type="vertical" />
+              </Col>
+              <Col span={3}>
+                Create date <Divider className={style.dividerHeader} type="vertical" />
+              </Col>
+              <Col span={4}>
+                Author <Divider className={style.dividerHeader} type="vertical" />
+              </Col>
+              <Col span={3}>
+                Last update <Divider className={style.dividerHeader} type="vertical" />
+              </Col>
+              <Col span={4}>
+                Who updated <Divider className={style.dividerHeader} type="vertical" />
+              </Col>
+              <Col span={3}>
+                Owners <Divider className={style.dividerHeader} type="vertical" />
+              </Col>
+              <Col span={1}></Col>
+            </Row>
+          </div>
+          <InfiniteList
+            className={''}
+            itemSize={55}
+            rowCount={datasourceTableService.count}
+          >
+            <DatasourcesTableRow index={0} />
+          </InfiniteList>
+        </>
+      ) : (
+        <InfiniteList
+          className={''}
+          itemSize={270}
+          rowCount={
+            datasourceTableService.count % 3 > 0
+              ? Math.floor(datasourceTableService.count / 3) + 1
+              : datasourceTableService.count / 3
+          }
+        >
+          <DatasourcesCardRow index={0} />
+        </InfiniteList>
+      );
 
-//   const onSelect: SelectionSelectFn<IDatasource> = useCallback(
-//     (record: IDatasource, selected: boolean) => {
-//       datasourceTableService.selectDataSource(record, selected);
-//     },
-//     []
-//   );
-
-//   if (datasourceTableService.isError) {
-//     return (
-//       <Result
-//         status="error"
-//         subTitle={'Please, try again'}
-//         title={'Failed to load datasources'}
-//       />
-//     );
-//   }
-
-//   const service = {
-//     datasets: () => {
-//       return datasourceTableService.datasources ? datasetsDataService.datasets : [];
-//     },
-//     setOffset: async (value: number) => {
-//       await datasourceTableService.setOffset(value);
-//     },
-//     getOffsetValue: () => datasourceTableService.offsetValue,
-//     getElemNumber: () => datasourceTableService.elemNumber,
-//   };
-
-//   if (datasetsDataService.isError) {
-//     return (
-//       <Result
-//         status="error"
-//         subTitle={'Please, try again'}
-//         title={'Failed to load datasets'}
-//       />
-//     );
-//   }
-
-//   const content =
-//     datasetsDataService.displaingType === DisplayingTypes.TABLE ? (
-//       // <DatasetsTable
-//       //   datasets={datasetsDataService.datasets}
-//       //   isLoading={datasetsDataService.isLoading}
-//       //   onClickHeader={onClickHeader}
-//       //   onSelectDataset={onSelect}
-//       //   onUpdate={(name, datasetId) => {
-//       //     const newDataset = datasetsDataService.datasets?.find(
-//       //       dataset => dataset.id === datasetId
-//       //     );
-
-//       //     if (newDataset !== undefined) newDataset.title = name;
-
-//       //     //if (datasets !== undefined) setDatasets([...datasets]);
-//       //   }}
-//       // />
-//       <DatasetsTableInfinity
-//         service={service}
-//         onClickHeader={onClickHeader}
-//         onSelect={onSelect}
-//         onUpdate={(name, datasetId) => {
-//           const newDataset = datasetsDataService.datasets?.find(
-//             dataset => dataset.id === datasetId
-//           );
-
-//           if (newDataset !== undefined) newDataset.title = name;
-
-//           //if (datasets !== undefined) setDatasets([...datasets]);
-//         }}
-//       ></DatasetsTableInfinity>
-//     ) : (
-//       <DatasetsCards
-//         service={service}
-//         onSelect={onSelect}
-//         onUpdate={(name, datasetId) => {
-//           const newDataset = datasetsDataService.datasets?.find(
-//             dataset => dataset.id === datasetId
-//           );
-
-//           if (newDataset !== undefined) newDataset.title = name;
-
-//           if (datasetsDataService.datasets !== undefined)
-//             datasetsDataService.setDatasets([...datasetsDataService.datasets]);
-//         }}
-//       ></DatasetsCards>
-//     );
-
-//   return (
-//     <>
-//       {datasetsDataService.activeRecord !== undefined ? (
-//         <>
-//           <DatasetsPaneBreadcrumbs
-//             selectedDataset={datasetsDataService.activeRecord}
-//             onUnselectDataset={handleUnselectDataset}
-//           />
-//           <DatasourcesTable datasetId={datasetsDataService.activeRecord.id} />
-//         </>
-//       ) : (
-//         <>
-//           <div className={style.toolbar}>
-//             <ToolbarContext.Provider value={datasetsDataService}>
-//               <ResultToolbar />
-//             </ToolbarContext.Provider>
-//           </div>
-//           <div className={style.main}>
-//             <div className={style.leftPanelWide}>
-//               {datasetsDataService.isLoading ? null : content}
-//             </div>
-//           </div>
-//         </>
-//       )}
-//     </>
-//   );
-// });
+    return (
+      <>
+        <>
+          <div className={style.toolbar}>
+            <ToolbarContext.Provider value={datasourceTableService}>
+              <ResultToolbar />
+            </ToolbarContext.Provider>
+          </div>
+          <div className={style.main}>
+            <div className={style.leftPanelWide}>
+              {datasourceTableService.isLoading ? null : content}
+            </div>
+            {datasourceTableService.activeRecord && (
+              <div className={style.rightPanel}>
+                <ArticleViewPanel
+                  article={{
+                    id: datasourceTableService.activeRecord.id,
+                    url: activeUrl,
+                    title: datasourceTableService.activeRecord.name,
+                  }}
+                />
+              </div>
+            )}
+          </div>
+        </>
+        )
+      </>
+    );
+  }
+);

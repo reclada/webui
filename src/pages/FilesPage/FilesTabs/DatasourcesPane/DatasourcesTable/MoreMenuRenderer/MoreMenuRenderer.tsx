@@ -2,11 +2,11 @@ import { Menu } from 'antd';
 import React, { FC, useCallback } from 'react';
 
 import { getDatasourceDownloadLink } from 'src/api/dataSourceDataGateService';
-import { FilePreviewModal } from 'src/pages/FilesPage/FilesTabs/DatasourcesTable/FilePreviewModal/FilePreviewModal';
 import { MoreDropdown } from 'src/shared/MoreDropdown/MoreDropdown';
 import { downloadURI } from 'src/utils/downloadUri';
 import { useOpen } from 'src/utils/useOpen';
 
+import { FilePreviewModal } from '../FilePreviewModal/FilePreviewModal';
 import { EditDatasourceModal } from '../Modals/EditDatasourceModal';
 
 export type MoreMenuRendererProps = {

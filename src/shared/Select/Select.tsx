@@ -29,7 +29,11 @@ export const Select: FC<SelectProps> = function Select({ className, options }) {
         onChange={setValue}
       >
         {options &&
-          options.map(option => <RCOption value={option.value}>{option.label}</RCOption>)}
+          options.map((option, index) => (
+            <RCOption key={index} value={option.value}>
+              {option.label}
+            </RCOption>
+          ))}
       </RCSelect>
     </div>
   );

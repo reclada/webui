@@ -1,0 +1,119 @@
+import { Card, Checkbox } from 'antd';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useCallback } from 'react';
+
+import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';
+import { ArticleNameRenderer } from '../DatasourcesTable/ArticleNameRenderer/ArticleNameRenderer';
+import { ArticleTypeRenderer } from '../DatasourcesTable/ArticleTypeRenderer/ArticleTypeRenderer';
+import { MoreMenuRenderer } from '../DatasourcesTable/MoreMenuRenderer/MoreMenuRenderer';
+import { datasourceTableService } from '../datasourceTable.service';
+
+import style from './DatasourcesCardsRow.module.scss';
+
+type DatasetCardProps = {
+  isScroling?: boolean;
+  className?: string;
+  index: number;
+};
+
+export const DatasourcesCard: FC<DatasetCardProps> = observer(function DatasourcesCard({
+  className,
+  isScroling,
+  index,
+}) {
+  const datasource = datasourceTableService.getRow(index);
+
+  if (!isScroling) {
+    datasourceTableService.updateList(index);
+  }
+
+  const onUpdate = (name: string) => {
+    if (datasource) {
+      datasource.name = name;
+      datasourceTableService.updateRow(index, datasource);
+    }
+  };
+
+  const onSelect = useCallback(
+    (selected: boolean) => {
+      if (datasource) {
+        datasourceTableService.selectDataSource(datasource, selected);
+      }
+    },
+    [datasource]
+  );
+
+  return (
+    <>
+      {!datasource ? (
+        <Card className={style.card} loading={true}></Card>
+      ) : (
+        <Card
+          key={datasource.id}
+          className={style.card}
+          extra={<MoreMenuRenderer datasource={datasource} onUpdate={onUpdate} />}
+          title={
+            <div className={style.titleCard}>
+              <Checkbox
+                checked={
+                  datasourceTableService.selectedRows.filter(
+                    chel => datasource.id === chel
+                  ).length > 0
+                }
+                className={style.checkboxCard}
+                onChange={event => {
+                  onSelect(event.target.checked);
+                }}
+              />
+              <ArticleTypeRenderer articleType={datasource.type} />
+            </div>
+          }
+        >
+          <div
+            onClick={() => {
+              datasourceTableService.setActiveRecord(datasource);
+            }}
+          >
+            <ArticleNameRenderer className={style.nameCard} title={datasource.name} />
+          </div>
+          <div className={style.cardContent}>
+            <div className={style.captionCard}>Create date</div>
+            <div>
+              {datasource.createDate.getDate() +
+                '-' +
+                datasource.createDate.getMonth() +
+                '-' +
+                datasource.createDate.getFullYear()}
+            </div>
+          </div>
+          <div className={style.divider} />
+          <div className={style.cardContent}>
+            <div className={style.captionCard}>Author</div>
+            <div>{datasource.author}</div>
+          </div>
+          <div className={style.divider} />
+          <div className={style.cardContent}>
+            <div className={style.captionCard}>Last update</div>
+            <div>
+              {datasource.lastUpdate.getDate() +
+                '-' +
+                datasource.lastUpdate.getMonth() +
+                '-' +
+                datasource.lastUpdate.getFullYear()}
+            </div>
+          </div>
+          <div className={style.divider} />
+          <div className={style.cardContent}>
+            <div className={style.captionCard}>Who updated</div>
+            <div>{datasource.whoUpdated}</div>
+          </div>
+          <div className={style.divider} />
+          <div className={style.cardContent}>
+            <div className={style.captionCard}>Owner</div>
+            <OwnersRenderer owners={datasource.owners} />
+          </div>
+        </Card>
+      )}
+    </>
+  );
+});

@@ -1,4 +1,4 @@
-import { observable, action, makeObservable } from 'mobx';
+import { observable, action, makeObservable, ObservableMap } from 'mobx';
 import { computedFn } from 'mobx-utils';
 
 import { IIdentifiable } from './Types';
@@ -9,19 +9,23 @@ interface IResult<TListItem> {
 }
 
 export default class BaseListStore<TListItem extends IIdentifiable> {
-  @observable protected _results: Map<number, TListItem> = new Map<number, TListItem>();
-  @observable protected _count: number = 0;
+  @observable.shallow protected _results: ObservableMap<
+    number,
+    TListItem
+  > = observable.map<number, TListItem>(undefined, { deep: false });
+  @observable
+  protected _count: number = 0;
+  @observable protected _currentPage: number = 0;
   protected rowInPage: number;
   protected pageLoding: Set<number> = new Set<number>();
-  protected casher: Map<number, number> = new Map<number, number>();
+  protected cache: Map<number, number> = new Map<number, number>();
   protected timer: number = 0;
-  @observable protected _currentPage: number = 0;
 
-  protected fetchData: (index: number) => Promise<IResult<TListItem>>;
+  protected fetchData: (offset: number, limit: number) => Promise<IResult<TListItem>>;
 
   constructor(
     rowInPage: number,
-    fetchData: (index: number) => Promise<IResult<TListItem>>
+    fetchData: (offset: number, limit: number) => Promise<IResult<TListItem>>
   ) {
     makeObservable<BaseListStore<TListItem>>(this);
     this.fetchData = fetchData;
@@ -49,14 +53,10 @@ export default class BaseListStore<TListItem extends IIdentifiable> {
   }
 
   initList() {
-    this.fetchData(0).then(result => {
+    this.fetchData(0, this.rowInPage).then(result => {
       this.addToList(result.objects, 0);
       this.setCount(result.number);
     });
-
-    this.timer = window.setInterval(() => {
-      this.cashProcess();
-    }, 100000);
   }
 
   @action
@@ -72,70 +72,54 @@ export default class BaseListStore<TListItem extends IIdentifiable> {
 
   @action
   clear() {
-    this._results = new Map<number, TListItem>();
+    this._results.clear();
   }
 
   @action
   setCurrentPage(val: number) {
     this._currentPage = val;
+    this.cache.set(val, new Date().getTime());
   }
 
   updateList(index: number) {
     const page = Math.floor(index / this.rowInPage);
 
-    console.log(index);
-
     if (!this.pageLoding.has(page) && !this._results.has(index)) {
-      //this.isLoading = true;
       this.pageLoding.add(page);
-      window.setTimeout(() => {
-        this.fetchData(page * this.rowInPage).then(result => {
-          this.pageLoding.delete(page);
-          this.addToList(result.objects, page * 1000);
-        });
-      }, 1000);
+      this.fetchData(page * this.rowInPage, this.rowInPage).then(result => {
+        this.pageLoding.delete(page);
+        this.addToList(result.objects, page * this.rowInPage);
+        this.setCurrentPage(page);
+        this.cacheCleaning();
+      });
     }
   }
 
   getRow = computedFn((index: number): TListItem | undefined => {
-    const page = Math.floor(index / this.rowInPage);
-
-    this.casher.set(page, new Date().getTime());
-    this.setCurrentPage(page);
-
-    if (this._results.has(index)) {
-      return this._results.get(index);
-    }
-
-    // if (!this.pageLoding.has(page)) {
-    //   //this.isLoading = true;
-    //   this.pageLoding.add(page);
-    //   window.setTimeout(() => {
-    //     this.fetchData(page * this.rowInPage).then(result => {
-    //       this.pageLoding.delete(page);
-    //       this.addToList(result.objects, page * 1000);
-    //     });
-    //   }, 1000);
-    // }
-
-    return undefined;
+    return this._results.get(index);
   });
 
-  cashProcess() {
+  private cacheCleaning() {
     const time = new Date().getTime();
     const afd: number[] = [];
 
-    this.casher.forEach((el, index) => {
-      if (el && el < time - 100000 && this._currentPage !== index) {
+    this.cache.forEach((el, index) => {
+      if (
+        el &&
+        el < time - 100000 &&
+        index !== this._currentPage &&
+        index !== this._currentPage + 1 &&
+        index !== this._currentPage - 1
+      ) {
         afd.push(index);
       }
     });
 
     afd.forEach(el => {
-      for (var i = 0; i < 1000; i++) {
+      for (var i = 0; i < this.rowInPage; i++) {
         this._results.delete(el * this.rowInPage + i);
       }
-      this.casher.delete(el);
+      this.cache.delete(el);
     });
   }
 }

@@ -37,5 +37,6 @@ export interface IRecladaDataset extends IRecladaObject {
   attrs: {
     name: string;
     dataSources: string[];
+    SomeDate: string;
   };
 }

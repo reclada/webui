@@ -1,4 +1,4 @@
-import { OrderBy } from 'src/Sorting';
+import { OrderBy } from 'src/shared/Sorting/Sorting';
 
 import { apiService } from './apiService';
 import {
@@ -78,7 +78,7 @@ export async function fetchDatasets(
         id: object.id,
         title: object.attrs.name,
         tags: undefined,
-        createDate: new Date(),
+        createDate: new Date(object.attrs.SomeDate),
         author: 'unknown',
         lastUpdate: new Date(),
         whoUpdated: 'unknown',

@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback } from 'react';
 
 import { AddDatasourceToDatasetModal } from 'src/pages/FilesPage/FilesTabs/AddDatasourceToDatasetModal/AddDatasourceToDatasetModal';
-import { datasourceTableService } from 'src/pages/FilesPage/FilesTabs/DatasourcesTable/datasourceTable.service';
+import { datasourceTableService } from 'src/pages/FilesPage/FilesTabs/DatasourcesPane/datasourceTable.service';
 import { useOpen } from 'src/utils/useOpen';
 
 import style from './FilesTabsActions.module.scss';

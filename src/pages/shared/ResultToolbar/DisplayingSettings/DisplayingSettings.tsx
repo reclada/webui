@@ -3,7 +3,7 @@ import React, { FC, useContext } from 'react';
 import { ReactComponent as CardViewIcon } from 'src/resources/card-view.svg';
 import { ReactComponent as ListViewIcon } from 'src/resources/list-view.svg';
 import { ReactComponent as TableViewIcon } from 'src/resources/table-view.svg';
-import { DisplayingTypes } from 'src/Sorting';
+import { DisplayingTypes } from 'src/shared/Sorting/Sorting';
 
 import { classNames } from '../../../../utils/classNames';
 import { ToolbarContext } from '../ResultToolbar';

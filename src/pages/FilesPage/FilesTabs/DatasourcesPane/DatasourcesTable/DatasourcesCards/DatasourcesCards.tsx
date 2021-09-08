@@ -1,11 +1,11 @@
 import { Card, Checkbox } from 'antd';
 import React, { FC, useCallback } from 'react';
 
-import { IDatasource } from '../../../../../api/datasourcesService';
-import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';
+import { IDatasource } from '../../../../../../api/datasourcesService';
+import { OwnersRenderer } from '../../../shared/OwnersRenderer/OwnersRenderer';
+import { datasourceTableService } from '../../datasourceTable.service';
 import { ArticleNameRenderer } from '../ArticleNameRenderer/ArticleNameRenderer';
 import { ArticleTypeRenderer } from '../ArticleTypeRenderer/ArticleTypeRenderer';
-import { datasourceTableService } from '../datasourceTable.service';
 import { MoreMenuRenderer } from '../MoreMenuRenderer/MoreMenuRenderer';
 
 import style from './DatasourcesCards.module.scss';
@@ -59,7 +59,7 @@ export const DatasourcesCards: FC<DatasourcesCardsProps> = function DatasourcesT
             </div>
           }
         >
-          <ArticleNameRenderer title={el.name} className={style.nameCard} />
+          <ArticleNameRenderer className={style.nameCard} title={el.name} />
           <div className={style.cardContent}>
             <div className={style.captionCard}>Create date</div>
             <div>

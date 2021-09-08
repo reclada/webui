@@ -1,30 +1,42 @@
 import { Card } from 'antd';
+import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
 
-import { IDataset } from 'src/api/datasetsDataGateService';
+import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';
+import { DatasetNameRenderer } from '../DatasetNameRenderer/DatasetNameRenderer';
+import { datasetsDataService } from '../datasetsData.service';
+import { MoreMenuRenderer } from '../DatasetsTable/MoreMenuRenderer/MoreMenuRenderer';
 
-import { OwnersRenderer } from '../../../shared/OwnersRenderer/OwnersRenderer';
-import { DatasetNameRenderer } from '../../DatasetNameRenderer/DatasetNameRenderer';
-import { MoreMenuRenderer } from '../../DatasetsTable/MoreMenuRenderer/MoreMenuRenderer';
-import style from '../DatasetsCards.module.scss';
+import style from './DatasetsCards.module.scss';
 
 type DatasetCardProps = {
-  loading: boolean;
+  isScroling?: boolean;
   className?: string;
   index: number;
-  dataset?: IDataset;
-  onSelect: (record: IDataset) => void;
-  onUpdate: (name: string, dataSet: IDataset, index: number) => void;
 };
 
-export const DatasetsCard: FC<DatasetCardProps> = function DatasetsCard({
+export const DatasetsCard: FC<DatasetCardProps> = observer(function DatasetsCard({
   className,
-  dataset,
+  isScroling,
   index,
-  loading,
-  onSelect,
-  onUpdate,
 }) {
+  const dataset = datasetsDataService.getRow(index);
+
+  if (!isScroling) {
+    datasetsDataService.updateList(index);
+  }
+
+  const onSelect = () => {
+    datasetsDataService.setActiveRecord(dataset);
+  };
+
+  const onUpdate = (name: string) => {
+    if (dataset) {
+      dataset.title = name;
+      datasetsDataService.updateRow(index, dataset);
+    }
+  };
+
   return (
     <>
       {!dataset ? (
@@ -42,7 +54,6 @@ export const DatasetsCard: FC<DatasetCardProps> = function DatasetsCard({
               onUpdate={onUpdate}
             />
           }
-          loading={loading}
           title={
             <div className={style.titleCard}>
               <DatasetNameRenderer dataset={dataset} onSelect={onSelect} />
@@ -90,4 +101,4 @@ export const DatasetsCard: FC<DatasetCardProps> = function DatasetsCard({
       )}
     </>
   );
-};
+});

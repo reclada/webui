@@ -78,6 +78,8 @@ export async function getDatasourceDownloadLink(id: string): Promise<string> {
   return fetchSourceById(id, RecladaObjectClass.DataSource).then(res => {
     const uri = res?.objects?.[0]?.attrs?.uri;
 
+    //debugger;
+
     if (uri) {
       const url = new URL(uri);
 

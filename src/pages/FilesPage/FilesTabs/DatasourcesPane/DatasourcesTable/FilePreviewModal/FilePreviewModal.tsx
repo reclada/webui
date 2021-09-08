@@ -1,10 +1,10 @@
 import { Button, Divider, Modal, Typography } from 'antd';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
-import { useFileUrl } from 'src/pages/FilesPage/FilesTabs/DatasourcesTable/FilePreviewModal/useFileUrl';
 import { DocumentViewer } from 'src/shared/DocumentViewer/DocumentViewer';
 
 import style from './FilePreviewModal.module.scss';
+import { useFileUrl } from './useFileUrl';
 
 type FilePreviewModalProps = {
   fileName: string;
@@ -18,7 +18,7 @@ export const FilePreviewModal: FC<FilePreviewModalProps> = function FilePreviewM
   isOpen,
   onClose,
 }) {
-  const url = useFileUrl(datasourceId);
+  const url = useFileUrl(datasourceId, isOpen);
 
   return (
     <Modal
