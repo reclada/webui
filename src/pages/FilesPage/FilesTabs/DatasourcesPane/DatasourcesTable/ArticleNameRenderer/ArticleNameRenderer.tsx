@@ -18,7 +18,7 @@ export const ArticleNameRenderer: FC<ArticleNameRendererProps> = function Articl
 }) {
   return (
     <>
-      <div className={style.titleWrapper}>
+      <div className={classNames(className, style.titleWrapper)}>
         <div className={className ? className : style.title}>{title}</div>
       </div>
 

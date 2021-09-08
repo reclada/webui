@@ -1,4 +1,3 @@
-import { UserBadge } from 'src/shared/Navigation/UserBadge/UserBadge';
 import { OrderBy } from 'src/shared/Sorting/Sorting';
 
 import { apiService } from './apiService';

@@ -1,6 +1,8 @@
 import { Row, Col, Checkbox } from 'antd';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useContext } from 'react';
+import { ListChildComponentProps } from 'react-window';
 
 import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';
 import { ArticleNameRenderer } from '../DatasourcesTable/ArticleNameRenderer/ArticleNameRenderer';
@@ -8,43 +10,41 @@ import { ArticleTypeRenderer } from '../DatasourcesTable/ArticleTypeRenderer/Art
 import { MoreMenuRenderer } from '../DatasourcesTable/MoreMenuRenderer/MoreMenuRenderer';
 import { datasourceTableService } from '../datasourceTable.service';
 
-import style from './DatasorcesTableRow.module.scss';
+import styleModule from './DatasorcesTableRow.module.scss';
 
-type DatasourcesTableRowProp = {
-  index: number;
-  isScrolling?: boolean;
-};
-
-export const DatasourcesTableRow: FC<DatasourcesTableRowProp> = observer(
-  function DatasourcesTableRow({ index, isScrolling }) {
+export const DatasourcesTableRow: FC<ListChildComponentProps> = observer(
+  function DatasourcesTableRow({ index, isScrolling, style }) {
     const datasource = datasourceTableService.getRow(index);
 
     if (!datasource && !isScrolling) {
       datasourceTableService.updateList(index);
     }
 
-    const onUpdate = (name: string) => {
-      if (datasource) {
-        datasource.name = name;
-        datasourceTableService.updateRow(index, datasource);
-      }
-    };
+    const onUpdate = useCallback(
+      (name: string) => {
+        if (datasource) {
+          datasource.name = name;
+          datasourceTableService.updateRow(index, datasource);
+        }
+      },
+      [datasource, index]
+    );
 
     const onSelect = useCallback(
-      (selected: boolean) => {
+      (event: CheckboxChangeEvent) => {
         if (datasource) {
-          datasourceTableService.selectDataSource(datasource, selected);
+          datasourceTableService.selectDataSource(datasource, event.target.checked);
         }
       },
       [datasource]
     );
 
     return (
-      <>
+      <div key={index} style={style}>
         {!datasource ? (
-          <Row className={style.rowTable}></Row>
+          <Row className={styleModule.rowTable}></Row>
         ) : (
-          <Row className={style.rowTable}>
+          <Row className={styleModule.rowTable}>
             <Col span={1}>
               <Checkbox
                 checked={
@@ -52,10 +52,8 @@ export const DatasourcesTableRow: FC<DatasourcesTableRowProp> = observer(
                     chel => datasource.id === chel
                   ).length > 0
                 }
-                className={style.checkboxCard}
-                onChange={event => {
-                  onSelect(event.target.checked);
-                }}
+                className={styleModule.checkboxCard}
+                onChange={onSelect}
               />
             </Col>
             <Col span={1}>
@@ -65,7 +63,10 @@ export const DatasourcesTableRow: FC<DatasourcesTableRowProp> = observer(
               span={4}
               onClick={() => datasourceTableService.setActiveRecord(datasource)}
             >
-              <ArticleNameRenderer className={style.nameCard} title={datasource.name} />
+              <ArticleNameRenderer
+                className={styleModule.nameCard}
+                title={datasource.name}
+              />
             </Col>
             <Col span={3}>
               {datasource.createDate.getDate() +
@@ -91,7 +92,7 @@ export const DatasourcesTableRow: FC<DatasourcesTableRowProp> = observer(
             </Col>
           </Row>
         )}
-      </>
+      </div>
     );
   }
 );

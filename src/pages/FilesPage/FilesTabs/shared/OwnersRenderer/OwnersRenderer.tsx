@@ -13,7 +13,7 @@ export const OwnersRenderer: FC<OwnersRendererProps> = function OwnersRenderer({
   owners,
 }) {
   const menu = (
-    <Menu className={style.menu}>
+    <Menu className={style.menu} theme="dark">
       {owners.map((owner, index) => (
         <Menu.Item key={index}>
           <a>{owner}</a>

@@ -1,11 +1,12 @@
-import React, { FC, Children, createRef } from 'react';
+import React, { FC, Children, createRef, ComponentType, CSSProperties } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { FixedSizeList as List } from 'react-window';
+import { FixedSizeList as List, ListChildComponentProps } from 'react-window';
 
 type InfiniteListProps = {
   className: string;
   rowCount: number;
   itemSize: number;
+  children: FC<ListChildComponentProps>;
 };
 
 export const InfiniteList: FC<InfiniteListProps> = function InfiniteList({
@@ -28,17 +29,7 @@ export const InfiniteList: FC<InfiniteListProps> = function InfiniteList({
           useIsScrolling={true}
           width={width}
         >
-          {({ index, isScrolling, style }) => {
-            return (
-              <div key={index} style={style}>
-                {Children.map(children, child => {
-                  if (React.isValidElement(child)) {
-                    return React.cloneElement(child, { index, isScrolling });
-                  }
-                })}
-              </div>
-            );
-          }}
+          {children}
         </List>
       )}
     </AutoSizer>

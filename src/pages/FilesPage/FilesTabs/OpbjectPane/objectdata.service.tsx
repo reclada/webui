@@ -1,105 +1,140 @@
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 
-import { OrderBy, DisplayingTypes } from 'src/shared/Sorting/Sorting';
-
-import { IDatasource } from '../../../../api/datasourcesService';
+import { IRecladaObject } from 'src/api/IRecladaObject';
+import { fetchObject } from 'src/api/objectService';
+import {
+  DisplayingTypes,
+  OrderBy,
+  OrderType,
+  RecladaOrder,
+} from 'src/shared/Sorting/Sorting';
+import BaseListStore, { BaseListStoreType } from 'src/stores/BaseListStore';
 
 class ObjectDataService {
-  private selectedRowKeys = observable.set<string>();
+  private _listStore: BaseListStoreType = new BaseListStore<IRecladaObject>(
+    1000,
+    this.fetchData.bind(this)
+  );
+  private className: string;
+  @observable private dispType: DisplayingTypes = DisplayingTypes.TABLE;
+  @observable private aRecord: IRecladaObject | undefined;
+  @observable private loading: boolean = false;
+  @observable private error: boolean = false;
+  @observable private sortopen: boolean = false;
+  private errMsg: string = '';
 
-  @observable private displaingType: DisplayingTypes = DisplayingTypes.TABLE;
-  @observable private activeRecord: IDatasource | undefined;
-  @observable private loading: boolean = true;
-  @observable private error: boolean = true;
-  @observable private errMsg: string = '';
+  @observable private orderList: RecladaOrder[] | undefined;
 
-  private orderList = observable.set<OrderBy>();
+  private get orderBy(): OrderBy[] {
+    const result = new Array<OrderBy>();
 
-  constructor() {
+    if (this.orderList) {
+      this.orderList.map(value =>
+        result.push({ field: value.field, order: value.order })
+      );
+    }
+
+    return result;
+  }
+
+  constructor(className: string) {
+    this.className = className;
     makeObservable(this);
   }
 
-  @computed
-  get selectedRows(): string[] {
-    return Array.from(this.selectedRowKeys.values());
+  get orders(): RecladaOrder[] | undefined {
+    return this.orderList;
   }
 
-  get DisplaingType(): DisplayingTypes {
-    return this.displaingType;
+  get enableOrders(): RecladaOrder[] {
+    return [
+      { name: 'Name', field: 'attrs, name', order: OrderType.ASC },
+      { name: 'Created date', field: 'attrs, SomeDate', order: OrderType.ASC },
+    ];
   }
 
-  get ActiveRecord(): IDatasource | undefined {
-    return this.activeRecord;
+  get sortOpen(): boolean {
+    return this.sortopen;
+  }
+
+  get displaingType(): DisplayingTypes {
+    return this.dispType;
+  }
+
+  get activeRecord(): IRecladaObject | undefined {
+    return this.aRecord;
   }
 
   get isLoading(): boolean {
     return this.loading;
   }
-
   get isError(): boolean {
-    return this.loading;
+    return this.error;
   }
 
   get errorMessage(): string {
     return this.errMsg;
   }
 
-  @action
-  setErrorMessage(value: string): void {
-    this.errMsg = value;
+  get listStore(): BaseListStoreType {
+    return this._listStore;
+  }
+
+  get count(): number {
+    return this._listStore.count;
+  }
+
+  get updateRow() {
+    return this._listStore.updateRow.bind(this._listStore);
+  }
+
+  getRow(index: number): IRecladaObject | undefined {
+    return this._listStore.getRow(index) as IRecladaObject;
+  }
+
+  updateList(index: number) {
+    this._listStore.updateList(index);
+  }
+
+  initList() {
+    this._listStore.initList();
   }
 
   @action
-  setIsLoading(value: boolean): void {
-    this.loading = value;
-  }
-
-  @action
-  setIsError(value: boolean): void {
-    this.loading = value;
-  }
-
-  @action
-  cleanup() {
-    this.selectedRowKeys.clear();
-  }
-
-  @action
-  selectDataSource(dataSource: IDatasource, selected: boolean) {
-    if (selected) {
-      this.selectedRowKeys.add(dataSource.id);
-    } else {
-      this.selectedRowKeys.delete(dataSource.id);
-    }
+  setObjects(datasets: IRecladaObject[]) {
+    //this.datasetsList = datasets;
   }
 
   @action
   setDisplaingType(displaingType: DisplayingTypes) {
-    this.displaingType = displaingType;
+    this.dispType = displaingType;
+    this.listStore.setCurrentPage(0);
   }
 
   @action
-  setActiveRecord(activeRecord: IDatasource | undefined) {
-    if (this.activeRecord && activeRecord && this.activeRecord.id === activeRecord.id) {
-      this.activeRecord = undefined;
+  setActiveRecord(activeRecord: IRecladaObject | undefined) {
+    if (this.aRecord && activeRecord && this.aRecord.id === activeRecord.id) {
+      this.aRecord = undefined;
     } else {
-      this.activeRecord = activeRecord;
+      this.aRecord = activeRecord;
     }
   }
 
   @action
-  setOrderList(order: OrderBy, remove: boolean) {
-    if (remove) {
-      this.orderList.delete(order);
-    } else {
-      this.orderList.add(order);
-    }
+  setOrder(order: RecladaOrder[] | undefined) {
+    this.orderList = order;
+    this._listStore.clear();
+    this._listStore.initList();
   }
 
   @action
-  cleanupOrder() {
-    this.orderList.clear();
+  setSortOpen(value: boolean) {
+    this.sortopen = value;
+  }
+
+  fetchData(index: number, limit: number) {
+    return fetchObject(this.className, this.orderBy, limit, index);
   }
 }
 
-export const objectDataService = new ObjectDataService();
+export const datasetsDataService = new ObjectDataService('DataSet');

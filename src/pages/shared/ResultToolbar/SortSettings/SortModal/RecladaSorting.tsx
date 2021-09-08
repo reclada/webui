@@ -99,7 +99,6 @@ export const RecladaSorting: FC<RecladaSortingProps> = function RecladaSorting({
             <Select
               className={style.select}
               defaultValue={el.order}
-              style={{ width: 120 }}
               onChange={(val: OrderType) => {
                 currentOrders[index].order = val;
                 setCurrentOrders(currentOrders);

@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable, runInAction } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 
 import { fetchDatasources, IDatasource } from 'src/api/datasourcesService';
 import {

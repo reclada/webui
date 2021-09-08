@@ -9,8 +9,7 @@ import {
   ToolbarContext,
 } from 'src/pages/shared/ResultToolbar/ResultToolbar';
 import { InfiniteList } from 'src/shared/InfiniteList/InfiniteList';
-import { DisplayingTypes, OrderType } from 'src/shared/Sorting/Sorting';
-import { useOpen } from 'src/utils/useOpen';
+import { DisplayingTypes } from 'src/shared/Sorting/Sorting';
 
 import { DatasourcesCardRow } from './DatasourcesCardsRow/DatasuorcesCardRow';
 import { useFileUrl } from './DatasourcesTable/FilePreviewModal/useFileUrl';
@@ -26,8 +25,6 @@ export const DatasourcesPane: FC<DatasourcesPaneProps> = observer(
     useEffect(() => {
       datasourceTableService.setDataSet(datasetId);
     }, [datasetId]);
-
-    const addDatasourceToDatasetModal = useOpen();
 
     const activeUrl = useFileUrl(
       datasourceTableService.activeRecord ? datasourceTableService.activeRecord.id : '',
@@ -119,20 +116,20 @@ export const DatasourcesPane: FC<DatasourcesPaneProps> = observer(
             itemSize={55}
             rowCount={datasourceTableService.count}
           >
-            <DatasourcesTableRow index={0} />
+            {DatasourcesTableRow}
           </InfiniteList>
         </>
       ) : (
         <InfiniteList
           className={''}
-          itemSize={270}
+          itemSize={300}
           rowCount={
             datasourceTableService.count % 3 > 0
               ? Math.floor(datasourceTableService.count / 3) + 1
               : datasourceTableService.count / 3
           }
         >
-          <DatasourcesCardRow index={0} />
+          {DatasourcesCardRow}
         </InfiniteList>
       );
 

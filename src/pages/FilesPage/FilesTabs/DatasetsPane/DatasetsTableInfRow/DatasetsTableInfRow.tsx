@@ -1,46 +1,43 @@
 import { Row, Col } from 'antd';
 import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
-
-import { IDataset } from 'src/api/datasetsDataGateService';
+import React, { FC, useCallback } from 'react';
+import { ListChildComponentProps } from 'react-window';
 
 import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';
 import { DatasetNameRenderer } from '../DatasetNameRenderer/DatasetNameRenderer';
 import { datasetsDataService } from '../datasetsData.service';
 import { MoreMenuRenderer } from '../DatasetsTable/MoreMenuRenderer/MoreMenuRenderer';
 
-import style from './DatasetsTableInfRow.module.scss';
+import styleModule from './DatasetsTableInfRow.module.scss';
 
-type DatasetsTableInfRowProp = {
-  index: number;
-  isScrolling?: boolean;
-};
-
-export const DatasetsTableInfRow: FC<DatasetsTableInfRowProp> = observer(
-  function DatasetsTableInfRow({ index, isScrolling }) {
+export const DatasetsTableInfRow: FC<ListChildComponentProps> = observer(
+  function DatasetsTableInfRow({ index, isScrolling, style }) {
     const dataset = datasetsDataService.getRow(index);
 
     if (!dataset && !isScrolling) {
       datasetsDataService.updateList(index);
     }
 
-    const onSelect = () => {
+    const onSelect = useCallback(() => {
       datasetsDataService.setActiveRecord(dataset);
-    };
+    }, [dataset]);
 
-    const onUpdate = (name: string) => {
-      if (dataset) {
-        dataset.title = name;
-        datasetsDataService.updateRow(index, dataset);
-      }
-    };
+    const onUpdate = useCallback(
+      (name: string) => {
+        if (dataset) {
+          dataset.title = name;
+          datasetsDataService.updateRow(index, dataset);
+        }
+      },
+      [dataset, index]
+    );
 
     return (
-      <>
+      <div key={index} style={style}>
         {!dataset ? (
-          <Row className={style.rowTable}></Row>
+          <Row className={styleModule.rowTable}></Row>
         ) : (
-          <Row className={style.rowTable}>
+          <Row className={styleModule.rowTable}>
             <Col span={3}>
               <DatasetNameRenderer dataset={dataset} onSelect={onSelect} />
             </Col>
@@ -74,7 +71,7 @@ export const DatasetsTableInfRow: FC<DatasetsTableInfRowProp> = observer(
             </Col>
           </Row>
         )}
-      </>
+      </div>
     );
   }
 );

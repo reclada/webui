@@ -23,7 +23,7 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
   const isEditModalOpen = useOpen(false);
 
   const moreMenu = (
-    <Menu>
+    <Menu theme="dark">
       <Menu.Item key={1}>
         <span>Version</span>
       </Menu.Item>

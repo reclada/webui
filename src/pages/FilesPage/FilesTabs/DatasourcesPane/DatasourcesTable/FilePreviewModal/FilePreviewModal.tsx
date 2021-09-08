@@ -1,5 +1,5 @@
 import { Button, Divider, Modal, Typography } from 'antd';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 
 import { DocumentViewer } from 'src/shared/DocumentViewer/DocumentViewer';
 

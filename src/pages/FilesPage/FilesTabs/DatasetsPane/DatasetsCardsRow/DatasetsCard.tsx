@@ -1,6 +1,6 @@
 import { Card } from 'antd';
 import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 
 import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';
 import { DatasetNameRenderer } from '../DatasetNameRenderer/DatasetNameRenderer';
@@ -26,16 +26,19 @@ export const DatasetsCard: FC<DatasetCardProps> = observer(function DatasetsCard
     datasetsDataService.updateList(index);
   }
 
-  const onSelect = () => {
+  const onSelect = useCallback(() => {
     datasetsDataService.setActiveRecord(dataset);
-  };
+  }, [dataset]);
 
-  const onUpdate = (name: string) => {
-    if (dataset) {
-      dataset.title = name;
-      datasetsDataService.updateRow(index, dataset);
-    }
-  };
+  const onUpdate = useCallback(
+    (name: string) => {
+      if (dataset) {
+        dataset.title = name;
+        datasetsDataService.updateRow(index, dataset);
+      }
+    },
+    [dataset, index]
+  );
 
   return (
     <>

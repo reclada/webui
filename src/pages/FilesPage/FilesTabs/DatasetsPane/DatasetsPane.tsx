@@ -8,7 +8,7 @@ import {
   ToolbarContext,
 } from 'src/pages/shared/ResultToolbar/ResultToolbar';
 import { InfiniteList } from 'src/shared/InfiniteList/InfiniteList';
-import { DisplayingTypes, OrderType } from 'src/shared/Sorting/Sorting';
+import { DisplayingTypes } from 'src/shared/Sorting/Sorting';
 
 import { Pager } from '../../../shared/Pager/Pager';
 import { DatasourcesPane } from '../DatasourcesPane/DatasourcesPane';
@@ -89,7 +89,7 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
           </Row>
         </div>
         <InfiniteList className={''} itemSize={55} rowCount={datasetsDataService.count}>
-          <DatasetsTableInfRow index={0} />
+          {DatasetsTableInfRow}
         </InfiniteList>
       </>
     ) : (
@@ -102,7 +102,7 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
             : datasetsDataService.count / 3
         }
       >
-        <DatasetsCardsRow index={0} />
+        {DatasetsCardsRow}
       </InfiniteList>
     );
 

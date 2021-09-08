@@ -2,77 +2,61 @@ import { OrderBy } from 'src/shared/Sorting/Sorting';
 
 import { apiService } from './apiService';
 import { ArticleType, getArticleTypeByKey } from './articleService';
-import { IRecladaFile, RecladaObjectClass } from './IRecladaObject';
+import { IRecladaDataset, IRecladaObject, RecladaObjectClass } from './IRecladaObject';
 import { rpcUrls } from './rpcUrls';
 
-export interface IRecladaObject {
-  id: string;
-  name: string;
-  type: ArticleType;
-  createDate: Date;
-  author: string;
-  lastUpdate: Date;
-  whoUpdated: string;
-  owners: string[];
-  checksum: string;
-  mimeType: string;
-  attrs?: CustomAttibute;
-}
-
-type CustomAttibute = {
-  [key: string]: string;
+type DatasetObjectResponse = {
+  number: number;
+  objects: IRecladaObject[];
 };
 
 export async function fetchObject(
-  datasetId?: string,
+  className: string,
   orderBy?: OrderBy[],
   limit?: number,
   offset?: number
-): Promise<IRecladaObject[]> {
-  const recladaFileObjects = datasetId
-    ? await fetchFilesListForDataset(datasetId)
-    : await fetchFilesList(
-        orderBy ? orderBy : [],
-        limit ? limit : 'ALL',
-        offset ? offset : 0
-      );
+): Promise<DatasetObjectResponse> {
+  const recladaFileObjects = await fetchObjectList(
+    className,
+    orderBy ? orderBy : [],
+    limit ? limit : 'ALL',
+    offset ? offset : 0
+  );
 
-  return recladaFileObjects.map(fileObject => {
-    const fd = fileObject.attrs.name.split('.');
+  // return recladaFileObjects.map(fileObject => {
+  //   const robject: IRecladaObject = {
+  //     id: fileObject.id,
+  //     revision: fileObject.r
+  //     attrs: fileObject.attrs,
+  //   };
 
-    const robject: IRecladaObject = {
-      id: fileObject.id,
-      name: fileObject.attrs.name,
-      type: getArticleTypeByKey(fd.length ? fd[fd.length - 1].toUpperCase() : ''),
-      createDate: new Date(),
-      author: 'unknown',
-      lastUpdate: new Date(),
-      whoUpdated: 'unknown',
-      owners: ['me', 'other'],
-      checksum: '',
-      mimeType: '',
-    };
-
-    return robject;
-  });
+  return recladaFileObjects;
 }
 
-async function fetchFilesListForDataset(datasetId: string) {
-  return apiService.callRpcPost<IRecladaFile[]>(rpcUrls.getRecladaObjectsFromList, {
-    id: datasetId,
-    class: RecladaObjectClass.DataSet,
-    relatedClass: RecladaObjectClass.DataSource,
-    field: 'dataSources',
-  });
+async function fetchObjectListForParent(
+  parent: string,
+  parentClassName: string,
+  className: string
+) {
+  return apiService.callRpcPost<DatasetObjectResponse>(
+    rpcUrls.getRecladaObjectsFromList,
+    {
+      id: parent,
+      class: parentClassName,
+      relatedClass: className,
+      field: 'dataSources',
+    }
+  );
 }
 
-async function fetchFilesList(
+async function fetchObjectList(
+  className: string,
   orderBy: OrderBy[],
   limit: number | string,
   offset: number
 ) {
-  return apiService.callRpcPost<IRecladaFile[]>(rpcUrls.getRecladaObjectList, {
-    class: RecladaObjectClass.DataSource,
+  return apiService.callRpcPost<DatasetObjectResponse>(rpcUrls.getRecladaObjectList, {
+    class: className,
     attrs: {},
     orderBy: orderBy,
     limit: limit,
@@ -81,9 +65,12 @@ async function fetchFilesList(
 }
 
 export async function fetchSourceById(id: string, objectClass: RecladaObjectClass) {
-  return apiService.callRpcPost<IRecladaFile[] | null>(rpcUrls.getRecladaObjectList, {
-    class: objectClass,
-    id,
-    attrs: {},
-  });
+  return apiService.callRpcPost<DatasetObjectResponse | null>(
+    rpcUrls.getRecladaObjectList,
+    {
+      class: objectClass,
+      id,
+      attrs: {},
+    }
+  );
 }

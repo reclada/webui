@@ -1,4 +1,5 @@
 import { Card, Checkbox } from 'antd';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback } from 'react';
 
@@ -27,17 +28,20 @@ export const DatasourcesCard: FC<DatasetCardProps> = observer(function Datasourc
     datasourceTableService.updateList(index);
   }
 
-  const onUpdate = (name: string) => {
-    if (datasource) {
-      datasource.name = name;
-      datasourceTableService.updateRow(index, datasource);
-    }
-  };
+  const onUpdate = useCallback(
+    (name: string) => {
+      if (datasource) {
+        datasource.name = name;
+        datasourceTableService.updateRow(index, datasource);
+      }
+    },
+    [datasource, index]
+  );
 
   const onSelect = useCallback(
-    (selected: boolean) => {
+    (event: CheckboxChangeEvent) => {
       if (datasource) {
-        datasourceTableService.selectDataSource(datasource, selected);
+        datasourceTableService.selectDataSource(datasource, event.target.checked);
       }
     },
     [datasource]
@@ -61,9 +65,7 @@ export const DatasourcesCard: FC<DatasetCardProps> = observer(function Datasourc
                   ).length > 0
                 }
                 className={style.checkboxCard}
-                onChange={event => {
-                  onSelect(event.target.checked);
-                }}
+                onChange={onSelect}
               />
               <ArticleTypeRenderer articleType={datasource.type} />
             </div>
