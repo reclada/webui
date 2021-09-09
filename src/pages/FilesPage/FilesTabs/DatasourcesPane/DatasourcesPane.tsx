@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect } from 'react';
 
 import { ArticleViewPanel } from 'src/pages/SearchResultPage/SearchResultMain/ArticleViewPanel/ArticleViewPanel';
-import style from 'src/pages/SearchResultPage/SearchResultMain/SearchResultMain.module.scss';
 import {
   ResultToolbar,
   ToolbarContext,
@@ -12,6 +11,7 @@ import { InfiniteList } from 'src/shared/InfiniteList/InfiniteList';
 import { DisplayingTypes } from 'src/shared/Sorting/Sorting';
 
 import { DatasourcesCardRow } from './DatasourcesCardsRow/DatasuorcesCardRow';
+import style from './DatasourcesPane.module.scss';
 import { useFileUrl } from './DatasourcesTable/FilePreviewModal/useFileUrl';
 import { DatasourcesTableRow } from './DatasourcesTableRow/DatasourceTableRow';
 import { datasourceTableService } from './datasourceTable.service';

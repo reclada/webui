@@ -2,7 +2,6 @@ import { Col, Divider, Result, Row, Spin } from 'antd';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useEffect } from 'react';
 
-import styleTool from 'src/pages/SearchResultPage/SearchResultMain/SearchResultMain.module.scss';
 import {
   ResultToolbar,
   ToolbarContext,
@@ -118,13 +117,13 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
         </>
       ) : (
         <>
-          <div className={styleTool.toolbar}>
+          <div className={style.toolbar}>
             <ToolbarContext.Provider value={datasetsDataService}>
               <ResultToolbar />
             </ToolbarContext.Provider>
           </div>
-          <div className={styleTool.main}>
-            <div className={styleTool.leftPanelWide}>
+          <div className={style.main}>
+            <div className={style.leftPanelWide}>
               {datasetsDataService.isLoading ? (
                 <Spin
                   size="large"
