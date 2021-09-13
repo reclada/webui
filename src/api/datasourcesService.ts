@@ -48,19 +48,21 @@ export async function fetchDatasources(
 
   return {
     objects: recladaFileObjects.objects.map(fileObject => {
-      const fd = fileObject.attrs.name.split('.');
+      //const fd = fileObject.attributes.name.split('.');
 
       const datasource: IDatasource = {
-        id: fileObject.id,
-        name: fileObject.attrs.name,
-        type: getArticleTypeByKey(fd.length ? fd[fd.length - 1].toUpperCase() : ''),
+        id: fileObject.GUID,
+        name: fileObject.attributes.name,
+        type: getArticleTypeByKey(
+          fileObject.attributes.mimeType.replace('application/', '').toUpperCase()
+        ),
         createDate: new Date(),
         author: 'unknown',
         lastUpdate: new Date(),
         whoUpdated: 'unknown',
         owners: ['me', 'other'],
-        checksum: '',
-        mimeType: '',
+        checksum: fileObject.attributes.checksum,
+        mimeType: fileObject.attributes.mimeType,
       };
 
       return datasource;
@@ -76,7 +78,7 @@ async function fetchFilesListForDataset(
   offset: number
 ) {
   return apiService.callRpcPost<RecladaFileResponse>(rpcUrls.getRecladaObjectsFromList, {
-    id: datasetId,
+    GUID: datasetId,
     class: RecladaObjectClass.DataSet,
     relatedClass: RecladaObjectClass.DataSource,
     field: 'dataSources',
@@ -93,7 +95,7 @@ async function fetchFilesList(
 ) {
   return apiService.callRpcPost<RecladaFileResponse>(rpcUrls.getRecladaObjectList, {
     class: RecladaObjectClass.DataSource,
-    attrs: {},
+    attributes: {},
     orderBy: orderBy,
     limit: limit,
     offset: offset,
@@ -105,8 +107,8 @@ export async function fetchSourceById(id: string, objectClass: RecladaObjectClas
     rpcUrls.getRecladaObjectList,
     {
       class: objectClass,
-      id,
-      attrs: {},
+      GUID: id,
+      attributes: {},
     }
   );
 }

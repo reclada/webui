@@ -20,6 +20,7 @@ export enum FilePageType {
   Datasources = 'datasources',
   Assets = 'assets',
   Available = 'available',
+  ObjectDataset = 'objectDataSet',
 }
 
 type FilesPageProps = {
@@ -40,7 +41,7 @@ export const FilesPage: FC<FilesPageProps> = function FilesPage({ pageType }) {
   const NewContent = (
     <>
       <div className={style.actionBtn} onClick={uploadDatasourceModal.open}>
-        Create Data Source
+        Create File
       </div>
       <div className={style.actionBtn} onClick={handleDatasetCreate}>
         Create Data Set

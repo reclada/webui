@@ -56,7 +56,7 @@ export const UploadDatasourceModal: FC<UploadDatasourceModalProps> = function Up
       visible={isOpen}
       onCancel={onComplete}
     >
-      <Typography.Title level={4}>Upload Data Source</Typography.Title>
+      <Typography.Title level={4}>Upload File</Typography.Title>
 
       <Divider />
 

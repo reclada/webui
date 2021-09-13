@@ -9,4 +9,5 @@ export const rpcUrls = {
   updateRecladaObject: `${prefix}/api/rpc/reclada_object_update`,
   generatePresignPost: `${prefix}/api/rpc/storage_generate_presigned_post`,
   generatePresignGet: `${prefix}/api/rpc/storage_generate_presigned_get`,
+  getObjectSchema: `${prefix}/api/rpc/reclada_object_schema`,
 };

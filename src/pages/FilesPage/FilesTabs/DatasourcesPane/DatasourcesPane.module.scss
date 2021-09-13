@@ -36,14 +36,14 @@
   .leftPanel {
     // height: 700px;
     height: 75vh;
-    overflow-y: auto;
+    // overflow-y: auto;
     padding-right: 18px;
     transition: width 300ms;
   }
 
   .rightPanel {
-    width: 50%;
-    padding-left: 18px;
+    width: 30%;
+   // padding-left: 18px;
   }
 
   .leftPanelWide {
@@ -53,6 +53,6 @@
   
   .leftPanelSlim {
     composes: leftPanel;
-    width: 50%;
+    width: 70%;
   }
   

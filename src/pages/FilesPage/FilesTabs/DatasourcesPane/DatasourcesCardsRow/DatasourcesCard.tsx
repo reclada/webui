@@ -3,6 +3,8 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback } from 'react';
 
+import { ArticleType } from 'src/api/articleService';
+
 import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';
 import { ArticleNameRenderer } from '../DatasourcesTable/ArticleNameRenderer/ArticleNameRenderer';
 import { ArticleTypeRenderer } from '../DatasourcesTable/ArticleTypeRenderer/ArticleTypeRenderer';
@@ -73,7 +75,9 @@ export const DatasourcesCard: FC<DatasetCardProps> = observer(function Datasourc
         >
           <div
             onClick={() => {
-              datasourceTableService.setActiveRecord(datasource);
+              if (datasource.type === ArticleType.PDF) {
+                datasourceTableService.setActiveRecord(datasource);
+              }
             }}
           >
             <ArticleNameRenderer className={style.nameCard} title={datasource.name} />

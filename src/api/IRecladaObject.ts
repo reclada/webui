@@ -1,29 +1,29 @@
 export interface IRecladaObject {
-  id: string;
+  GUID: string;
   revision: number;
   class: RecladaObjectClass;
   isDeleted: boolean;
-  attrs: {
+  attributes: {
     [key: string]: any;
   };
 }
 
 export type RecladaPartialObject<T extends IRecladaObject> = {
-  id?: string;
+  GUID?: string;
   class: T['class'];
-  attrs: Partial<T['attrs']>;
+  attributes: Partial<T['attributes']>;
   access_token?: string;
 };
 
 export enum RecladaObjectClass {
   File = 'File',
   DataSet = 'DataSet',
-  DataSource = 'DataSource',
+  DataSource = 'File',
 }
 
 export interface IRecladaFile extends IRecladaObject {
   class: RecladaObjectClass.File;
-  attrs: {
+  attributes: {
     checksum: string;
     mimeType: string;
     name: string;
@@ -39,4 +39,19 @@ export interface IRecladaDataset extends IRecladaObject {
     dataSources: string[];
     SomeDate: string;
   };
+}
+
+export type ObjectAttributes = {
+  [key: string]: {
+    caption: string;
+    type: TypesKey;
+    isSorting: boolean;
+  };
+};
+
+export enum TypesKey {
+  ARRAY = 'array',
+  STRING = 'string',
+  NUMBER = 'number',
+  DATE = 'date',
 }

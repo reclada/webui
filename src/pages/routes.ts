@@ -7,4 +7,5 @@ export const routes = {
   available: '/available',
   search: '/search',
   authCallback: '/callback',
+  objectDataset: '/object_dataset',
 };

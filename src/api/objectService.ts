@@ -2,7 +2,12 @@ import { OrderBy } from 'src/shared/Sorting/Sorting';
 
 import { apiService } from './apiService';
 import { ArticleType, getArticleTypeByKey } from './articleService';
-import { IRecladaDataset, IRecladaObject, RecladaObjectClass } from './IRecladaObject';
+import {
+  IRecladaDataset,
+  IRecladaObject,
+  ObjectAttributes,
+  RecladaObjectClass,
+} from './IRecladaObject';
 import { rpcUrls } from './rpcUrls';
 
 type DatasetObjectResponse = {
@@ -73,4 +78,10 @@ export async function fetchSourceById(id: string, objectClass: RecladaObjectClas
       attrs: {},
     }
   );
+}
+
+export async function fetchObjectSchema(className: string) {
+  return apiService.callRpcPost<ObjectAttributes | null>(rpcUrls.getObjectSchema, {
+    class: className,
+  });
 }

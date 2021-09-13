@@ -1,8 +1,10 @@
 import { Row, Col, Checkbox } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useCallback, useContext } from 'react';
+import React, { FC, useCallback } from 'react';
 import { ListChildComponentProps } from 'react-window';
+
+import { ArticleType } from 'src/api/articleService';
 
 import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';
 import { ArticleNameRenderer } from '../DatasourcesTable/ArticleNameRenderer/ArticleNameRenderer';
@@ -61,7 +63,11 @@ export const DatasourcesTableRow: FC<ListChildComponentProps> = observer(
             </Col>
             <Col
               span={4}
-              onClick={() => datasourceTableService.setActiveRecord(datasource)}
+              onClick={() => {
+                if (datasource.type === ArticleType.PDF) {
+                  datasourceTableService.setActiveRecord(datasource);
+                }
+              }}
             >
               <ArticleNameRenderer
                 className={styleModule.nameCard}

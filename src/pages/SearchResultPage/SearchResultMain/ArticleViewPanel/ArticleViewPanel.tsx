@@ -29,9 +29,9 @@ export const ArticleViewPanel: FC<ArticleViewPanelProps> = function ArticleViewP
           </div>
           <div className={style.titleWrapper}>
             <h2 className={style.title}>{article?.title}</h2>
-            {/*<div className={style.fileInfo}>*/}
-            {/*  {article?.type && article.type.toUpperCase()} {article?.size} bytes*/}
-            {/*</div>*/}
+            {/* <div className={style.fileInfo}>
+              {article?.type && article.type.toUpperCase()} {article?.size} bytes
+            </div> */}
           </div>
         </div>
         <div className={style.headerTools}>

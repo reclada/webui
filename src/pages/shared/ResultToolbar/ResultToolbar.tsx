@@ -77,8 +77,8 @@ export const ResultToolbar: FC<ResultToolbarProps> = observer(function ResultToo
         <Separator />
         <Paginator />
         <Separator />
-        <SortSettings />
-        <Separator />
+        {/* <SortSettings /> */}
+        {/* <Separator /> */}
         <DisplayingSettings />
         <Separator />
         <div style={{ display: 'flex' }}>

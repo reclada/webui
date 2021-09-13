@@ -45,8 +45,8 @@ class DatasetsDataService {
 
   get enableOrders(): RecladaOrder[] {
     return [
-      { name: 'Name', field: 'attrs, name', order: OrderType.ASC },
-      { name: 'Created date', field: 'attrs, SomeDate', order: OrderType.ASC },
+      { name: 'Name', field: 'attributes, name', order: OrderType.ASC },
+      // { name: 'Created date', field: 'attributes, SomeDate', order: OrderType.ASC },
     ];
   }
 

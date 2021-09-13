@@ -69,29 +69,11 @@ export async function createFileDataSource(
 }
 
 export async function getDatasourceDownloadLink(id: string): Promise<string> {
-  // return apiService
-  //   .callRpcPost<{ url: string }>(rpcUrls.generatePresignGet, {
-  //     objectId: id,
-  //   })
-  //   .then(res => res.url);
-  //!!!!!!!!!!!!!
-  return fetchSourceById(id, RecladaObjectClass.DataSource).then(res => {
-    const uri = res?.objects?.[0]?.attrs?.uri;
-
-    //debugger;
-
-    if (uri) {
-      const url = new URL(uri);
-
-      if (url.protocol === 's3:') {
-        url.protocol = 'https:';
-        url.hostname += '.s3.amazonaws.com';
-      }
-
-      return url.href;
-    }
-    throw new Error(`id not found: ${id}`);
-  });
+  return apiService
+    .callRpcPost<{ url: string }>(rpcUrls.generatePresignGet, {
+      objectId: id,
+    })
+    .then(res => res.url);
 }
 
 export async function updateDataSource(
@@ -99,9 +81,9 @@ export async function updateDataSource(
   dataSource: { id: string; checksum: string; mimeType: string }
 ) {
   const ds: RecladaPartialObject<IRecladaFile> = {
-    id: dataSource.id,
+    GUID: dataSource.id,
     class: RecladaObjectClass.File,
-    attrs: {
+    attributes: {
       name: name,
       checksum: dataSource.checksum,
       mimeType: dataSource.mimeType,

@@ -142,7 +142,13 @@ export const DatasourcesPane: FC<DatasourcesPaneProps> = observer(
             </ToolbarContext.Provider>
           </div>
           <div className={style.main}>
-            <div className={style.leftPanelWide}>
+            <div
+              className={
+                datasourceTableService.activeRecord
+                  ? style.leftPanelSlim
+                  : style.leftPanelWide
+              }
+            >
               {datasourceTableService.isLoading ? null : content}
             </div>
             {datasourceTableService.activeRecord && (
@@ -158,7 +164,6 @@ export const DatasourcesPane: FC<DatasourcesPaneProps> = observer(
             )}
           </div>
         </>
-        )
       </>
     );
   }

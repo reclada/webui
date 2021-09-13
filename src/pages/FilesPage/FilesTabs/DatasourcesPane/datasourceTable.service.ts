@@ -48,7 +48,7 @@ class DatasourceTableService {
   }
 
   get enableOrders(): RecladaOrder[] {
-    return [{ name: 'Name', field: 'attrs, name', order: OrderType.ASC }];
+    return [{ name: 'Name', field: 'attributes, name', order: OrderType.ASC }];
   }
 
   get orders(): RecladaOrder[] | undefined {

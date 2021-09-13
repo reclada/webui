@@ -17,7 +17,7 @@ export const ArticleSearchBar: FC<ArticleSearchBarProps> = function ArticleSearc
 }) {
   return (
     <div className={classNames(className, style.root)}>
-      <div className={style.tagList}>
+      {/* <div className={style.tagList}>
         <SearchTerm
           className={classNames(style.term, style.activeTag)}
           color="#EE7D87"
@@ -35,8 +35,8 @@ export const ArticleSearchBar: FC<ArticleSearchBarProps> = function ArticleSearc
           count={2}
           title="lung adenocarcinoma"
         />
-      </div>
-      <div className={style.activeSearch}>
+      </div> */}
+      {/* <div className={style.activeSearch}>
         <div className={style.foundCounter}>1/8</div>
         <Button breed="icon" className={style.button}>
           <ArrowDown />
@@ -44,7 +44,7 @@ export const ArticleSearchBar: FC<ArticleSearchBarProps> = function ArticleSearc
         <Button breed="icon">
           <ArrowUp />
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 };

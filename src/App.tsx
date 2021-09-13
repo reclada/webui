@@ -31,7 +31,7 @@ function App() {
         <Route path={routes.datasets}>
           <FilesPage pageType={FilePageType.Datasets} />
         </Route>
-        <Route path={routes.datasources}>
+        <Route path={routes.files}>
           <AuthGuard>
             <FilesPage pageType={FilePageType.Datasources} />
           </AuthGuard>
@@ -46,6 +46,11 @@ function App() {
             <FilesPage pageType={FilePageType.Available} />
           </AuthGuard>
         </Route>
+        {/* <Route path={routes.objectDataset}>
+          <AuthGuard>
+            <FilesPage pageType={FilePageType.ObjectDataset} />
+          </AuthGuard>
+        </Route> */}
         <Route
           exact={true}
           path={routes.root}

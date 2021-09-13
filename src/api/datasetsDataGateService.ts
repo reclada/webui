@@ -32,7 +32,7 @@ type DatasetResponse = {
 export async function createDataset(name: string) {
   const dataSet: RecladaPartialObject<IRecladaDataset> = {
     class: RecladaObjectClass.DataSet,
-    attrs: {
+    attributes: {
       name,
       dataSources: [],
     },
@@ -43,9 +43,9 @@ export async function createDataset(name: string) {
 
 export async function updateDataset(name: string, datasetId: string) {
   const dataSet: RecladaPartialObject<IRecladaDataset> = {
-    id: datasetId,
+    GUID: datasetId,
     class: RecladaObjectClass.DataSet,
-    attrs: {
+    attributes: {
       name,
       dataSources: [],
     },
@@ -56,7 +56,7 @@ export async function updateDataset(name: string, datasetId: string) {
 
 export async function addDataSourcesToDataset(datasetId: string, ids: string[]) {
   const payload = {
-    id: datasetId,
+    GUID: datasetId,
     class: RecladaObjectClass.DataSet,
     field: 'dataSources',
     value: ids,
@@ -75,10 +75,10 @@ export async function fetchDatasets(
   return {
     objects: resp.objects.map(object => {
       const dataset: IDataset = {
-        id: object.id,
-        title: object.attrs.name,
+        id: object.GUID,
+        title: object.attributes.name,
         tags: undefined,
-        createDate: new Date(object.attrs.SomeDate),
+        createDate: new Date(),
         author: 'unknown',
         lastUpdate: new Date(),
         whoUpdated: 'unknown',
@@ -98,7 +98,7 @@ async function fetchRecladaDatasets(
 ) {
   return apiService.callRpcPost<DatasetRecladaResponse>(rpcUrls.getRecladaObjectList, {
     class: RecladaObjectClass.DataSet,
-    attrs: {},
+    attributes: {},
     orderBy: order,
     offset: !offset ? 0 : offset,
     limit: limit,

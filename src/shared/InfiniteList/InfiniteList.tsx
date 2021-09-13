@@ -18,7 +18,7 @@ export const InfiniteList: FC<InfiniteListProps> = function InfiniteList({
   const listRef = createRef<List>();
 
   return (
-    <AutoSizer>
+    <AutoSizer disableWidth={true}>
       {({ height, width }) => (
         <List
           ref={listRef}
