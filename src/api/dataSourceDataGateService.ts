@@ -7,7 +7,7 @@ import { rpcUrls } from './rpcUrls';
 
 interface IS3PathResponse {
   object: IRecladaFile;
-  upload_url: {
+  uploadUrl: {
     url: string;
     fields: {
       key: string;
@@ -49,15 +49,16 @@ export async function createFileDataSource(
   });
   const form = new FormData();
 
-  form.append('file', file);
-  const fields = config.upload_url.fields;
+  const fields = config.uploadUrl.fields;
 
   Object.keys(fields).forEach(key => {
     // @ts-ignore
     form.append(key, fields[key]);
   });
 
-  return axiosCall.post(config.upload_url.url, form, {
+  form.append('file', file);
+
+  return axiosCall.post(config.uploadUrl.url, form, {
     headers: { 'content-type': 'multipart/form-data' },
     onUploadProgress: (event: ProgressEvent) => {
       if (event.lengthComputable) {
