@@ -19,16 +19,18 @@ export default class BaseListStore<TListItem extends IIdentifiable> {
   protected rowInPage: number;
   protected pageLoding: Set<number> = new Set<number>();
   protected cache: Map<number, number> = new Map<number, number>();
-  protected timer: number = 0;
 
   protected fetchData: (offset: number, limit: number) => Promise<IResult<TListItem>>;
+  protected setError: (value: boolean) => void;
 
   constructor(
     rowInPage: number,
-    fetchData: (offset: number, limit: number) => Promise<IResult<TListItem>>
+    fetchData: (offset: number, limit: number) => Promise<IResult<TListItem>>,
+    setError: (value: boolean) => void
   ) {
     makeObservable<BaseListStore<TListItem>>(this);
     this.fetchData = fetchData;
+    this.setError = setError;
     this.rowInPage = rowInPage;
   }
 
@@ -53,10 +55,15 @@ export default class BaseListStore<TListItem extends IIdentifiable> {
   }
 
   initList() {
-    this.fetchData(0, this.rowInPage).then(result => {
-      this.addToList(result.objects, 0);
-      this.setCount(result.number);
-    });
+    this.fetchData(0, this.rowInPage)
+      .then(result => {
+        this.addToList(result.objects, 0);
+        this.setCount(result.number);
+      })
+      .catch(err => {
+        console.log(err);
+        this.setError(true);
+      });
   }
 
   @action
@@ -86,12 +93,14 @@ export default class BaseListStore<TListItem extends IIdentifiable> {
 
     if (!this.pageLoding.has(page) && !this._results.has(index)) {
       this.pageLoding.add(page);
-      this.fetchData(page * this.rowInPage, this.rowInPage).then(result => {
-        this.pageLoding.delete(page);
-        this.addToList(result.objects, page * this.rowInPage);
-        this.setCurrentPage(page);
-        this.cacheCleaning();
-      });
+      this.fetchData(page * this.rowInPage, this.rowInPage)
+        .then(result => {
+          this.pageLoding.delete(page);
+          this.addToList(result.objects, page * this.rowInPage);
+          this.setCurrentPage(page);
+          this.cacheCleaning();
+        })
+        .catch(err => {});
     }
   }
 

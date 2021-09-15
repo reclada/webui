@@ -12,7 +12,8 @@ import BaseListStore, { BaseListStoreType } from 'src/stores/BaseListStore';
 class DatasetsDataService {
   private _listStore: BaseListStoreType = new BaseListStore<IDataset>(
     1000,
-    this.fetchData.bind(this)
+    this.fetchData.bind(this),
+    this.setError.bind(this)
   );
   @observable private dispType: DisplayingTypes = DisplayingTypes.TABLE;
   @observable private aRecord: IDataset | undefined;
@@ -122,6 +123,11 @@ class DatasetsDataService {
     this.orderList = order;
     this._listStore.clear();
     this._listStore.initList();
+  }
+
+  @action
+  setError(value: boolean) {
+    this.error = value;
   }
 
   @action
