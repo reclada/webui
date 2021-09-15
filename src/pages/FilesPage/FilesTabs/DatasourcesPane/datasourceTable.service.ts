@@ -12,7 +12,8 @@ import BaseListStore, { BaseListStoreType } from 'src/stores/BaseListStore';
 class DatasourceTableService {
   private _listStore: BaseListStoreType = new BaseListStore<IDatasource>(
     1000,
-    this.fetchData.bind(this)
+    this.fetchData.bind(this),
+    this.setError.bind(this)
   );
   private selectedRowKeys = observable.set<string>();
 
@@ -130,6 +131,10 @@ class DatasourceTableService {
     } else {
       this.aRecord = activeRecord;
     }
+  }
+  @action
+  setError(value: boolean) {
+    this.error = value;
   }
 
   @action

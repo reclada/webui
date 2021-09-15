@@ -55,17 +55,7 @@ export const DatasourcesPane: FC<DatasourcesPaneProps> = observer(
         <Result
           status="error"
           subTitle={'Please, try again'}
-          title={'Failed to load datasources'}
-        />
-      );
-    }
-
-    if (datasourceTableService.isError) {
-      return (
-        <Result
-          status="error"
-          subTitle={'Please, try again'}
-          title={'Failed to load datasets'}
+          title={'Failed to load files'}
         />
       );
     }
