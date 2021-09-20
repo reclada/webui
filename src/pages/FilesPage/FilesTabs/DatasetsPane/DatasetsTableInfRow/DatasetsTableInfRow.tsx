@@ -3,10 +3,10 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback } from 'react';
 import { ListChildComponentProps } from 'react-window';
 
-import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';
-import { DatasetNameRenderer } from '../DatasetNameRenderer/DatasetNameRenderer';
+import { OwnersRenderer } from '../../../../shared/OwnersRenderer/OwnersRenderer';
 import { datasetsDataService } from '../datasetsData.service';
-import { MoreMenuRenderer } from '../DatasetsTable/MoreMenuRenderer/MoreMenuRenderer';
+import { DatasetNameRenderer } from '../shared/DatasetNameRenderer/DatasetNameRenderer';
+import { MoreMenuRenderer } from '../shared/MoreMenuRenderer/MoreMenuRenderer';
 
 import styleModule from './DatasetsTableInfRow.module.scss';
 

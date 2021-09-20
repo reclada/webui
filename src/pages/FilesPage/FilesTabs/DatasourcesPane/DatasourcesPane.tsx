@@ -1,4 +1,4 @@
-import { Col, Divider, Result, Row, Checkbox } from 'antd';
+import { Col, Divider, Result, Row, Checkbox, Spin } from 'antd';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect } from 'react';
 
@@ -12,9 +12,9 @@ import { DisplayingTypes } from 'src/shared/Sorting/Sorting';
 
 import { DatasourcesCardRow } from './DatasourcesCardsRow/DatasuorcesCardRow';
 import style from './DatasourcesPane.module.scss';
-import { useFileUrl } from './DatasourcesTable/FilePreviewModal/useFileUrl';
 import { DatasourcesTableRow } from './DatasourcesTableRow/DatasourceTableRow';
 import { datasourceTableService } from './datasourceTable.service';
+import { useFileUrl } from './shared/FilePreviewModal/useFileUrl';
 
 type DatasourcesPaneProps = {
   datasetId?: string;
@@ -139,7 +139,14 @@ export const DatasourcesPane: FC<DatasourcesPaneProps> = observer(
                   : style.leftPanelWide
               }
             >
-              {datasourceTableService.isLoading ? null : content}
+              {datasourceTableService.isLoading ? (
+                <Spin
+                  size="large"
+                  style={{ position: 'absolute', width: '100%', height: '500px' }}
+                />
+              ) : (
+                content
+              )}
             </div>
             {datasourceTableService.activeRecord && (
               <div className={style.rightPanel}>

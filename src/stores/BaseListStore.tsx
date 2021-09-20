@@ -1,4 +1,4 @@
-import { observable, action, makeObservable, ObservableMap } from 'mobx';
+import { observable, action, makeObservable, ObservableMap, runInAction } from 'mobx';
 import { computedFn } from 'mobx-utils';
 
 import { IIdentifiable } from './Types';
@@ -13,24 +13,23 @@ export default class BaseListStore<TListItem extends IIdentifiable> {
     number,
     TListItem
   > = observable.map<number, TListItem>(undefined, { deep: false });
-  @observable
-  protected _count: number = 0;
+  @observable protected _count: number = 0;
   @observable protected _currentPage: number = 0;
+  @observable protected _isError: boolean = false;
+  @observable protected _isLoading: boolean = false;
+
   protected rowInPage: number;
   protected pageLoding: Set<number> = new Set<number>();
   protected cache: Map<number, number> = new Map<number, number>();
 
   protected fetchData: (offset: number, limit: number) => Promise<IResult<TListItem>>;
-  protected setError: (value: boolean) => void;
 
   constructor(
     rowInPage: number,
-    fetchData: (offset: number, limit: number) => Promise<IResult<TListItem>>,
-    setError: (value: boolean) => void
+    fetchData: (offset: number, limit: number) => Promise<IResult<TListItem>>
   ) {
     makeObservable<BaseListStore<TListItem>>(this);
     this.fetchData = fetchData;
-    this.setError = setError;
     this.rowInPage = rowInPage;
   }
 
@@ -42,9 +41,27 @@ export default class BaseListStore<TListItem extends IIdentifiable> {
     return this._currentPage;
   }
 
+  get isError(): boolean {
+    return this._isError;
+  }
+
+  get isLoading(): boolean {
+    return this._isLoading;
+  }
+
   @action
   setCount(value: number) {
     this._count = value;
+  }
+
+  @action
+  setError(value: boolean) {
+    this._isError = value;
+  }
+
+  @action
+  setLoading(value: boolean) {
+    this._isLoading = value;
   }
 
   @action
@@ -55,14 +72,18 @@ export default class BaseListStore<TListItem extends IIdentifiable> {
   }
 
   initList() {
+    this.setLoading(true);
     this.fetchData(0, this.rowInPage)
       .then(result => {
         this.addToList(result.objects, 0);
         this.setCount(result.number);
+        this.setLoading(false);
       })
       .catch(err => {
-        console.log(err);
-        this.setError(true);
+        runInAction(() => {
+          this._isError = true;
+          this._isLoading = false;
+        });
       });
   }
 

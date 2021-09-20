@@ -12,15 +12,11 @@ import BaseListStore, { BaseListStoreType } from 'src/stores/BaseListStore';
 class DatasetsDataService {
   private _listStore: BaseListStoreType = new BaseListStore<IDataset>(
     1000,
-    this.fetchData.bind(this),
-    this.setError.bind(this)
+    this.fetchData.bind(this)
   );
   @observable private dispType: DisplayingTypes = DisplayingTypes.TABLE;
   @observable private aRecord: IDataset | undefined;
-  @observable private loading: boolean = false;
-  @observable private error: boolean = false;
   @observable private sortopen: boolean = false;
-  private errMsg: string = '';
 
   @observable private orderList: RecladaOrder[] | undefined;
 
@@ -64,14 +60,10 @@ class DatasetsDataService {
   }
 
   get isLoading(): boolean {
-    return this.loading;
+    return this._listStore.isLoading;
   }
   get isError(): boolean {
-    return this.error;
-  }
-
-  get errorMessage(): string {
-    return this.errMsg;
+    return this._listStore.isError;
   }
 
   get listStore(): BaseListStoreType {
@@ -123,11 +115,6 @@ class DatasetsDataService {
     this.orderList = order;
     this._listStore.clear();
     this._listStore.initList();
-  }
-
-  @action
-  setError(value: boolean) {
-    this.error = value;
   }
 
   @action
