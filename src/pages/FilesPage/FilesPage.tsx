@@ -9,7 +9,7 @@ import { SearchResultSidebar } from '../SearchResultPage/SearchResultSidebar/Sea
 import { FileSearch } from './FileSearch/FileSearch';
 import style from './FilesPage.module.scss';
 import { DatasetsPane } from './FilesTabs/DatasetsPane/DatasetsPane';
-import { EditDataSetModal } from './FilesTabs/DatasetsPane/DatasetsTable/Modals/EditDataSetModal';
+import { EditDataSetModal } from './FilesTabs/DatasetsPane/shared/Modals/EditDataSetModal';
 import { DatasourcesPane } from './FilesTabs/DatasourcesPane/DatasourcesPane';
 // import { DatasourcesTable } from './FilesTabs/DatasourcesTable/DatasourcesTable';
 // import { FilesTabsActions } from './FilesTabs/FilesTabsActions/FilesTabsActions';

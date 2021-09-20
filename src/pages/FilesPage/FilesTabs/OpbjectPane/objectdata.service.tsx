@@ -26,11 +26,13 @@ class ObjectDataService {
   // @observable private orderList: RecladaOrder[] | undefined;
   // private get orderBy(): OrderBy[] {
   //   const result = new Array<OrderBy>();
+
   //   if (this.orderList) {
   //     this.orderList.map(value =>
   //       result.push({ field: value.field, order: value.order })
   //     );
   //   }
+
   //   return result;
   // }
   constructor(className: string) {
@@ -42,6 +44,7 @@ class ObjectDataService {
   // }
   // get enableOrders(): RecladaOrder[] {
   //   const result = [];
+
   //   for (var key in this.attributes) {
   //     if (this.attributes[key].isSorting) {
   //       result.push({
@@ -51,6 +54,7 @@ class ObjectDataService {
   //       });
   //     }
   //   }
+
   //   return result;
   // }
   // get sortOpen(): boolean {
@@ -99,9 +103,9 @@ class ObjectDataService {
   //     });
   //   this.initList();
   // }
-  // getRow(index: number): IRecladaObject | undefined {
-  //   return this._listStore.getRow(index) as IRecladaObject;
-  // }
+  // // getRow(index: number): IRecladaObject | undefined {
+  // //   return this._listStore.getRow(index) as IRecladaObject;
+  // // }
   // updateList(index: number) {
   //   this._listStore.updateList(index);
   // }

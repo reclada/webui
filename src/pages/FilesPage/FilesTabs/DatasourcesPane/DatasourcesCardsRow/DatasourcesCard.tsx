@@ -5,11 +5,11 @@ import React, { FC, useCallback } from 'react';
 
 import { ArticleType } from 'src/api/articleService';
 
-import { OwnersRenderer } from '../../shared/OwnersRenderer/OwnersRenderer';
-import { ArticleNameRenderer } from '../DatasourcesTable/ArticleNameRenderer/ArticleNameRenderer';
-import { ArticleTypeRenderer } from '../DatasourcesTable/ArticleTypeRenderer/ArticleTypeRenderer';
-import { MoreMenuRenderer } from '../DatasourcesTable/MoreMenuRenderer/MoreMenuRenderer';
+import { OwnersRenderer } from '../../../../shared/OwnersRenderer/OwnersRenderer';
 import { datasourceTableService } from '../datasourceTable.service';
+import { ArticleNameRenderer } from '../shared/ArticleNameRenderer/ArticleNameRenderer';
+import { ArticleTypeRenderer } from '../shared/ArticleTypeRenderer/ArticleTypeRenderer';
+import { MoreMenuRenderer } from '../shared/MoreMenuRenderer/MoreMenuRenderer';
 
 import style from './DatasourcesCardsRow.module.scss';
 

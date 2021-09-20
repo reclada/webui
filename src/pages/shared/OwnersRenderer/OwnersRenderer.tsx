@@ -1,7 +1,7 @@
 import { Dropdown, Menu } from 'antd';
 import React, { FC } from 'react';
 
-import { ReactComponent as MenuArrowIcon } from '../../../../../resources/menu-arrow.svg';
+import { ReactComponent as MenuArrowIcon } from 'src/resources/menu-arrow.svg';
 
 import style from './OwnersRenderer.module.scss';
 

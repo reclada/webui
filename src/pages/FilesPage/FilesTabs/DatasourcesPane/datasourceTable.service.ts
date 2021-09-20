@@ -12,17 +12,13 @@ import BaseListStore, { BaseListStoreType } from 'src/stores/BaseListStore';
 class DatasourceTableService {
   private _listStore: BaseListStoreType = new BaseListStore<IDatasource>(
     1000,
-    this.fetchData.bind(this),
-    this.setError.bind(this)
+    this.fetchData.bind(this)
   );
   private selectedRowKeys = observable.set<string>();
 
   @observable private dispType: DisplayingTypes = DisplayingTypes.TABLE;
   @observable private aRecord: IDatasource | undefined;
-  @observable private loading: boolean = false;
-  @observable private error: boolean = false;
   @observable private dataSetId: string | undefined = '';
-  private errMsg: string = '';
 
   @observable private orderList: RecladaOrder[] | undefined;
   //@observable private datasourcesList: IDatasource[] | undefined;
@@ -57,14 +53,10 @@ class DatasourceTableService {
   }
 
   get isLoading(): boolean {
-    return this.loading;
+    return this._listStore.isLoading;
   }
   get isError(): boolean {
-    return this.error;
-  }
-
-  get errorMessage(): string {
-    return this.errMsg;
+    return this._listStore.isError;
   }
 
   get listStore(): BaseListStoreType {
@@ -131,10 +123,6 @@ class DatasourceTableService {
     } else {
       this.aRecord = activeRecord;
     }
-  }
-  @action
-  setError(value: boolean) {
-    this.error = value;
   }
 
   @action
