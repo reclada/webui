@@ -1,13 +1,7 @@
-import { OrderBy } from 'src/shared/Sorting/Sorting';
+import { OrderBy } from 'src/stores/Types';
 
 import { apiService } from './apiService';
-import { ArticleType, getArticleTypeByKey } from './articleService';
-import {
-  IRecladaDataset,
-  IRecladaObject,
-  ObjectAttributes,
-  RecladaObjectClass,
-} from './IRecladaObject';
+import { IRecladaObject, ObjectAttributes, RecladaObjectClass } from './IRecladaObject';
 import { rpcUrls } from './rpcUrls';
 
 type DatasetObjectResponse = {

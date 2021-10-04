@@ -19,6 +19,7 @@ export enum RecladaObjectClass {
   File = 'File',
   DataSet = 'DataSet',
   DataSource = 'File',
+  JsonSchema = 'jsonschema',
 }
 
 export interface IRecladaFile extends IRecladaObject {

@@ -13,7 +13,9 @@ type PaginatorProps = {
   className?: string;
 };
 
-export const Paginator: FC<PaginatorProps> = function Paginator({ className }) {
+export const Paginator: FC<PaginatorProps> = React.memo(function Paginator({
+  className,
+}) {
   const [currentPage, setCurrentPage] = useState(30);
 
   const setFirst = useCallback(() => setCurrentPage(1), []);
@@ -58,4 +60,4 @@ export const Paginator: FC<PaginatorProps> = function Paginator({ className }) {
       </button>
     </div>
   );
-};
+});

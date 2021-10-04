@@ -1,13 +1,16 @@
 import { action, computed, makeObservable, observable } from 'mobx';
 
 import { fetchDatasources, IDatasource } from 'src/api/datasourcesService';
+import BaseListStore, { BaseListStoreType } from 'src/stores/BaseListStore';
 import {
   OrderBy,
   DisplayingTypes,
   RecladaOrder,
   OrderType,
-} from 'src/shared/Sorting/Sorting';
-import BaseListStore, { BaseListStoreType } from 'src/stores/BaseListStore';
+  RecladaFilter,
+  FiltersOperators,
+  RFilter,
+} from 'src/stores/Types';
 
 class DatasourceTableService {
   private _listStore: BaseListStoreType = new BaseListStore<IDatasource>(
@@ -21,15 +24,26 @@ class DatasourceTableService {
   @observable private dataSetId: string | undefined = '';
 
   @observable private orderList: RecladaOrder[] | undefined;
+  @observable private _filters: RecladaFilter[] | undefined;
   //@observable private datasourcesList: IDatasource[] | undefined;
 
   private get orderBy(): OrderBy[] {
-    const result = new Array<OrderBy>();
-
     if (this.orderList) {
-      this.orderList.map(value =>
-        result.push({ field: value.field, order: value.order })
-      );
+      return this.orderList.map(value => {
+        return { field: value.field, order: value.order };
+      });
+    }
+
+    return [];
+  }
+
+  private get rFilter(): RFilter {
+    const result: RFilter = {};
+
+    if (this._filters) {
+      this._filters.forEach(value => {
+        result[value.key] = { operator: value.operator, object: value.object };
+      });
     }
 
     return result;
@@ -48,8 +62,16 @@ class DatasourceTableService {
     return [{ name: 'Name', field: 'attributes, name', order: OrderType.ASC }];
   }
 
+  get enableFilters(): RecladaFilter[] {
+    return [{ key: 'name', name: 'Name', operator: FiltersOperators.EQUAL, object: '' }];
+  }
+
   get orders(): RecladaOrder[] | undefined {
     return this.orderList;
+  }
+
+  get filters(): RecladaFilter[] | undefined {
+    return this._filters;
   }
 
   get isLoading(): boolean {
@@ -98,9 +120,9 @@ class DatasourceTableService {
   @action
   selectDataSource(dataSource: IDatasource, selected: boolean) {
     if (selected) {
-      this.selectedRowKeys.add(dataSource.id);
+      this.selectedRowKeys.add(dataSource.GUID);
     } else {
-      this.selectedRowKeys.delete(dataSource.id);
+      this.selectedRowKeys.delete(dataSource.GUID);
     }
   }
 
@@ -118,11 +140,18 @@ class DatasourceTableService {
 
   @action
   setActiveRecord(activeRecord: IDatasource | undefined) {
-    if (this.aRecord && activeRecord && this.aRecord.id === activeRecord.id) {
+    if (this.aRecord && activeRecord && this.aRecord.GUID === activeRecord.GUID) {
       this.aRecord = undefined;
     } else {
       this.aRecord = activeRecord;
     }
+  }
+
+  @action
+  setFilters(filters: RecladaFilter[] | undefined) {
+    this._filters = filters;
+    this._listStore.clear();
+    this._listStore.initList();
   }
 
   @action
@@ -133,7 +162,7 @@ class DatasourceTableService {
   }
 
   fetchData(offset: number, limit: number) {
-    return fetchDatasources(this.dataSetId, this.orderBy, limit, offset);
+    return fetchDatasources(this.dataSetId, this.orderBy, limit, offset, this.rFilter);
   }
 }
 

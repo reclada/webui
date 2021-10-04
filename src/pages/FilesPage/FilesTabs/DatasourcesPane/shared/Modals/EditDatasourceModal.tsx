@@ -7,7 +7,7 @@ type EditModalProps = {
   opened: boolean;
   handleOk: () => void;
   handleCancel: () => void;
-  datasource: { id: string; checksum: string; mimeType: string };
+  datasource: { GUID: string; checksum: string; mimeType: string };
   onUpdate: (name: string, dataSourceId: string) => void;
   name: string;
 };
@@ -22,7 +22,7 @@ export const EditDatasourceModal: FC<EditModalProps> = function EditDatasourceMo
 }) {
   const onFinish = (values: any) => {
     handleOk();
-    updateDataSource(values.name, datasource) && onUpdate(values.name, datasource.id);
+    updateDataSource(values.name, datasource) && onUpdate(values.name, datasource.GUID);
   };
 
   const onFinishFailed = (errorInfo: any) => {

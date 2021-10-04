@@ -1,4 +1,4 @@
-import { OrderBy } from 'src/shared/Sorting/Sorting';
+import { OrderBy } from 'src/stores/Types';
 
 import { apiService } from './apiService';
 import {
@@ -9,7 +9,7 @@ import {
 import { rpcUrls } from './rpcUrls';
 
 export interface IDataset {
-  id: string;
+  GUID: string;
   title: string;
   tags?: string[];
   createDate: Date;
@@ -75,7 +75,7 @@ export async function fetchDatasets(
   return {
     objects: resp.objects.map(object => {
       const dataset: IDataset = {
-        id: object.GUID,
+        GUID: object.GUID,
         title: object.attributes.name,
         tags: undefined,
         createDate: new Date(),

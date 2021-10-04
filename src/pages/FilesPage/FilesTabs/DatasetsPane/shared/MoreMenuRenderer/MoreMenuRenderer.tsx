@@ -40,8 +40,8 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
         <span>Delete</span>
       </Menu.Item>
       <EditDataSetModal
-        dataSetId={dataSet.id}
-        datasetId={dataSet.id}
+        dataSetId={dataSet.GUID}
+        datasetId={dataSet.GUID}
         handleCancel={isEditModalOpen.close}
         handleOk={() => {
           isEditModalOpen.close();

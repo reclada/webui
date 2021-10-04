@@ -10,16 +10,18 @@ import { FilePreviewModal } from '../FilePreviewModal/FilePreviewModal';
 import { EditDatasourceModal } from '../Modals/EditDatasourceModal';
 
 export type MoreMenuRendererProps = {
-  datasource: { id: string; name: string; checksum: string; mimeType: string };
+  className?: string;
+  datasource: { GUID: string; name: string; checksum: string; mimeType: string };
   onUpdate?: (name: string, datasource: string) => void;
 };
 
 export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRenderer({
+  className,
   datasource,
   onUpdate,
 }) {
   const downloadDatasource = useCallback(async () => {
-    const link = await getDatasourceDownloadLink(datasource.id);
+    const link = await getDatasourceDownloadLink(datasource.GUID);
 
     const resp = await fetch(link, {
       method: 'GET',
@@ -29,7 +31,7 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
 
     downloadURI(obj, datasource.name);
     window.URL.revokeObjectURL(obj);
-  }, [datasource.id, datasource.name]);
+  }, [datasource.GUID, datasource.name]);
 
   const isEditModalOpen = useOpen(false);
 
@@ -81,14 +83,14 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
   );
 
   return (
-    <>
+    <div className={className}>
       <MoreDropdown menu={moreMenu} />
       <FilePreviewModal
-        datasourceId={datasource.id}
+        datasourceId={datasource.GUID}
         fileName={datasource.name}
         isOpen={filePreviewModal.isOpen}
         onClose={filePreviewModal.close}
       />
-    </>
+    </div>
   );
 };

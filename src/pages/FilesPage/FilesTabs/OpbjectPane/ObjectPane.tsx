@@ -3,12 +3,10 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback, useEffect } from 'react';
 
 import { IRecladaObject } from 'src/api/IRecladaObject';
-import {
-  ResultToolbar,
-  ToolbarContext,
-} from 'src/pages/shared/ResultToolbar/ResultToolbar';
+import { ResultToolbar } from 'src/pages/shared/ResultToolbar/ResultToolbar';
 import { InfiniteList } from 'src/shared/InfiniteList/InfiniteList';
-import { DisplayingTypes, RecladaOrder } from 'src/shared/Sorting/Sorting';
+import BaseListStore, { BaseListStoreType } from 'src/stores/BaseListStore';
+import { DisplayingTypes, RecladaOrder } from 'src/stores/Types';
 
 import { Pager } from '../../../shared/Pager/Pager';
 import { DatasetsCardsRow } from '../DatasetsPane/DatasetsCardsRow/DatasetsCardsRow';
@@ -35,6 +33,7 @@ interface IObjectServiceInterface {
   setDisplaingType: (displaingType: DisplayingTypes) => void;
   setOrder: (order: RecladaOrder[] | undefined) => void;
   orders: RecladaOrder[] | undefined;
+  listStore: BaseListStoreType;
 }
 type ObjectPaneProps = {
   service: IObjectServiceInterface;
@@ -64,11 +63,7 @@ export const ObjectPane: FC<ObjectPaneProps> = observer(function ObjectPane({ se
   return (
     <>
       <>
-        <div className={style.toolbar}>
-          <ToolbarContext.Provider value={service}>
-            <ResultToolbar />
-          </ToolbarContext.Provider>
-        </div>
+        <div className={style.toolbar}>{/* <ResultToolbar /> */}</div>
         <div className={style.main}>
           <div className={style.leftPanelWide}>
             {service.isLoading ? (
@@ -80,7 +75,7 @@ export const ObjectPane: FC<ObjectPaneProps> = observer(function ObjectPane({ se
               content
             )}
           </div>
-          {/* <Pager service={service.listStore} /> */}
+          <Pager service={service.listStore} />
         </div>
       </>
     </>

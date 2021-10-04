@@ -79,10 +79,10 @@ export async function getDatasourceDownloadLink(id: string): Promise<string> {
 
 export async function updateDataSource(
   name: string,
-  dataSource: { id: string; checksum: string; mimeType: string }
+  dataSource: { GUID: string; checksum: string; mimeType: string }
 ) {
   const ds: RecladaPartialObject<IRecladaFile> = {
-    GUID: dataSource.id,
+    GUID: dataSource.GUID,
     class: RecladaObjectClass.File,
     attributes: {
       name: name,

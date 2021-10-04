@@ -51,7 +51,7 @@ export const DatasourcesTableRow: FC<ListChildComponentProps> = observer(
               <Checkbox
                 checked={
                   datasourceTableService.selectedRows.filter(
-                    chel => datasource.id === chel
+                    chel => datasource.GUID === chel
                   ).length > 0
                 }
                 className={styleModule.checkboxCard}
