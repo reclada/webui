@@ -95,7 +95,7 @@ export default class BaseListStore<TListItem extends IIdentifiable> {
 
   @action
   updateRow(index: number, elem: TListItem) {
-    this._results.set(index, elem);
+    this._results.set(index, { ...elem });
   }
 
   @action

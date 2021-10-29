@@ -60,9 +60,19 @@
     padding-top: 15px;
     height: 55px;
     border-bottom: 1px solid rgb(240, 240, 240);
+    overflow: hidden;
   }
   
   .rowTable:hover {
     background: #fafafa;
+  }
+
+  .draggingColumnHeader{
+    border-left: 1px solid blue;
+    border-right: 1px solid blue;
+  }
+  .draggingRow{
+    border-top: 1px solid blue;
+    border-bottom: 1px solid blue;
   }
   

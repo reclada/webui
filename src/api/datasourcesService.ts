@@ -60,7 +60,8 @@ export async function fetchDatasources(
           fileObject.attributes.mimeType.replace('application/', '').toUpperCase()
         ),
         createDate: new Date(),
-        author: 'unknown',
+        author:
+          'long unknown author long unknown author long unknown author long unknown author long unknown author long unknown author long unknown author',
         lastUpdate: new Date(),
         whoUpdated: 'unknown',
         owners: ['me', 'other'],
