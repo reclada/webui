@@ -52,7 +52,7 @@ export async function fetchDatasources(
   return {
     objects: recladaFileObjects.objects.map(fileObject => {
       //const fd = fileObject.attributes.name.split('.');
-
+      Math.random();
       const datasource: IDatasource = {
         GUID: fileObject.GUID,
         name: fileObject.attributes.name,
@@ -60,8 +60,9 @@ export async function fetchDatasources(
           fileObject.attributes.mimeType.replace('application/', '').toUpperCase()
         ),
         createDate: new Date(),
-        author:
-          'long unknown author long unknown author long unknown author long unknown author long unknown author long unknown author long unknown author',
+        author: Math.floor(Math.random() * 2)
+          ? 'long unknown author long unknown author long unknown author long unknown author long unknown author long unknown author long unknown author'
+          : 'unknown author',
         lastUpdate: new Date(),
         whoUpdated: 'unknown',
         owners: ['me', 'other'],

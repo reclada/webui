@@ -1,10 +1,9 @@
 import { Checkbox, Divider, Input } from 'antd';
+import result from 'antd/lib/result';
 import { observer } from 'mobx-react-lite';
 import React, {
   createContext,
   FC,
-  forwardRef,
-  FunctionComponent,
   memo,
   ReactNode,
   useCallback,
@@ -72,10 +71,8 @@ export const DatasourcesTable2 = observer(function DatasourcesTable2() {
       ? attr.maxWidth
       : attr.width;
 
-    //const minWidth = datasourceTableService.getAttributeDataByIndex(i).width;
     header.push(<th style={{ width: width }}></th>);
   }
-
   const containerRef = useRef(null);
   const onScrollTable = useCallback(event => {
     //@ts-ignore
@@ -106,14 +103,7 @@ export const DatasourcesTable2 = observer(function DatasourcesTable2() {
                 <DatasourcesTableObjectHeader />
               </div>
               <DatasourcesTableObject
-                header={
-                  <thead>
-                    <tr>
-                      <th style={{ width: '35px' }}></th>
-                      {header}
-                    </tr>
-                  </thead>
-                }
+                header={<TableTHead />}
                 height={height * 0.9}
                 itemCount={datasourceTableService.count}
                 itemSize={36}
@@ -218,13 +208,34 @@ const DatasourcesTableObjectHeader: FC<headerProp> = memo(
   })
 );
 
-const RowDataSources: FC<ListChildComponentProps> = observer(
-  function DatasourcesTableRowGrid({ index, isScrolling, style }) {
+const TableTHead: FC = observer(function TableTHead() {
+  const result = [];
+
+  for (let i = 0; i < 7; i++) {
+    const attr = datasourceTableService.getAttributeDataByIndex(i);
+    const width = datasourceTableService.isColumnCustomWidth(i)
+      ? attr.maxWidth
+      : attr.width;
+
+    result.push(<th style={{ width: width }}></th>);
+  }
+
+  return (
+    <thead>
+      <tr>
+        <th style={{ width: '35px' }}></th>
+        {result}
+      </tr>
+    </thead>
+  );
+});
+
+const RowDataSources: FC<ListChildComponentProps> = memo(
+  observer(function DatasourcesTableRowGrid({ index, isScrolling, style }) {
     const datasource = datasourceTableService.getRow(index);
 
     const [edit, setEdit] = useState(false);
-
-    // const refDiv = useRef(null);
+    const refTR = useRef(null);
 
     if (!datasource && !isScrolling) {
       datasourceTableService.updateList(index);
@@ -264,6 +275,7 @@ const RowDataSources: FC<ListChildComponentProps> = observer(
           case 'date':
             content.push(
               <td key={i}>
+                {index}
                 <DateColumn
                   date={
                     getKeyValue<keyof IDatasource, IDatasource>(
@@ -346,11 +358,11 @@ const RowDataSources: FC<ListChildComponentProps> = observer(
             position={{ x: 0, y: 0 }}
           >
             <tr
+              ref={refTR}
+              className={datasource ? styleModule.tableRow : ''}
               id={index + '/-1'}
               //id={index.toString()}
               onMouseOver={() => {
-                console.log('onMouseOver', index, datasourceTableService.rowDragging);
-
                 if (datasourceTableService.rowDragging !== undefined) {
                   datasourceTableService.setRowForSwap(index);
                 }
@@ -383,5 +395,5 @@ const RowDataSources: FC<ListChildComponentProps> = observer(
         )}
       </>
     );
-  }
+  })
 );

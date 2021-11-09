@@ -1,4 +1,5 @@
 import { Input, Popover } from 'antd';
+import { set } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import React, {
   FC,
@@ -8,18 +9,10 @@ import React, {
   useCallback,
   useLayoutEffect,
 } from 'react';
-import { FixedSizeList, FixedSizeListProps, ListChildComponentProps } from 'react-window';
+import { FixedSizeList, FixedSizeListProps, ListOnScrollProps } from 'react-window';
 
-import { ArticleType } from 'src/api/articleService';
-import { IDatasource } from 'src/api/datasourcesService';
-import { DateColumn } from 'src/pages/shared/DateColumn/DateColumn';
-import { classNames } from 'src/utils/classNames';
-
-import { OwnersRenderer } from '../../../../shared/OwnersRenderer/OwnersRenderer';
 import { DragContext } from '../DatasorcesTable2/DatasourcesTable2';
 import { datasourceTableService } from '../datasourceTable.service';
-import { ArticleNameRenderer } from '../shared/ArticleNameRenderer/ArticleNameRenderer';
-import { ArticleTypeRenderer } from '../shared/ArticleTypeRenderer/ArticleTypeRenderer';
 
 type Prop = {
   header?: React.ReactNode;
@@ -39,6 +32,8 @@ const VirtualTableContext = React.createContext<{
   footer: <></>,
 });
 
+const getKeyValue = <U extends keyof T, T extends object>(key: U) => (obj: T) => obj[key];
+
 const Inner = React.forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>(
   function Inner({ children, ...rest }, ref) {
     const { header, footer, top } = useContext(VirtualTableContext);
@@ -52,9 +47,6 @@ const Inner = React.forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>(
             height: '100%',
             tableLayout: 'auto',
             width: datasourceTableService.widthTable + 35,
-          }}
-          onScroll={event => {
-            console.log(event);
           }}
         >
           {header}
@@ -71,8 +63,13 @@ export const DatasourcesTableObject: FC<
 > = observer(function InfintyTable({ header, footer, row, ...rest }) {
   const mainContext = useContext(DragContext);
   const listRef = useRef<FixedSizeList | null>();
+  // const [currentItem, setCurrentItem] = useState(0);
   const listConteinerRef = useRef(null);
   const [top, setTop] = useState(0);
+
+  const onScroll = useCallback((prop: ListOnScrollProps) => {
+    setTop(prop.scrollOffset);
+  }, []);
   // @ts-ignore
   const listScroll = useCallback(
     event => {
@@ -101,18 +98,21 @@ export const DatasourcesTableObject: FC<
         {...rest}
         ref={el => (listRef.current = el)}
         innerElementType={Inner}
+        // itemSize={(index: number) => 36}
         outerRef={listConteinerRef}
-        onItemsRendered={props => {
-          const style =
-            listRef.current &&
-            // @ts-ignore private method access
-            listRef.current._getItemStyle(props.overscanStartIndex);
+        overscanCount={0}
+        // onItemsRendered={props => {
+        //   const style =
+        //     listRef.current &&
+        //     // @ts-ignore private method access
+        //     listRef.current._getItemStyle(props.overscanStartIndex);
 
-          setTop((style && style.top) || 0);
-
-          // Call the original callback
-          rest.onItemsRendered && rest.onItemsRendered(props);
-        }}
+        //   // console.log(style ? style.top : 0);
+        //   // setTop((style && style.top) || 0);
+        //   // Call the original callback
+        //   rest.onItemsRendered && rest.onItemsRendered(props);
+        // }}
+        onScroll={onScroll}
       >
         {row}
       </FixedSizeList>

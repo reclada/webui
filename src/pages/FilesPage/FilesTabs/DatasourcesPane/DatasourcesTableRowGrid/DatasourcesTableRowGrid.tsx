@@ -23,8 +23,6 @@ export const DatasourcesTableRowGrid: FC<GridChildComponentProps> = observer(
 
     const [edit, setEdit] = useState(false);
 
-    // const refDiv = useRef(null);
-
     if (!datasource && !isScrolling) {
       datasourceTableService.updateList(rowIndex);
     }

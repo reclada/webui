@@ -131,7 +131,6 @@ export class GridStore {
   }
 
   setRowForSwap(index: number | undefined) {
-    console.log('row for swap');
     this._selectRow2 = index;
   }
 
