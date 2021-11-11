@@ -1,0 +1,72 @@
+# Default values for webui.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+webui:
+  env:
+    SOME_VAR: /api
+
+
+
+replicaCount: 1
+
+image:
+  repository: 588200329560.dkr.ecr.eu-west-1.amazonaws.com/webui
+  pullPolicy: Always
+  tag: latest
+
+imagePullSecrets: []
+nameOverride: "webui"
+fullnameOverride: "webui"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: 50m
+    # nginx.ingress.kubernetes.io/auth-type: basic
+    # nginx.ingress.kubernetes.io/auth-secret: basic-auth
+    # nginx.ingress.kubernetes.io/auth-realm: 'Authentication Reqwebuired - reclada'
+  hosts:
+    - paths:
+        - /
+  # tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

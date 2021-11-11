@@ -1,0 +1,84 @@
+# Default values for reclada.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+postgrest:
+  env:
+    PGST_DB_URI: "postgresql://reclada:fesge%2546sfdf@dev-reclada-k8s.c9lpgtggzz0d.eu-west-1.rds.amazonaws.com:5432/dev_reclada_k8s"
+    PGST_DB_SCHEMA: "api"
+    PGST_ANON_ROLE: "reclada"
+    PGST_SERVER_HOST: "0.0.0.0"
+    PGST_SERVER_PORT: "3000"
+
+replicaCount: 1
+
+image:
+  repository: 588200329560.dkr.ecr.eu-west-1.amazonaws.com/postgrest
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: "postgrest"
+fullnameOverride: "postgrest"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: "postgrest"
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+
+ingress:
+  enabled: false
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: 50m
+    certmanager.k8s.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  hosts:
+    - host: postgrest.reclada.com
+      paths:
+        - /
+  tls:
+  - secretName: postgrest-tls
+    hosts:
+    - postgrest.reclada.com
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
