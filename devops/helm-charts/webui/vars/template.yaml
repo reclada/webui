@@ -6,12 +6,12 @@ webui:
 
 clusterissuer:
   prod:
-    name: letsencrypt-prod
+    name: letsencrypt-prod-dynamicenvname
     enabled: false
     privateKeySecretRef: tls-secret-letsencrypt-prod-dynamicenvname
     email: maksim.vasilev@quantori.com  # declare a valid email here, even for staging!
   staging:
-    name: letsencrypt-staging
+    name: letsencrypt-staging-dynamicenvname
     enabled: true
     privateKeySecretRef: tls-secret-letsencrypt-staging-dynamicenvname
     email: maksim.vasilev@quantori.com  # declare a valid email here, even for staging!
