@@ -12,7 +12,7 @@ clusterissuer:
     email: maksim.vasilev@quantori.com  # declare a valid email here, even for staging!
   staging:
     name: letsencrypt-staging
-    enabled: false
+    enabled: true
     privateKeySecretRef: tls-secret-letsencrypt-staging-dynamicenvname
     email: maksim.vasilev@quantori.com  # declare a valid email here, even for staging!
 
