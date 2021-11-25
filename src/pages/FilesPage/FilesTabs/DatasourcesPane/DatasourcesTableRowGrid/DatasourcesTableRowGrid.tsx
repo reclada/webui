@@ -1,6 +1,16 @@
-import { Input, Popover } from 'antd';
+import { Checkbox, Input, Popover } from 'antd';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useCallback, useMemo, useRef, useState } from 'react';
+import React, {
+  FC,
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import Draggable from 'react-draggable';
 import { GridChildComponentProps } from 'react-window';
 
 import { ArticleType } from 'src/api/articleService';
@@ -9,6 +19,7 @@ import { DateColumn } from 'src/pages/shared/DateColumn/DateColumn';
 import { classNames } from 'src/utils/classNames';
 
 import { OwnersRenderer } from '../../../../shared/OwnersRenderer/OwnersRenderer';
+import { RowContext } from '../DatasourcesTable/DatasourcesTable';
 import { datasourceTableService } from '../datasourceTable.service';
 import { ArticleNameRenderer } from '../shared/ArticleNameRenderer/ArticleNameRenderer';
 import { ArticleTypeRenderer } from '../shared/ArticleTypeRenderer/ArticleTypeRenderer';
@@ -20,12 +31,38 @@ const getKeyValue = <U extends keyof T, T extends object>(key: U) => (obj: T) =>
 export const DatasourcesTableRowGrid: FC<GridChildComponentProps> = observer(
   function DatasourcesTableRowGrid({ columnIndex, rowIndex, isScrolling, style }) {
     const datasource = datasourceTableService.getRow(rowIndex);
+    const context = useContext(RowContext);
+    const columnRoot = useRef<null | HTMLDivElement>(null);
 
     const [edit, setEdit] = useState(false);
 
     if (!datasource && !isScrolling) {
       datasourceTableService.updateList(rowIndex);
     }
+
+    useEffect(() => {
+      if (columnRoot.current) {
+        //@ts-ignore
+        if (!datasource)
+          context.setHeight(
+            //@ts-ignore
+            columnRoot.current.dataset.id,
+            columnRoot.current.getBoundingClientRect().height
+          );
+      }
+    }, [datasource, context]);
+
+    useLayoutEffect(() => {
+      if (columnRoot.current && !isScrolling && datasource) {
+        //@ts-ignore
+        context.setHeight(rowIndex, columnRoot.current.offsetHeight);
+      }
+
+      if (columnRoot.current && !isScrolling && datasource) {
+        //@ts-ignore
+        context.setWidth(columnIndex, columnRoot.current.offsetWidth);
+      }
+    }, [context, rowIndex, isScrolling, datasource, columnIndex]);
 
     const onClickActive = useCallback(() => {
       if (datasource && datasource.type === ArticleType.PDF) {
@@ -44,7 +81,7 @@ export const DatasourcesTableRowGrid: FC<GridChildComponentProps> = observer(
       switch (attrData.type) {
         case 'string':
           content = (
-            <div>
+            <div ref={columnRoot} data-id={rowIndex}>
               {getKeyValue<keyof IDatasource, IDatasource>(column as keyof IDatasource)(
                 datasource
               )}
@@ -129,9 +166,7 @@ export const DatasourcesTableRowGrid: FC<GridChildComponentProps> = observer(
                   ? styleModule.draggingRow
                   : ''
               )}
-              style={{
-                ...style,
-              }}
+              style={style}
               // onClick={event => {
               //   setEdit(true);
               //   // refDiv.current.f
@@ -142,7 +177,9 @@ export const DatasourcesTableRowGrid: FC<GridChildComponentProps> = observer(
               }}
             >
               {' '}
-              {content}
+              <div ref={columnRoot} style={{ display: 'inline-block' }}>
+                {content}
+              </div>
             </div>
           </Popover>
         )}

@@ -8,11 +8,12 @@ import React, {
   useContext,
   useMemo,
   useRef,
+  useState,
 } from 'react';
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
+import AutoSizer from 'react-virtualized-auto-sizer';
 import { GridChildComponentProps, VariableSizeGrid } from 'react-window';
 
-import { InfiniteGrid } from 'src/shared/InfinitrGrid/InfiniteGrid';
 import { classNames } from 'src/utils/classNames';
 
 import { DatasourcesTableRowGrid } from '../DatasourcesTableRowGrid/DatasourcesTableRowGrid';
@@ -27,6 +28,13 @@ const defContextHeader = {
 };
 const DragContext = createContext(defContextHeader);
 
+const defRowContext = {
+  setHeight: (index: number, val: number) => {},
+  setWidth: (index: number, val: number) => {},
+};
+
+export const RowContext = createContext(defRowContext);
+
 export const DatasourcesTable = observer(function DatasourcesTable() {
   const staticGridHeader = useRef<VariableSizeGrid>(null);
   const leftFixedGrid = useRef<VariableSizeGrid>(null);
@@ -38,6 +46,93 @@ export const DatasourcesTable = observer(function DatasourcesTable() {
       leftFixedGrid.current?.scrollTo({ scrollLeft: 0, scrollTop });
       rightFixedGrid.current?.scrollTo({ scrollLeft: 0, scrollTop });
     }
+  }, []);
+
+  const sizeMap = React.useRef<{ [key: string]: number }>({});
+  const sizeMapWidth = React.useRef<{ [key: string]: number }>({});
+
+  const setWidth = useCallback((index: number, size: number) => {
+    console.log('set', size);
+
+    if (
+      size > datasourceTableService.getAttributeDataByIndex(index).width &&
+      (!sizeMapWidth.current[index] || sizeMapWidth.current[index] < size)
+    ) {
+      sizeMapWidth.current = { ...sizeMapWidth.current, [index]: size };
+
+      if (mainFixedGrid.current) {
+        mainFixedGrid.current.resetAfterColumnIndex(index);
+      } else {
+        setTimeout(() => {
+          if (mainFixedGrid.current) {
+            mainFixedGrid.current.resetAfterColumnIndex(index);
+          }
+        }, 100);
+      }
+
+      if (staticGridHeader.current) {
+        staticGridHeader.current.resetAfterColumnIndex(index);
+      } else {
+        setTimeout(() => {
+          if (staticGridHeader.current) {
+            staticGridHeader.current.resetAfterColumnIndex(index);
+          }
+        }, 100);
+      }
+    }
+  }, []);
+
+  const getWidth = useCallback((index: number) => {
+    //console.log('width', sizeMapWidth.current[index]);
+
+    return (
+      sizeMapWidth.current[index] ||
+      datasourceTableService.getAttributeDataByIndex(index).width
+    );
+  }, []);
+
+  const setHeight = useCallback((index: number, size: number) => {
+    if (size > 55 && (!sizeMap.current[index] || sizeMap.current[index] < size)) {
+      sizeMap.current = { ...sizeMap.current, [index]: size };
+
+      if (mainFixedGrid.current) {
+        mainFixedGrid.current.resetAfterRowIndex(index);
+      } else {
+        setTimeout(() => {
+          if (mainFixedGrid.current) {
+            mainFixedGrid.current.resetAfterRowIndex(index);
+          }
+        }, 100);
+      }
+
+      if (leftFixedGrid.current) {
+        leftFixedGrid.current.resetAfterRowIndex(index);
+      } else {
+        setTimeout(() => {
+          if (leftFixedGrid.current) {
+            leftFixedGrid.current.resetAfterRowIndex(index);
+          }
+        }, 100);
+      }
+    }
+  }, []);
+
+  const getHeight = useCallback(index => {
+    return sizeMap.current[index] || 55;
+  }, []);
+
+  const calcEstimatedSize = useCallback(() => {
+    const keys = Object.keys(sizeMap.current);
+    const estimatedHeight = keys.reduce((param, i) => param + sizeMap.current[i], 0);
+
+    return estimatedHeight / keys.length;
+  }, []);
+
+  const calcEstimatedSizeWidth = React.useCallback(() => {
+    const keys = Object.keys(sizeMapWidth.current);
+    const estimatedWidth = keys.reduce((param, i) => param + sizeMap.current[i], 0);
+
+    return estimatedWidth / keys.length;
   }, []);
 
   const onStartDrag = useCallback((event: DraggableEvent, data: DraggableData) => {
@@ -56,20 +151,14 @@ export const DatasourcesTable = observer(function DatasourcesTable() {
 
     if (ids[0] === 'devider-column') {
       datasourceTableService.setColumnWidth(+ids[1], data.x);
-      //mainFixedGrid.current?.resetAfterColumnIndex(+ids[1]);
+      mainFixedGrid.current?.resetAfterColumnIndex(+ids[1]);
       staticGridHeader.current?.resetAfterColumnIndex(+ids[1]);
 
       return;
     }
 
     if (ids[0] === '-1') datasourceTableService.setColumnOrder(+ids[1], data.x);
-
-    // if (+ids[0] >= 0) datasourceTableService.setOrderRow(+ids[0], data.y);
   }, []);
-
-  const getColumnWidth = (columnIndex: number) => {
-    return datasourceTableService.getAttributeDataByIndex(columnIndex).width;
-  };
 
   return (
     <DragContext.Provider
@@ -91,56 +180,83 @@ export const DatasourcesTable = observer(function DatasourcesTable() {
           <Divider className={styleModule.dividerHeader} type="vertical" />
         </div>
         <div style={{ width: '100%', height: '100%', overflow: 'scroll' }}>
-          <InfiniteGrid
-            ref={staticGridHeader}
-            columnCount={7}
-            columnWidth={getColumnWidth}
-            rowCount={1}
-            rowHeight={(index: number) => 52.25}
-            style={{ overflowX: 'hidden' }}
-          >
-            {DatasourcesTableHeader}
-          </InfiniteGrid>
-          {/* <DatasourcesTableObjectHeader /> */}
+          <AutoSizer>
+            {({ height, width }) => (
+              <VariableSizeGrid
+                ref={staticGridHeader}
+                columnCount={7}
+                columnWidth={getWidth}
+                height={height}
+                rowCount={1}
+                rowHeight={(index: number) => 52.25}
+                style={{ overflowX: 'hidden' }}
+                width={width}
+              >
+                {DatasourcesTableHeader}
+              </VariableSizeGrid>
+            )}
+          </AutoSizer>
         </div>
         <div style={{ width: '45px' }}></div>
       </div>
       <div className={styleModule.table}>
         <div style={{ width: '35px' }}>
-          <InfiniteGrid
-            ref={leftFixedGrid}
-            columnCount={1}
-            columnWidth={(index: number) => 30}
-            rowCount={datasourceTableService.count}
-            rowHeight={(index: number) => 55}
-            style={{ overflowY: 'hidden' }}
-          >
-            {DatasourcesCheckBoxRow}
-          </InfiniteGrid>
+          <AutoSizer>
+            {({ height, width }) => (
+              <VariableSizeGrid
+                ref={leftFixedGrid}
+                columnCount={1}
+                columnWidth={(index: number) => 30}
+                height={height}
+                rowCount={datasourceTableService.count}
+                rowHeight={getHeight}
+                style={{ overflowY: 'hidden' }}
+                width={width}
+              >
+                {DatasourcesCheckBoxRow}
+              </VariableSizeGrid>
+            )}
+          </AutoSizer>
         </div>
         <div style={{ width: '100%', height: '100%', overflow: 'scroll' }}>
-          <InfiniteGrid
-            ref={mainFixedGrid}
-            columnCount={7}
-            columnWidth={getColumnWidth}
-            rowCount={datasourceTableService.count}
-            rowHeight={(index: number) => 55}
-            onScroll={onScroll}
-          >
-            {DatasourcesTableRowGrid}
-          </InfiniteGrid>
+          <RowContext.Provider value={{ setHeight: setHeight, setWidth: setWidth }}>
+            <AutoSizer>
+              {({ height, width }) => (
+                <VariableSizeGrid
+                  ref={mainFixedGrid}
+                  columnCount={7}
+                  columnWidth={getWidth}
+                  estimatedColumnWidth={calcEstimatedSizeWidth()}
+                  estimatedRowHeight={calcEstimatedSize()}
+                  height={height}
+                  rowCount={datasourceTableService.count}
+                  rowHeight={getHeight}
+                  width={width}
+                  onScroll={onScroll}
+                >
+                  {DatasourcesTableRowGrid}
+                </VariableSizeGrid>
+              )}
+            </AutoSizer>
+          </RowContext.Provider>
         </div>
         <div style={{ width: '35px' }}>
-          <InfiniteGrid
-            ref={rightFixedGrid}
-            columnCount={1}
-            columnWidth={(index: number) => 35}
-            rowCount={datasourceTableService.count}
-            rowHeight={(index: number) => 55}
-            style={{ overflowY: 'hidden' }}
-          >
-            {DatasourcesMoreMenuRow}
-          </InfiniteGrid>
+          <AutoSizer>
+            {({ height, width }) => (
+              <VariableSizeGrid
+                ref={rightFixedGrid}
+                columnCount={1}
+                columnWidth={(index: number) => 35}
+                height={height}
+                rowCount={datasourceTableService.count}
+                rowHeight={(index: number) => 55}
+                style={{ overflowY: 'hidden' }}
+                width={width}
+              >
+                {DatasourcesMoreMenuRow}
+              </VariableSizeGrid>
+            )}
+          </AutoSizer>
         </div>
       </div>
     </DragContext.Provider>
@@ -150,6 +266,13 @@ export const DatasourcesTable = observer(function DatasourcesTable() {
 const DatasourcesTableHeader: FC<GridChildComponentProps> = observer(
   function DatasourcesTableHeader({ columnIndex, rowIndex, style }) {
     const context = useContext(DragContext);
+
+    // const onDoubleClick = useCallback(() => {
+    //   datasourceTableService.setColumnCustomWidth(
+    //     columnIndex,
+    //     !!datasourceTableService.isColumnCustomWidth(columnIndex)
+    //   );
+    // }, [columnIndex]);
 
     const className =
       datasourceTableService.columnSelect === columnIndex
@@ -163,6 +286,7 @@ const DatasourcesTableHeader: FC<GridChildComponentProps> = observer(
           ...style,
           display: 'flex',
         }}
+        // onDoubleClick={onDoubleClick}
       >
         <Draggable
           axis="x"

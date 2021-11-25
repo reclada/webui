@@ -1,5 +1,5 @@
 import { Checkbox, Divider, Input } from 'antd';
-import result from 'antd/lib/result';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { observer } from 'mobx-react-lite';
 import React, {
   createContext,
@@ -25,6 +25,7 @@ import { DatasourcesTableObject } from '../DatasourcesTableObject/DatasourcesTab
 import { datasourceTableService } from '../datasourceTable.service';
 import { ArticleNameRenderer } from '../shared/ArticleNameRenderer/ArticleNameRenderer';
 import { ArticleTypeRenderer } from '../shared/ArticleTypeRenderer/ArticleTypeRenderer';
+import { MoreMenuRenderer } from '../shared/MoreMenuRenderer/MoreMenuRenderer';
 
 import styleModule from './DatasourcesTable2.module.scss';
 
@@ -63,7 +64,7 @@ export const DatasourcesTable2 = observer(function DatasourcesTable2() {
     if (+ids[0] >= 0) datasourceTableService.setOrderRow(+ids[0]);
   }, []);
 
-  const header: ReactNode[] = [];
+  const header: ReactNode[] = [<th style={{ width: '35px' }}></th>];
 
   for (let i = 0; i < 7; i++) {
     const attr = datasourceTableService.getAttributeDataByIndex(i);
@@ -73,6 +74,7 @@ export const DatasourcesTable2 = observer(function DatasourcesTable2() {
 
     header.push(<th style={{ width: width }}></th>);
   }
+  header.push(<th style={{ width: '35px' }}></th>);
   const containerRef = useRef(null);
   const onScrollTable = useCallback(event => {
     //@ts-ignore
@@ -185,6 +187,7 @@ const DatasourcesTableObjectHeader: FC<headerProp> = memo(
               <Divider className={styleModule.dividerHeader} type="vertical" />
             </div>
           </Draggable>
+          <div style={{ width: '35px' }}></div>
         </div>
       );
     }
@@ -193,14 +196,14 @@ const DatasourcesTableObjectHeader: FC<headerProp> = memo(
       <div style={{ display: 'flex' }}>
         <div
           className={classNames(styleModule.columnTable, styleModule.columnHeader)}
-          style={{ width: '35px' }}
+          style={{ width: '35px', position: 'relative' }}
         >
           <Checkbox
             checked={datasourceTableService.selectedRows.length > 0}
             className={styleModule.checkBox}
             disabled={true}
           />
-          <Divider className={styleModule.dividerHeader} type="vertical" />
+          {/* <Divider className={styleModule.dividerHeader} type="vertical" /> */}
         </div>
         {content}
       </div>
@@ -240,6 +243,25 @@ const RowDataSources: FC<ListChildComponentProps> = memo(
     if (!datasource && !isScrolling) {
       datasourceTableService.updateList(index);
     }
+
+    const onUpdate = useCallback(
+      (name: string) => {
+        if (datasource) {
+          datasource.name = name;
+          datasourceTableService.updateRow(index, datasource);
+        }
+      },
+      [datasource, index]
+    );
+
+    const onSelect = useCallback(
+      (event: CheckboxChangeEvent) => {
+        if (datasource) {
+          datasourceTableService.selectDataSource(datasource, event.target.checked);
+        }
+      },
+      [datasource]
+    );
 
     const onClickActive = useCallback(() => {
       if (datasource && datasource.type === ArticleType.PDF) {
@@ -382,13 +404,18 @@ const RowDataSources: FC<ListChildComponentProps> = memo(
                           ).length > 0
                         }
                         className={styleModule.checkBox}
-                        // onChange={onSelect}
+                        onChange={onSelect}
                       />
                     </div>
                   </strong>
                 ) : null}
               </td>
               {content}
+              <td>
+                {datasource ? (
+                  <MoreMenuRenderer datasource={datasource} onUpdate={onUpdate} />
+                ) : null}
+              </td>
             </tr>
           </Draggable>
           // </Popover>

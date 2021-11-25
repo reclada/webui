@@ -14,6 +14,7 @@ import { DisplayingTypes } from 'src/stores/Types';
 import { DatasourcesTable2 } from './DatasorcesTable2/DatasourcesTable2';
 import { DatasourcesCardRow } from './DatasourcesCardsRow/DatasuorcesCardRow';
 import style from './DatasourcesPane.module.scss';
+import { DatasourcesTable } from './DatasourcesTable/DatasourcesTable';
 import { datasourceTableService } from './datasourceTable.service';
 import { useFileUrl } from './shared/FilePreviewModal/useFileUrl';
 
@@ -63,8 +64,9 @@ export const DatasourcesPane: FC<DatasourcesPaneProps> = observer(
 
     const content =
       datasourceTableService.displaingType === DisplayingTypes.TABLE ? (
-        <DatasourcesTable2 />
+        <DatasourcesTable />
       ) : (
+        // <DatasourcesTable3 />
         <InfiniteList
           className={''}
           itemSize={300}
