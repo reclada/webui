@@ -9,6 +9,9 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: {{ .Values.clusterissuer.staging.name }}
   labels:
     {{- include "webui.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
