@@ -46,7 +46,7 @@ export const DatasetsCard: FC<DatasetCardProps> = observer(function DatasetsCard
         <Card className={style.card} loading={true}></Card>
       ) : (
         <Card
-          key={dataset.id}
+          key={dataset.GUID}
           className={style.card}
           extra={
             <MoreMenuRenderer

@@ -1,5 +1,5 @@
 import { Dropdown, Menu } from 'antd';
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 
 import { ReactComponent as MenuArrowIcon } from 'src/resources/menu-arrow.svg';
 
@@ -9,7 +9,7 @@ type OwnersRendererProps = {
   owners: string[];
 };
 
-export const OwnersRenderer: FC<OwnersRendererProps> = function OwnersRenderer({
+export const OwnersRenderer: FC<OwnersRendererProps> = memo(function OwnersRenderer({
   owners,
 }) {
   const menu = (
@@ -35,4 +35,4 @@ export const OwnersRenderer: FC<OwnersRendererProps> = function OwnersRenderer({
       )}
     </>
   );
-};
+});

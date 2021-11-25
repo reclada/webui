@@ -1,11 +1,11 @@
-import { OrderBy } from 'src/shared/Sorting/Sorting';
+import { OrderBy, RFilter } from 'src/stores/Types';
 
 import { apiService } from './apiService';
 import { ArticleType, getArticleTypeByKey } from './articleService';
 import { IRecladaFile, RecladaObjectClass } from './IRecladaObject';
 import { rpcUrls } from './rpcUrls';
 export interface IDatasource {
-  id: string;
+  GUID: string;
   name: string;
   type: ArticleType;
   createDate: Date;
@@ -31,33 +31,36 @@ export async function fetchDatasources(
   datasetId?: string,
   orderBy?: OrderBy[],
   limit?: number,
-  offset?: number
+  offset?: number,
+  filter?: RFilter
 ): Promise<DatasourcesResponse> {
   const recladaFileObjects = datasetId
     ? await fetchFilesListForDataset(
         datasetId,
         orderBy ? orderBy : [],
         limit === undefined ? 'ALL' : limit,
-        offset === undefined ? 0 : offset
+        offset === undefined ? 0 : offset,
+        filter ? filter : {}
       )
     : await fetchFilesList(
         orderBy ? orderBy : [],
         limit === undefined ? 'ALL' : limit,
-        offset === undefined ? 0 : offset
+        offset === undefined ? 0 : offset,
+        filter ? filter : {}
       );
 
   return {
     objects: recladaFileObjects.objects.map(fileObject => {
       //const fd = fileObject.attributes.name.split('.');
-
+      Math.random();
       const datasource: IDatasource = {
-        id: fileObject.GUID,
+        GUID: fileObject.GUID,
         name: fileObject.attributes.name,
         type: getArticleTypeByKey(
           fileObject.attributes.mimeType.replace('application/', '').toUpperCase()
         ),
         createDate: new Date(),
-        author: 'unknown',
+        author: 'unknown author',
         lastUpdate: new Date(),
         whoUpdated: 'unknown',
         owners: ['me', 'other'],
@@ -75,7 +78,8 @@ async function fetchFilesListForDataset(
   datasetId: string,
   orderBy: OrderBy[],
   limit: number | string,
-  offset: number
+  offset: number,
+  filter: RFilter
 ) {
   return apiService.callRpcPost<RecladaFileResponse>(rpcUrls.getRecladaObjectsFromList, {
     GUID: datasetId,
@@ -85,17 +89,19 @@ async function fetchFilesListForDataset(
     orderBy: orderBy,
     limit: limit,
     offset: offset,
+    attributes: filter,
   });
 }
 
 async function fetchFilesList(
   orderBy: OrderBy[],
   limit: number | string,
-  offset: number
+  offset: number,
+  filter: RFilter
 ) {
   return apiService.callRpcPost<RecladaFileResponse>(rpcUrls.getRecladaObjectList, {
     class: RecladaObjectClass.DataSource,
-    attributes: {},
+    attributes: filter,
     orderBy: orderBy,
     limit: limit,
     offset: offset,

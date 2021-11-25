@@ -4,7 +4,7 @@ import React, { FC, useContext } from 'react';
 import { ReactComponent as CardViewIcon } from 'src/resources/card-view.svg';
 import { ReactComponent as ListViewIcon } from 'src/resources/list-view.svg';
 import { ReactComponent as TableViewIcon } from 'src/resources/table-view.svg';
-import { DisplayingTypes } from 'src/shared/Sorting/Sorting';
+import { DisplayingTypes } from 'src/stores/Types';
 
 import { classNames } from '../../../../utils/classNames';
 import { ToolbarContext } from '../ResultToolbar';
@@ -13,8 +13,6 @@ import style from './DisplayingSettings.module.scss';
 
 type DisplayingSettingsProps = {
   className?: string;
-  activeDisplayingType?: DisplayingTypes;
-  setActiveDisplayingType?: any;
 };
 
 export const DisplayingSettings: FC<DisplayingSettingsProps> = observer(

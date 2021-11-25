@@ -95,7 +95,7 @@ export default class BaseListStore<TListItem extends IIdentifiable> {
 
   @action
   updateRow(index: number, elem: TListItem) {
-    this._results.set(index, elem);
+    this._results.set(index, { ...elem });
   }
 
   @action
@@ -112,13 +112,14 @@ export default class BaseListStore<TListItem extends IIdentifiable> {
   updateList(index: number) {
     const page = Math.floor(index / this.rowInPage);
 
+    this.setCurrentPage(page);
+
     if (!this.pageLoding.has(page) && !this._results.has(index)) {
       this.pageLoding.add(page);
       this.fetchData(page * this.rowInPage, this.rowInPage)
         .then(result => {
           this.pageLoding.delete(page);
           this.addToList(result.objects, page * this.rowInPage);
-          this.setCurrentPage(page);
           this.cacheCleaning();
         })
         .catch(err => {});

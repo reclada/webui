@@ -3,16 +3,18 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect } from 'react';
 
 import { ArticleViewPanel } from 'src/pages/SearchResultPage/SearchResultMain/ArticleViewPanel/ArticleViewPanel';
+import { Pager } from 'src/pages/shared/Pager/Pager';
 import {
   ResultToolbar,
   ToolbarContext,
 } from 'src/pages/shared/ResultToolbar/ResultToolbar';
 import { InfiniteList } from 'src/shared/InfiniteList/InfiniteList';
-import { DisplayingTypes } from 'src/shared/Sorting/Sorting';
+import { DisplayingTypes } from 'src/stores/Types';
 
+import { DatasourcesTable2 } from './DatasorcesTable2/DatasourcesTable2';
 import { DatasourcesCardRow } from './DatasourcesCardsRow/DatasuorcesCardRow';
 import style from './DatasourcesPane.module.scss';
-import { DatasourcesTableRow } from './DatasourcesTableRow/DatasourceTableRow';
+import { DatasourcesTable } from './DatasourcesTable/DatasourcesTable';
 import { datasourceTableService } from './datasourceTable.service';
 import { useFileUrl } from './shared/FilePreviewModal/useFileUrl';
 
@@ -27,7 +29,7 @@ export const DatasourcesPane: FC<DatasourcesPaneProps> = observer(
     }, [datasetId]);
 
     const activeUrl = useFileUrl(
-      datasourceTableService.activeRecord ? datasourceTableService.activeRecord.id : '',
+      datasourceTableService.activeRecord ? datasourceTableService.activeRecord.GUID : '',
       datasourceTableService.activeRecord !== undefined
     );
 
@@ -62,54 +64,9 @@ export const DatasourcesPane: FC<DatasourcesPaneProps> = observer(
 
     const content =
       datasourceTableService.displaingType === DisplayingTypes.TABLE ? (
-        <>
-          <div className={style.headTable}>
-            <Row>
-              <Col span={1}>
-                <Checkbox
-                  checked={datasourceTableService.selectedRows.length > 0}
-                  className={style.checkboxCard}
-                  disabled={true}
-                />
-                <Divider className={style.dividerHeader} type="vertical" />
-              </Col>
-              <Col span={1}>
-                Type <Divider className={style.dividerHeader} type="vertical" />
-              </Col>
-              <Col
-                className={style.columnTable}
-                span={4}
-                onClick={() => onClickHeader('attrs, name')}
-              >
-                Name <Divider className={style.dividerHeader} type="vertical" />
-              </Col>
-              <Col span={3}>
-                Create date <Divider className={style.dividerHeader} type="vertical" />
-              </Col>
-              <Col span={4}>
-                Author <Divider className={style.dividerHeader} type="vertical" />
-              </Col>
-              <Col span={3}>
-                Last update <Divider className={style.dividerHeader} type="vertical" />
-              </Col>
-              <Col span={4}>
-                Who updated <Divider className={style.dividerHeader} type="vertical" />
-              </Col>
-              <Col span={3}>
-                Owners <Divider className={style.dividerHeader} type="vertical" />
-              </Col>
-              <Col span={1}></Col>
-            </Row>
-          </div>
-          <InfiniteList
-            className={''}
-            itemSize={55}
-            rowCount={datasourceTableService.count}
-          >
-            {DatasourcesTableRow}
-          </InfiniteList>
-        </>
+        <DatasourcesTable />
       ) : (
+        // <DatasourcesTable3 />
         <InfiniteList
           className={''}
           itemSize={300}
@@ -148,11 +105,12 @@ export const DatasourcesPane: FC<DatasourcesPaneProps> = observer(
                 content
               )}
             </div>
+            <Pager service={datasourceTableService.listStore} />
             {datasourceTableService.activeRecord && (
               <div className={style.rightPanel}>
                 <ArticleViewPanel
                   article={{
-                    id: datasourceTableService.activeRecord.id,
+                    id: datasourceTableService.activeRecord.GUID,
                     url: activeUrl,
                     title: datasourceTableService.activeRecord.name,
                   }}

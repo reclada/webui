@@ -88,7 +88,7 @@ export const AddDatasourceToDatasetModal: FC<AddDatasourceToDatasetModalProps> =
           <Typography.Title level={4}>Select dataset:</Typography.Title>
           <Select defaultValue="" style={{ width: 120 }} onChange={setSelectedDataSet}>
             {datasets.map(dataset => (
-              <Option key={dataset.id} value={dataset.id}>
+              <Option key={dataset.GUID} value={dataset.GUID}>
                 {dataset.title}
               </Option>
             ))}

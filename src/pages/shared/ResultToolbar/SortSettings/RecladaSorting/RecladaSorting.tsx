@@ -1,28 +1,34 @@
 import { Button, Modal, Select, Typography } from 'antd';
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 
-import { ToolbarContext } from 'src/pages/shared/ResultToolbar/ResultToolbar';
 import { ReactComponent as Empty } from 'src/resources/empty.svg';
 import { ReactComponent as Plus } from 'src/resources/plus.svg';
-import { OrderType } from 'src/shared/Sorting/Sorting';
+import { OrderType, RecladaOrder } from 'src/stores/Types';
 
 import style from './RecladaSorting.module.scss';
 
 type RecladaSortingProps = {
   onClose: () => void;
+  orders?: RecladaOrder[];
+  enableOrders?: RecladaOrder[];
+  setOrder: (value: RecladaOrder[] | undefined) => void;
 };
 
 const { Option } = Select;
 
 export const RecladaSorting: FC<RecladaSortingProps> = function RecladaSorting({
   onClose,
+  orders,
+  enableOrders,
+  setOrder,
 }) {
-  const store = useContext(ToolbarContext);
-  const [currentOrders, setCurrentOrders] = useState(store.orders ? store.orders : []);
+  const [currentOrders, setCurrentOrders] = useState(orders ? orders : []);
 
-  const onClickAdd = () => {
+  const onClickAdd = useCallback(() => {
     setCurrentOrders([...currentOrders, { name: '', field: '', order: OrderType.ASC }]);
-  };
+  }, [currentOrders]);
+
+  console.log('reneder RecladaSorting');
 
   return (
     <Modal
@@ -50,7 +56,7 @@ export const RecladaSorting: FC<RecladaSortingProps> = function RecladaSorting({
             size="large"
             type="primary"
             onClick={() => {
-              store.setOrder(
+              setOrder(
                 currentOrders
                   ? currentOrders.filter(el => {
                       return el.field && el.order;
@@ -78,19 +84,24 @@ export const RecladaSorting: FC<RecladaSortingProps> = function RecladaSorting({
             <Select
               className={style.select}
               value={
-                store.enableOrders && el.name
-                  ? store.enableOrders.findIndex(elem => elem.name === el.name)
+                enableOrders && el.name
+                  ? enableOrders.findIndex(elem => elem.name === el.name)
                   : undefined
               }
               onChange={(val: number) => {
-                if (store.enableOrders !== undefined) {
-                  currentOrders[index].name = store.enableOrders[val].name;
-                  currentOrders[index].field = store.enableOrders[val].field;
-                  setCurrentOrders(currentOrders);
+                if (enableOrders) {
+                  setCurrentOrders(prev => {
+                    const newOrders = [...currentOrders];
+
+                    newOrders[index].name = enableOrders[val].name;
+                    newOrders[index].field = enableOrders[val].field;
+
+                    return newOrders;
+                  });
                 }
               }}
             >
-              {store.enableOrders?.map((elem, ind) => (
+              {enableOrders?.map((elem, ind) => (
                 <Option key={ind} value={ind}>
                   {elem.name}
                 </Option>
@@ -100,8 +111,13 @@ export const RecladaSorting: FC<RecladaSortingProps> = function RecladaSorting({
               className={style.select}
               defaultValue={el.order}
               onChange={(val: OrderType) => {
-                currentOrders[index].order = val;
-                setCurrentOrders(currentOrders);
+                setCurrentOrders(prev => {
+                  const newOrders = [...currentOrders];
+
+                  newOrders[index].order = val;
+
+                  return newOrders;
+                });
               }}
             >
               <Option key={OrderType.ASC} value={OrderType.ASC}>

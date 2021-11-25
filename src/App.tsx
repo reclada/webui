@@ -46,11 +46,11 @@ function App() {
             <FilesPage pageType={FilePageType.Available} />
           </AuthGuard>
         </Route>
-        {/* <Route path={routes.objectDataset}>
+        <Route path={routes.objectDataset}>
           <AuthGuard>
             <FilesPage pageType={FilePageType.ObjectDataset} />
           </AuthGuard>
-        </Route> */}
+        </Route>
         <Route
           exact={true}
           path={routes.root}

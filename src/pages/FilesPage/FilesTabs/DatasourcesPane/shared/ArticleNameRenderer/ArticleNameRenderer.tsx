@@ -11,18 +11,18 @@ type ArticleNameRendererProps = {
   className?: string;
 };
 
-export const ArticleNameRenderer: FC<ArticleNameRendererProps> = function ArticleNameRenderer({
-  title,
-  dictionaries,
-  className,
-}) {
-  return (
-    <>
-      <div className={classNames(className, style.titleWrapper)}>
-        <div className={className ? className : style.title}>{title}</div>
-      </div>
+export const ArticleNameRenderer: FC<ArticleNameRendererProps> = React.memo(
+  function ArticleNameRenderer({ title, dictionaries, className }) {
+    return (
+      <>
+        <div className={classNames(className, style.titleWrapper)}>
+          <div className={className ? className : style.title}>{title}</div>
+        </div>
 
-      <>{dictionaries && dictionaries.map((dict, idx) => <Tag key={idx}>#{dict}</Tag>)}</>
-    </>
-  );
-};
+        <>
+          {dictionaries && dictionaries.map((dict, idx) => <Tag key={idx}>#{dict}</Tag>)}
+        </>
+      </>
+    );
+  }
+);

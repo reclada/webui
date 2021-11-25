@@ -55,7 +55,7 @@ export const DatasourcesCard: FC<DatasetCardProps> = observer(function Datasourc
         <Card className={style.card} loading={true}></Card>
       ) : (
         <Card
-          key={datasource.id}
+          key={datasource.GUID}
           className={style.card}
           extra={<MoreMenuRenderer datasource={datasource} onUpdate={onUpdate} />}
           title={
@@ -63,7 +63,7 @@ export const DatasourcesCard: FC<DatasetCardProps> = observer(function Datasourc
               <Checkbox
                 checked={
                   datasourceTableService.selectedRows.filter(
-                    chel => datasource.id === chel
+                    chel => datasource.GUID === chel
                   ).length > 0
                 }
                 className={style.checkboxCard}

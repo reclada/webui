@@ -7,7 +7,7 @@ import {
   ToolbarContext,
 } from 'src/pages/shared/ResultToolbar/ResultToolbar';
 import { InfiniteList } from 'src/shared/InfiniteList/InfiniteList';
-import { DisplayingTypes } from 'src/shared/Sorting/Sorting';
+import { DisplayingTypes } from 'src/stores/Types';
 
 import { Pager } from '../../../shared/Pager/Pager';
 import { DatasourcesPane } from '../DatasourcesPane/DatasourcesPane';
@@ -21,7 +21,6 @@ import { DatasetsTableInfRow } from './DatasetsTableInfRow/DatasetsTableInfRow';
 export const DatasetsPane: FC = observer(function DatasetsPane() {
   const handleUnselectDataset = useCallback(() => {
     datasetsDataService.setActiveRecord(undefined);
-    //setSelectedDataset(undefined);
   }, []);
 
   const onClickHeader = (key: string) => {
@@ -113,7 +112,7 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
             selectedDataset={datasetsDataService.activeRecord}
             onUnselectDataset={handleUnselectDataset}
           />
-          <DatasourcesPane datasetId={datasetsDataService.activeRecord.id} />
+          <DatasourcesPane datasetId={datasetsDataService.activeRecord.GUID} />
         </>
       ) : (
         <>

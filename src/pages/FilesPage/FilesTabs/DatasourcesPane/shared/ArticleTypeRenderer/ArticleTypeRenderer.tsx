@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 
 import { ArticleType } from 'src/api/articleService';
 
@@ -8,8 +8,8 @@ type ArticleTypeRendererProps = {
   articleType: ArticleType;
 };
 
-export const ArticleTypeRenderer: FC<ArticleTypeRendererProps> = function ArticleTypeRenderer({
-  articleType,
-}) {
-  return <div className={style.type}>{articleType}</div>;
-};
+export const ArticleTypeRenderer: FC<ArticleTypeRendererProps> = memo(
+  function ArticleTypeRenderer({ articleType }) {
+    return <div className={style.type}>{articleType}</div>;
+  }
+);

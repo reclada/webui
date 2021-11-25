@@ -1,0 +1,78 @@
+.table {
+    //   display: flex;
+    //   flex-wrap: wrap;
+    width: 100%;
+    height: 90%;
+  }
+  
+  .headTable {
+    height: 55px;
+    background: #fafafa;
+    font-weight: 500;
+    padding-top: 15px;
+  }
+  
+  
+  .dividerHeader {
+    height: 90%;
+    position: absolute;
+    right: 0;
+  }
+  
+  .columnTable{
+    padding-left: 10px;
+  }
+
+  .toolbar {
+    padding: 0 0 30px;
+  }
+  
+  .main {
+    // padding: 0 30px;
+    flex-grow: 1;
+    display: flex;
+  }
+  
+  .leftPanel {
+    // height: 700px;
+    height: 75vh;
+    // overflow-y: auto;
+    padding-right: 18px;
+    transition: width 300ms;
+  }
+
+  .rightPanel {
+    width: 30%;
+   // padding-left: 18px;
+  }
+
+  .leftPanelWide {
+    composes: leftPanel;
+    width: 100%;
+  }
+  
+  .leftPanelSlim {
+    composes: leftPanel;
+    width: 70%;
+  }
+
+  .rowTable {
+    padding-top: 15px;
+    height: 55px;
+    border-bottom: 1px solid rgb(240, 240, 240);
+    overflow: hidden;
+  }
+  
+  .rowTable:hover {
+    background: #fafafa;
+  }
+
+  .draggingColumnHeader{
+    border-left: 1px solid blue;
+    border-right: 1px solid blue;
+  }
+  .draggingRow{
+    border-top: 1px solid blue;
+    border-bottom: 1px solid blue;
+  }
+  
