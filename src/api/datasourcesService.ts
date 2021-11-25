@@ -60,9 +60,7 @@ export async function fetchDatasources(
           fileObject.attributes.mimeType.replace('application/', '').toUpperCase()
         ),
         createDate: new Date(),
-        author: Math.floor(Math.random() * 2)
-          ? 'long unknown author long unknown author long unknown author long unknown author long unknown author long unknown author long unknown author'
-          : 'unknown author',
+        author: 'unknown author',
         lastUpdate: new Date(),
         whoUpdated: 'unknown',
         owners: ['me', 'other'],
