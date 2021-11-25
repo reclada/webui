@@ -23,7 +23,7 @@ spec:
       {{- range .hosts }}
         - {{ . | quote }}
       {{- end }}
-      secretName: {{ .Values.clusterissuer.staging.privateKeySecretRef }}
+      secretName: {{ .secretName }}
   {{- end }}
 {{- end }}
   rules:
