@@ -41,7 +41,7 @@ prepare_webui:
       when: never
     - if: $CI_COMMIT_REF_NAME =~ /^dynamic/ 
       when: always
-    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME =~  "main"
       when: always
     - if: $CI_COMMIT_REF_NAME == "test"
       when: never
@@ -67,7 +67,7 @@ build_webui:
       when: never
     - if: $CI_COMMIT_REF_NAME =~ /^dynamic/ && $CI_COMMIT_MESSAGE !~ /^delenv/
       when: always
-    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME =~  "main"
       when: always
     - if: $CI_COMMIT_REF_NAME == "test"
       when: never
