@@ -466,11 +466,8 @@ deploy-prod-env:
   image: 588200329560.dkr.ecr.eu-west-1.amazonaws.com/helm-kubectl:v1.0.0-0
   script:
     - echo "Run update webui in prod env"
-
     - helm upgrade --install --debug --wait --timeout 600s --create-namespace -n reclada-prod -f $CI_PROJECT_DIR/devops/helm-charts/postgrest/values.yaml -f $CI_PROJECT_DIR/devops/helm-charts/postgrest/vars/autotest.yaml --set image.tag=v7.0.1-1 $POSTGREST_RELEASE_NAME devops/helm-charts/postgrest/
-    
     - echo "********"
-
     - helm upgrade --install --debug --wait --timeout 600s --create-namespace -n reclada-prod -f $CI_PROJECT_DIR/devops/helm-charts/webui/values.yaml -f $CI_PROJECT_DIR/devops/helm-charts/webui/vars/autotest.yaml --set image.tag=$IMAGE_TAG $UI_RELEASE_NAME devops/helm-charts/webui/
   needs:
     - job: build_webui
@@ -506,6 +503,10 @@ push-to-github:
     - git commit -am "${CI_COMMIT_MESSAGE}"
     - git remote --verbose
     - git push origin HEAD:$CI_COMMIT_REF_NAME --force
+  needs:
+    - job: build_webui
+    - job: prepare_webui
+      artifacts: true
   tags:
       - k8s-devops
   rules:
