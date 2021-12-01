@@ -1,6 +1,0 @@
-export BUILD_NUMBER=${BUILD_NUMBER:-dev}
-export IMAGE_VERSION=v7.0.1
-export IMAGE_TAG=${IMAGE_VERSION}-${BUILD_NUMBER}
-export REPO_URL=588200329560.dkr.ecr.eu-west-1.amazonaws.com
-export IMAGE_NAME=postgrest
-echo $IMAGE_TAG
