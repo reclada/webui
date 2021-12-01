@@ -9,6 +9,7 @@ stages:
   - clean
   - clean_db
   - clean_branches
+  - sast
   - autotest
   - push-to-github
 
@@ -378,6 +379,13 @@ delete-branches-dynamic-env:
       when: never
   tags:
     - k8s-devops
+
+include:
+  - local: Security/SAST.gitlab-ci.yml
+
+semgrep-sast:
+  variables:
+    SAST_ANALYZER_IMAGE_TAG: "2.12"
 
 
 deploy-autotest-env:
