@@ -1,14 +1,19 @@
 import { default as RCSelect, Option as RCOption } from 'rc-select';
-import React, { FC, useState } from 'react';
+import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
+import React, { FC } from 'react';
 
 import { ReactComponent as ArrowDown } from '../../resources/arrow-down.svg';
-import { classNames } from '../../utils/classNames';
 
 import style from './Select.module.scss';
 
 type SelectProps = {
+  value: string | number;
   className?: string;
   options: SelectOption[];
+  onChange: (
+    value: string | number,
+    option: OptionsType | OptionData | OptionGroupData
+  ) => void;
 };
 
 export type SelectOption = {
@@ -16,25 +21,21 @@ export type SelectOption = {
   value: string | number;
 };
 
-export const Select: FC<SelectProps> = function Select({ className, options }) {
-  const [value, setValue] = useState(options[0].value);
-
-  return (
-    <div className={classNames(className, style.root)}>
-      <RCSelect
-        inputIcon={<ArrowDown className={style.arrow} />}
-        showArrow={true}
-        showSearch={false}
-        value={value}
-        onChange={setValue}
-      >
-        {options &&
-          options.map((option, index) => (
-            <RCOption key={index} value={option.value}>
-              {option.label}
-            </RCOption>
-          ))}
-      </RCSelect>
-    </div>
-  );
-};
+export const Select: FC<SelectProps> = ({ value, className, options, onChange }) => (
+  <div className={className}>
+    <RCSelect
+      dropdownMatchSelectWidth={false}
+      inputIcon={<ArrowDown className={style.arrow} height={16} width={16} />}
+      showArrow
+      showSearch={false}
+      value={value}
+      onChange={onChange}
+    >
+      {options?.map((option, index) => (
+        <RCOption key={index} value={option.value}>
+          {option.label}
+        </RCOption>
+      ))}
+    </RCSelect>
+  </div>
+);
