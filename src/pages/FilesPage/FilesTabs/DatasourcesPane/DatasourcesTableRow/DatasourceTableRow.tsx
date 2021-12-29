@@ -50,16 +50,17 @@ export const DatasourcesTableRow: FC<ListChildComponentProps> = observer(
             <Col span={1}>
               <Checkbox
                 checked={
-                  datasourceTableService.selectedRows.filter(
-                    chel => datasource.GUID === chel
-                  ).length > 0
+                  // datasourceTableService.selectedRows.filter(
+                  //   chel => datasource.GUID === chel
+                  // ).length > 0
+                  false
                 }
                 className={styleModule.checkboxCard}
                 onChange={onSelect}
               />
             </Col>
             <Col span={1}>
-              <ArticleTypeRenderer articleType={datasource.type} />
+              <ArticleTypeRenderer value={datasource.type} />
             </Col>
             <Col
               span={4}
@@ -94,7 +95,7 @@ export const DatasourcesTableRow: FC<ListChildComponentProps> = observer(
               <OwnersRenderer owners={datasource.owners} />
             </Col>
             <Col span={1}>
-              <MoreMenuRenderer datasource={datasource} onUpdate={onUpdate} />
+              <MoreMenuRenderer datasource={datasource as any} onUpdate={onUpdate} />
             </Col>
           </Row>
         )}

@@ -17,9 +17,9 @@ import {
 } from 'src/stores/Types';
 
 class DatasourceTableService {
-  private _listStore: BaseListStoreType = new BaseListStore<IDatasource>(
+  private _listStore: BaseListStoreType = new BaseListStore<any>(
     1000,
-    this.fetchData.bind(this)
+    this.fetchData.bind(this) as any
   );
 
   private _gridStore: GridStoreType = new GridStore(
@@ -177,7 +177,7 @@ class DatasourceTableService {
   }
 
   updateRow(index: number, elem: IDatasource) {
-    return this._listStore.updateRow(index, elem);
+    return this._listStore.updateRow(index, elem as any);
   }
 
   getAttributeDataByIndex(index: number): AttributeData {
@@ -216,7 +216,7 @@ class DatasourceTableService {
   }
 
   getRow(index: number): IDatasource | undefined {
-    return this._listStore.getRow(index) as IDatasource;
+    return this._listStore.getRow(index) as any;
   }
 
   updateList(index: number) {
@@ -235,9 +235,9 @@ class DatasourceTableService {
   @action
   selectDataSource(dataSource: IDatasource, selected: boolean) {
     if (selected) {
-      this.selectedRowKeys.add(dataSource.GUID);
+      this.selectedRowKeys.add(dataSource['{GUID}:string']);
     } else {
-      this.selectedRowKeys.delete(dataSource.GUID);
+      this.selectedRowKeys.delete(dataSource['{GUID}:string']);
     }
   }
 
@@ -267,7 +267,11 @@ class DatasourceTableService {
 
   @action
   setActiveRecord(activeRecord: IDatasource | undefined) {
-    if (this.aRecord && activeRecord && this.aRecord.GUID === activeRecord.GUID) {
+    if (
+      this.aRecord &&
+      activeRecord &&
+      this.aRecord['{GUID}:string'] === activeRecord['{GUID}:string']
+    ) {
       this.aRecord = undefined;
     } else {
       this.aRecord = activeRecord;

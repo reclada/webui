@@ -112,12 +112,12 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
             selectedDataset={datasetsDataService.activeRecord}
             onUnselectDataset={handleUnselectDataset}
           />
-          <DatasourcesPane datasetId={datasetsDataService.activeRecord.GUID} />
+          <DatasourcesPane datasetId={datasetsDataService.activeRecord['{GUID}']} />
         </>
       ) : (
         <>
           <div className={style.toolbar}>
-            <ToolbarContext.Provider value={datasetsDataService}>
+            <ToolbarContext.Provider value={datasetsDataService as any}>
               <ResultToolbar />
             </ToolbarContext.Provider>
           </div>
@@ -132,7 +132,7 @@ export const DatasetsPane: FC = observer(function DatasetsPane() {
                 content
               )}
             </div>
-            <Pager service={datasetsDataService.listStore} />
+            <Pager service={datasetsDataService.listStore as any} />
           </div>
         </>
       )}

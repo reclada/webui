@@ -28,7 +28,7 @@ export const SortSettings: FC<SortSettingsProps> = function SortSettings({ class
   return (
     <div className={classNames(className, style.root)}>
       <p className={style.label}>Sort by:</p>
-      <Select options={sortTypes} />
+      {/* <Select options={sortTypes} /> */}
     </div>
   );
 };
