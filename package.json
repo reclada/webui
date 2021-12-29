@@ -11,6 +11,7 @@
     "@types/react-window": "^1.8.5",
     "antd": "^4.16.9",
     "axios": "^0.19.2",
+    "date-fns": "^2.27.0",
     "filesize": "^6.3.0",
     "mobx": "^6.1.8",
     "mobx-react-lite": "^3.2.0",

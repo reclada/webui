@@ -1,15 +1,19 @@
 @import 'src/styles/variables';
 
 .type {
-  width: 40px;
-  height: 18px;
-  padding: 0 4px;
-  border-radius: 2px;
-  background: $dark-blue-0;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background-color: #90B3C7;
   color: $white;
   font-weight: bold;
-  font-size: 12px;
-  line-height: 18px;
+  font-size: 10px;
+  line-height: 16px;
   overflow-wrap: normal;
   text-align: center;
+  display: inline-flex;
+  transition: background-color 200ms ease-in;
+
+  &:hover {
+    background-color: #536D85;
+  }
 }

@@ -1,19 +1,16 @@
+export type Value = string | number | boolean | Date | any[];
+
 export interface IRecladaObject {
-  GUID: string;
-  revision: number;
-  class: RecladaObjectClass;
-  isDeleted: boolean;
-  attributes: {
-    [key: string]: any;
-  };
+  '{GUID}': string;
+  '{class}': RecladaObjectClass;
+  '{status}': string;
+  '{createdTime}': string;
+  '{transactionID}': number;
+  '{attributes,name}': string;
+  // [x: string]: Value | undefined;
 }
 
-export type RecladaPartialObject<T extends IRecladaObject> = {
-  GUID?: string;
-  class: T['class'];
-  attributes: Partial<T['attributes']>;
-  access_token?: string;
-};
+export type RecladaPartialObject<T extends IRecladaObject> = Partial<T>;
 
 export enum RecladaObjectClass {
   File = 'File',
@@ -23,23 +20,17 @@ export enum RecladaObjectClass {
 }
 
 export interface IRecladaFile extends IRecladaObject {
-  class: RecladaObjectClass.File;
-  attributes: {
-    checksum: string;
-    mimeType: string;
-    name: string;
-    uri: string;
-  };
+  '{class}': RecladaObjectClass.File;
+  '{attributes,mimeType}': string;
+  '{attributes,uri}': string;
+  '{attributes,checksum}': string;
+  '{attributes,tags}': unknown[];
 }
 
 export interface IRecladaDataset extends IRecladaObject {
-  dataSetId?: string;
-  class: RecladaObjectClass.DataSet;
-  attrs: {
-    name: string;
-    dataSources: string[];
-    SomeDate: string;
-  };
+  '{dataSetId}': string;
+  // TODO: types for dataSources
+  '{attributes,dataSources}': unknown[];
 }
 
 export type ObjectAttributes = {

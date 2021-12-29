@@ -1,11 +1,8 @@
 import { Button, Divider, Modal, Select, Typography } from 'antd';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 
-import {
-  addDataSourcesToDataset,
-  fetchDatasets,
-  IDataset,
-} from 'src/api/datasetsDataGateService';
+import { addDataSourcesToDataset, fetchDatasets } from 'src/api/datasetsDataGateService';
+import { IRecladaDataset } from 'src/api/IRecladaObject';
 
 const { Option } = Select;
 
@@ -20,7 +17,7 @@ export const AddDatasourceToDatasetModal: FC<AddDatasourceToDatasetModalProps> =
   isOpen,
   onClose,
 }) {
-  const [datasets, setDatasets] = useState<IDataset[]>([]);
+  const [datasets, setDatasets] = useState<IRecladaDataset[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [selectedDataSet, setSelectedDataSet] = useState<string>('');
@@ -88,8 +85,8 @@ export const AddDatasourceToDatasetModal: FC<AddDatasourceToDatasetModalProps> =
           <Typography.Title level={4}>Select dataset:</Typography.Title>
           <Select defaultValue="" style={{ width: 120 }} onChange={setSelectedDataSet}>
             {datasets.map(dataset => (
-              <Option key={dataset.GUID} value={dataset.GUID}>
-                {dataset.title}
+              <Option key={dataset['{GUID}']} value={dataset['{GUID}']}>
+                {dataset['{attributes,name}']}
               </Option>
             ))}
           </Select>

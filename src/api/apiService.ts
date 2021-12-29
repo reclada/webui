@@ -14,6 +14,7 @@ class ApiService {
         url,
         {
           data: payload,
+          ver: 2,
         },
         {
           headers: { 'Content-Profile': 'api' },

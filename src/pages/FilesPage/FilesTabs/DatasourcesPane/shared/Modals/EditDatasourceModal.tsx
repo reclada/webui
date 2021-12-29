@@ -7,7 +7,12 @@ type EditModalProps = {
   opened: boolean;
   handleOk: () => void;
   handleCancel: () => void;
-  datasource: { GUID: string; checksum: string; mimeType: string };
+  datasource: {
+    '{GUID}': string;
+    '{attributes,name}': string;
+    '{checksum}': string;
+    '{attributes,mimeType}': string;
+  };
   onUpdate: (name: string, dataSourceId: string) => void;
   name: string;
 };
@@ -22,7 +27,8 @@ export const EditDatasourceModal: FC<EditModalProps> = function EditDatasourceMo
 }) {
   const onFinish = (values: any) => {
     handleOk();
-    updateDataSource(values.name, datasource) && onUpdate(values.name, datasource.GUID);
+    updateDataSource(values.name, datasource) &&
+      onUpdate(values.name, datasource['{GUID}']);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -31,7 +37,12 @@ export const EditDatasourceModal: FC<EditModalProps> = function EditDatasourceMo
 
   return (
     <Modal closeIcon={[]} footer={[]} visible={opened}>
-      <Form name="basic" onFinish={onFinish} onFinishFailed={onFinishFailed}>
+      <Form
+        initialValues={{ name }}
+        name="basic"
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+      >
         <Typography.Title level={4}>Edit Data Source</Typography.Title>
 
         <Divider />
@@ -40,7 +51,7 @@ export const EditDatasourceModal: FC<EditModalProps> = function EditDatasourceMo
           name="name"
           rules={[{ required: true, message: 'Please input datasetName!' }]}
         >
-          <Input defaultValue={name} />
+          <Input />
         </Form.Item>
         <Row>
           <Col>

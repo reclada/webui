@@ -25,7 +25,7 @@ export const DatasetsTableInfRow: FC<ListChildComponentProps> = observer(
     const onUpdate = useCallback(
       (name: string) => {
         if (dataset) {
-          dataset.title = name;
+          dataset['{attributes,name}'] = name;
           datasetsDataService.updateRow(index, dataset);
         }
       },
@@ -39,32 +39,32 @@ export const DatasetsTableInfRow: FC<ListChildComponentProps> = observer(
         ) : (
           <Row className={styleModule.rowTable}>
             <Col span={3}>
-              <DatasetNameRenderer dataset={dataset} onSelect={onSelect} />
+              <DatasetNameRenderer dataset={dataset as any} onSelect={onSelect} />
             </Col>
             <Col span={4}>
-              {dataset.createDate.getDate() +
+              {new Date(dataset['{createdTime}']).getDate() +
                 '-' +
-                dataset.createDate.getMonth() +
+                new Date(dataset['{createdTime}']).getMonth() +
                 '-' +
-                dataset.createDate.getFullYear()}
+                new Date(dataset['{createdTime}']).getFullYear()}
             </Col>
-            <Col span={4}>{dataset.author}</Col>
+            <Col span={4}>{(dataset as any).author}</Col>
             <Col span={4}>
-              {dataset.lastUpdate.getDate() +
+              {(dataset as any).lastUpdate.getDate() +
                 '-' +
-                dataset.lastUpdate.getMonth() +
+                (dataset as any).lastUpdate.getMonth() +
                 '-' +
-                dataset.lastUpdate.getFullYear()}
+                (dataset as any).lastUpdate.getFullYear()}
             </Col>
-            <Col span={4}>{dataset.whoUpdated}</Col>
+            <Col span={4}>{(dataset as any).whoUpdated}</Col>
             <Col span={4}>
-              <OwnersRenderer owners={dataset.owners} />
+              <OwnersRenderer owners={(dataset as any).owners} />
             </Col>
             <Col span={1}>
               <MoreMenuRenderer
                 dataSet={dataset}
                 //dataSetId={dataset.id}
-                datasetIndex={index}
+                // datasetIndex={index}
                 //prevName={dataset.title}
                 onUpdate={onUpdate}
               />
