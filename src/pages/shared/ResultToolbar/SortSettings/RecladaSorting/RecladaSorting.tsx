@@ -28,8 +28,6 @@ export const RecladaSorting: FC<RecladaSortingProps> = function RecladaSorting({
     setCurrentOrders([...currentOrders, { name: '', field: '', order: OrderType.ASC }]);
   }, [currentOrders]);
 
-  console.log('reneder RecladaSorting');
-
   return (
     <Modal
       cancelButtonProps={{ disabled: true }}
@@ -38,20 +36,11 @@ export const RecladaSorting: FC<RecladaSortingProps> = function RecladaSorting({
       destroyOnClose={true}
       footer={
         <div>
-          <Button
-            key={0}
-            shape="round"
-            size="large"
-            type="default"
-            onClick={() => {
-              onClose();
-            }}
-          >
+          <Button key={0} shape="round" size="large" type="default" onClick={onClose}>
             Cancel
           </Button>
           <Button
             key={1}
-            disabled={false}
             shape="round"
             size="large"
             type="primary"
@@ -76,7 +65,7 @@ export const RecladaSorting: FC<RecladaSortingProps> = function RecladaSorting({
     >
       <Typography.Title level={4}>Sorting by Multiple Columns</Typography.Title>
       <button className={style.iconButton} onClick={onClickAdd}>
-        <Plus /> Add
+        <Plus fill="#536D85" /> Add
       </button>
       {currentOrders.map((el, index) => {
         return (
@@ -91,7 +80,7 @@ export const RecladaSorting: FC<RecladaSortingProps> = function RecladaSorting({
               onChange={(val: number) => {
                 if (enableOrders) {
                   setCurrentOrders(prev => {
-                    const newOrders = [...currentOrders];
+                    const newOrders = [...prev];
 
                     newOrders[index].name = enableOrders[val].name;
                     newOrders[index].field = enableOrders[val].field;
