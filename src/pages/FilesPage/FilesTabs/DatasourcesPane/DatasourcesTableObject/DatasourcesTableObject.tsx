@@ -67,9 +67,9 @@ export const DatasourcesTableObject: FC<
   const listConteinerRef = useRef(null);
   const [top, setTop] = useState(0);
 
-  // const onScroll = useCallback((prop: ListOnScrollProps) => {
-  //   setTop(prop.scrollOffset);
-  // }, []);
+  const onScroll = useCallback((prop: ListOnScrollProps) => {
+    setTop(prop.scrollOffset);
+  }, []);
   // @ts-ignore
   const listScroll = useCallback(
     event => {
@@ -112,7 +112,7 @@ export const DatasourcesTableObject: FC<
         //   // Call the original callback
         //   rest.onItemsRendered && rest.onItemsRendered(props);
         // }}
-        // onScroll={onScroll}
+        onScroll={onScroll}
       >
         {row}
       </FixedSizeList>

@@ -5,6 +5,6 @@ import { Redirect } from 'react-router-dom';
 import { routes } from 'src/pages/routes';
 import { authService } from 'src/services/authService';
 
-export const AuthGuard: FC = observer(({ children }) => {
+export const AuthGuard: FC = observer(function AuthGuard({ children }) {
   return authService.user.isLogged ? <>{children}</> : <Redirect to={routes.root} />;
 });

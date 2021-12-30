@@ -7,6 +7,7 @@ type EditModalProps = {
   opened: boolean;
   handleOk: () => void;
   handleCancel: () => void;
+  dataSetId?: string;
   isCreationType: boolean;
   datasetId?: string;
   prevName?: string;
@@ -38,12 +39,7 @@ export const EditDataSetModal: FC<EditModalProps> = function EditModalRenderer({
 
   return (
     <Modal closeIcon={[]} footer={[]} visible={opened}>
-      <Form
-        initialValues={{ name: prevName }}
-        name="basic"
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-      >
+      <Form name="basic" onFinish={onFinish} onFinishFailed={onFinishFailed}>
         <Typography.Title level={4}>
           {isCreationType ? 'Create' : 'Edit'} Data Set
         </Typography.Title>
@@ -54,7 +50,7 @@ export const EditDataSetModal: FC<EditModalProps> = function EditModalRenderer({
           name="name"
           rules={[{ required: true, message: 'Please input datasetName!' }]}
         >
-          <Input />
+          <Input defaultValue={prevName} />
         </Form.Item>
         <Row>
           <Col>

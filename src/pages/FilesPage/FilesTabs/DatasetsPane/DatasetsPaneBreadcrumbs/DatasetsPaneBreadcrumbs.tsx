@@ -1,12 +1,12 @@
 import { Breadcrumb } from 'antd';
 import React, { FC } from 'react';
 
-import { IRecladaDataset } from 'src/api/IRecladaObject';
+import { IDataset } from 'src/api/datasetsDataGateService';
 
 import style from './DatasetsPaneBreadcrumbs.module.scss';
 
 type DatasetsPaneBreadcrumbsProps = {
-  selectedDataset: IRecladaDataset;
+  selectedDataset: IDataset;
   onUnselectDataset: () => void;
 };
 
@@ -19,7 +19,7 @@ export const DatasetsPaneBreadcrumbs: FC<DatasetsPaneBreadcrumbsProps> = functio
       <Breadcrumb.Item className={style.breadcrumbParent} onClick={onUnselectDataset}>
         Datasets
       </Breadcrumb.Item>
-      <Breadcrumb.Item>{selectedDataset['{attributes,name}']}</Breadcrumb.Item>
+      <Breadcrumb.Item>{selectedDataset.title}</Breadcrumb.Item>
     </Breadcrumb>
   );
 };

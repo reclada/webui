@@ -35,9 +35,9 @@ export const ArticleViewPanel: FC<ArticleViewPanelProps> = function ArticleViewP
           </div>
         </div>
         <div className={style.headerTools}>
-          <button className={style.iconButton}>
+          <Button breed="icon" className={style.iconButton}>
             <ResizeIcon />
-          </button>
+          </Button>
           <a className={style.iconButton} download href={article?.url}>
             <DownloadIcon />
           </a>

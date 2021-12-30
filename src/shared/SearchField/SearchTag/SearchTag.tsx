@@ -35,7 +35,7 @@ export const SearchTag: FC<SearchTagProps> = function SearchTag({
       })}
     >
       <div className={style.text}>{tag}</div>
-      <Button className={style.remove} size="xs" variant="clear" onClick={remove}>
+      <Button breed="icon" className={style.remove} onClick={remove}>
         <ArrowDownIcon />
       </Button>
     </div>
