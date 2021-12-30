@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import React, { useCallback, useEffect } from 'react';
 
 import { ArticleViewPanel } from 'src/pages/SearchResultPage/SearchResultMain/ArticleViewPanel/ArticleViewPanel';
+import { ResultTabs } from 'src/pages/SearchResultPage/SearchResultMain/ResultTabs/ResultTabs';
 import {
   ResultToolbar,
   ToolbarContext,
@@ -57,11 +58,14 @@ export const ObjectPane = observer<ObjectPaneProps>(({ service, selectable = fal
 
   return (
     <>
+      <ResultTabs />
+
       <div className={style.toolbar}>
         <ToolbarContext.Provider value={service}>
           <ResultToolbar />
         </ToolbarContext.Provider>
       </div>
+
       <div className={style.main}>
         <div className={style.leftPanelWide}>
           <ObjectContextProvider selectable={selectable} service={service}>
