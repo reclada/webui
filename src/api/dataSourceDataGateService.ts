@@ -77,18 +77,11 @@ export async function getDatasourceDownloadLink(id: string): Promise<string> {
     .then(res => res.url);
 }
 
-export async function updateDataSource(
-  name: string,
-  dataSource: { GUID: string; checksum: string; mimeType: string }
-) {
+export async function updateDataSource(name: string, dataSource: Partial<IRecladaFile>) {
   const ds: RecladaPartialObject<IRecladaFile> = {
-    GUID: dataSource.GUID,
-    class: RecladaObjectClass.File,
-    attributes: {
-      name: name,
-      checksum: dataSource.checksum,
-      mimeType: dataSource.mimeType,
-    },
+    '{class}': RecladaObjectClass.File,
+    ...dataSource,
+    '{attributes,name}': name,
   };
 
   return apiService.callRpcPost(rpcUrls.updateRecladaObject, ds);

@@ -17,40 +17,39 @@ type DisplayingSettingsProps = {
 
 export const DisplayingSettings: FC<DisplayingSettingsProps> = observer(
   function DisplayingSettings({ className }) {
-    const displaingService = useContext(ToolbarContext);
+    const displayingService = useContext(ToolbarContext);
 
     return (
       <div className={classNames(className, style.root)}>
         <button
           className={classNames(style.iconButton, {
-            //[style.active]: activeDisplayingType === DisplayingTypes.LIST,
-            [style.active]: displaingService.displaingType === DisplayingTypes.LIST,
+            [style.active]: displayingService.displayingType === DisplayingTypes.LIST,
           })}
           onClick={() => {
-            displaingService.setDisplaingType(DisplayingTypes.LIST);
+            displayingService.setDisplayingType(DisplayingTypes.LIST);
           }}
         >
           <ListViewIcon />
         </button>
         <button
           className={classNames(style.iconButton, {
-            [style.active]: displaingService.displaingType === DisplayingTypes.CARD,
+            [style.active]: displayingService.displayingType === DisplayingTypes.TABLE,
           })}
           onClick={() => {
-            displaingService.setDisplaingType(DisplayingTypes.CARD);
-          }}
-        >
-          <CardViewIcon />
-        </button>
-        <button
-          className={classNames(style.iconButton, {
-            [style.active]: displaingService.displaingType === DisplayingTypes.TABLE,
-          })}
-          onClick={() => {
-            displaingService.setDisplaingType(DisplayingTypes.TABLE);
+            displayingService.setDisplayingType(DisplayingTypes.TABLE);
           }}
         >
           <TableViewIcon />
+        </button>
+        <button
+          className={classNames(style.iconButton, {
+            [style.active]: displayingService.displayingType === DisplayingTypes.CARD,
+          })}
+          onClick={() => {
+            displayingService.setDisplayingType(DisplayingTypes.CARD);
+          }}
+        >
+          <CardViewIcon />
         </button>
       </div>
     );

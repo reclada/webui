@@ -1,20 +1,19 @@
 @import 'src/styles/variables';
 
 .root {
-  border: none;
   display: flex;
 }
 
 .iconButton {
   cursor: pointer;
+  margin: 0 8px;
+  padding: 0px;
+  display: flex;
+  align-items: center;
+
   svg {
-    fill: $steel-blue
+    fill: #536D85;
   }
-
-  &:nth-of-type(2) {
-    padding: 0 25px;
-  }
-
 }
 
 .iconButton.active {
