@@ -1,19 +1,21 @@
-import React, { memo, ReactElement } from 'react';
+import { Table as AntTable, TableProps as AntTableProps } from 'antd';
+import React, { useMemo } from 'react';
 
-import { Value } from 'src/api/IRecladaObject';
-import { CellRendererProps } from 'src/types/CellRenderer';
+const defaultTablePagination: AntTableProps<any>['pagination'] = {
+  hideOnSinglePage: true,
+  showSizeChanger: false,
+  position: ['bottomCenter'],
+};
 
-interface TableProps {
-  columns: {
-    name: string;
-    caption: string;
-    width: number;
-    cellRenderer: (props: CellRendererProps<Value>) => ReactElement;
-    headerRenderer: (props: unknown) => ReactElement;
-  }[];
-  data: Record<string, Value>[];
-}
+export const Table = function Table<T extends object>({
+  pagination: paginationProp,
+  ...restProps
+}: AntTableProps<T>) {
+  const pagination: AntTableProps<T>['pagination'] = useMemo(
+    () =>
+      paginationProp !== false ? { ...defaultTablePagination, ...paginationProp } : false,
+    [paginationProp]
+  );
 
-export const Table = memo(({ columns, data }: TableProps) => {
-  return <></>;
-});
+  return <AntTable pagination={pagination} {...restProps} />;
+};

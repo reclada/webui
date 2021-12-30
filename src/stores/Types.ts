@@ -1,5 +1,5 @@
 export interface IIdentifiable {
-  '{GUID}': string;
+  GUID: string;
 }
 
 export type OrderBy = {

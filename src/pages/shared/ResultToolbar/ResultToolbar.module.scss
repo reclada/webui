@@ -1,19 +1,18 @@
 @import 'src/styles/variables';
 
 .root {
-  padding: 12px 10px;
-  border: 1px solid #BBD7E7;
-  border-radius: 8px;
-  background-color: #FAFBFC;
+  padding: 15px 10px;
+  border: none;
+  border-radius: 10px 10px 10px 10px;
+  background-color: $light-blue-1;
   display: flex;
-  align-items: center;
 }
 
 .separator {
-  height: 24px;
+  height: 30px;
   width: 0;
-  border-left: 1px solid #90B3C7;
-  margin: 0 24px;
+  border-left: 1px solid $steel-blue;
+  margin: 0 25px;
 }
 
 .button {
@@ -27,32 +26,29 @@
 
   svg {
     margin-right: 10px;
-    fill: #536D85;
+    fill: $steel-blue;
   }
 }
 
-.sectionContainer {
-  display: flex;
+.iconButton {
+  padding: 2px 0 0 0;
+  cursor: pointer;
+
+  svg {
+    fill: $steel-blue
+  }
 }
 
 .iconButton {
   cursor: pointer;
-  margin: 0 8px;
-  padding: 0px;
-  display: flex;
-  align-items: center;
-
   svg {
-    fill: #536D85
+    fill: $steel-blue
   }
 
-  &:disabled {
-    cursor: not-allowed;
-
-    svg {
-      fill: #BBD7E7;
-    }
+  &:nth-of-type(2) {
+    margin: 0 25px;
   }
+
 }
 
 .actions {

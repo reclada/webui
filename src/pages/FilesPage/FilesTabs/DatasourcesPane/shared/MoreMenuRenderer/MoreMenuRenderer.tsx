@@ -11,13 +11,8 @@ import { EditDatasourceModal } from '../Modals/EditDatasourceModal';
 
 export type MoreMenuRendererProps = {
   className?: string;
-  datasource: {
-    '{GUID}': string;
-    '{attributes,name}': string;
-    '{checksum}': string;
-    '{attributes,mimeType}': string;
-  };
-  onUpdate?: (name: string, datasourceId: string) => void;
+  datasource: { GUID: string; name: string; checksum: string; mimeType: string };
+  onUpdate?: (name: string, datasource: string) => void;
 };
 
 export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRenderer({
@@ -26,7 +21,7 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
   onUpdate,
 }) {
   const downloadDatasource = useCallback(async () => {
-    const link = await getDatasourceDownloadLink(datasource['{GUID}']);
+    const link = await getDatasourceDownloadLink(datasource.GUID);
 
     const resp = await fetch(link, {
       method: 'GET',
@@ -34,9 +29,9 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
     const blob = await resp.blob();
     const obj = window.URL.createObjectURL(blob);
 
-    downloadURI(obj, datasource['{attributes,name}']);
+    downloadURI(obj, datasource.name);
     window.URL.revokeObjectURL(obj);
-  }, [datasource]);
+  }, [datasource.GUID, datasource.name]);
 
   const isEditModalOpen = useOpen(false);
 
@@ -55,32 +50,32 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
       <Menu.Item key={0} onClick={downloadDatasource}>
         <span>Download</span>
       </Menu.Item>
-      <Menu.Item key={1} onClick={filePreviewModal.open}>
+      <Menu.Item key={0} onClick={filePreviewModal.open}>
         <span>Preview</span>
       </Menu.Item>
-      <Menu.Item key={2}>
+      <Menu.Item key={1}>
         <span>Data set</span>
       </Menu.Item>
-      <Menu.Item key={3}>
+      <Menu.Item key={2}>
         <span>Version</span>
       </Menu.Item>
-      <Menu.Item key={4} onClick={isEditModalOpen.open}>
+      <Menu.Item key={3} onClick={isEditModalOpen.open}>
         <span> Edit</span>
       </Menu.Item>
-      <Menu.Item key={5}>
+      <Menu.Item key={4}>
         <span>Permissions</span>
       </Menu.Item>
-      <Menu.Item key={6}>
+      <Menu.Item key={5}>
         <span>Share</span>
       </Menu.Item>
-      <Menu.Item key={7}>
+      <Menu.Item key={6}>
         <span>Delete</span>
       </Menu.Item>
       <EditDatasourceModal
         datasource={datasource}
         handleCancel={handleEditCancel}
         handleOk={handleEditOk}
-        name={datasource['{attributes,name}']}
+        name={datasource.name}
         opened={isEditModalOpen.isOpen}
         onUpdate={(name, datasourceId) => onUpdate && onUpdate(name, datasourceId)}
       />
@@ -91,8 +86,8 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
     <div className={className}>
       <MoreDropdown menu={moreMenu} />
       <FilePreviewModal
-        datasourceId={datasource['{GUID}']}
-        fileName={datasource['{attributes,name}']}
+        datasourceId={datasource.GUID}
+        fileName={datasource.name}
         isOpen={filePreviewModal.isOpen}
         onClose={filePreviewModal.close}
       />

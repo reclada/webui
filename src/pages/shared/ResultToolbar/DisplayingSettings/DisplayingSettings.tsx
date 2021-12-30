@@ -17,39 +17,40 @@ type DisplayingSettingsProps = {
 
 export const DisplayingSettings: FC<DisplayingSettingsProps> = observer(
   function DisplayingSettings({ className }) {
-    const displayingService = useContext(ToolbarContext);
+    const displaingService = useContext(ToolbarContext);
 
     return (
       <div className={classNames(className, style.root)}>
         <button
           className={classNames(style.iconButton, {
-            [style.active]: displayingService.displayingType === DisplayingTypes.LIST,
+            //[style.active]: activeDisplayingType === DisplayingTypes.LIST,
+            [style.active]: displaingService.displaingType === DisplayingTypes.LIST,
           })}
           onClick={() => {
-            displayingService.setDisplayingType(DisplayingTypes.LIST);
+            displaingService.setDisplaingType(DisplayingTypes.LIST);
           }}
         >
           <ListViewIcon />
         </button>
         <button
           className={classNames(style.iconButton, {
-            [style.active]: displayingService.displayingType === DisplayingTypes.TABLE,
+            [style.active]: displaingService.displaingType === DisplayingTypes.CARD,
           })}
           onClick={() => {
-            displayingService.setDisplayingType(DisplayingTypes.TABLE);
-          }}
-        >
-          <TableViewIcon />
-        </button>
-        <button
-          className={classNames(style.iconButton, {
-            [style.active]: displayingService.displayingType === DisplayingTypes.CARD,
-          })}
-          onClick={() => {
-            displayingService.setDisplayingType(DisplayingTypes.CARD);
+            displaingService.setDisplaingType(DisplayingTypes.CARD);
           }}
         >
           <CardViewIcon />
+        </button>
+        <button
+          className={classNames(style.iconButton, {
+            [style.active]: displaingService.displaingType === DisplayingTypes.TABLE,
+          })}
+          onClick={() => {
+            displaingService.setDisplaingType(DisplayingTypes.TABLE);
+          }}
+        >
+          <TableViewIcon />
         </button>
       </div>
     );
