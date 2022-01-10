@@ -24,9 +24,9 @@ type ObjectPaneProps = {
 };
 
 const contentMap = {
-  [DisplayingTypes.TABLE]: <ObjectTable />,
-  [DisplayingTypes.CARD]: null,
-  [DisplayingTypes.LIST]: null,
+  [DisplayingTypes.TABLE]: ObjectTable,
+  [DisplayingTypes.CARD]: () => null,
+  [DisplayingTypes.LIST]: () => null,
 };
 
 export const ObjectPane = observer<ObjectPaneProps>(({ service, selectable = false }) => {
@@ -54,10 +54,10 @@ export const ObjectPane = observer<ObjectPaneProps>(({ service, selectable = fal
     );
   }
 
-  const content = contentMap[service.displayingType];
+  const Content = contentMap[service.displayingType];
 
   return (
-    <>
+    <ObjectContextProvider selectable={selectable} service={service}>
       <ResultTabs />
 
       <div className={style.toolbar}>
@@ -68,21 +68,19 @@ export const ObjectPane = observer<ObjectPaneProps>(({ service, selectable = fal
 
       <div className={style.main}>
         <div className={style.leftPanelWide}>
-          <ObjectContextProvider selectable={selectable} service={service}>
-            {service.isLoading ? (
-              <Spin
-                size="large"
-                style={{
-                  width: '100%',
-                  height: '500px',
-                }}
-              />
-            ) : (
-              content
-            )}
+          {service.isLoading ? (
+            <Spin
+              size="large"
+              style={{
+                width: '100%',
+                height: '500px',
+              }}
+            />
+          ) : (
+            <Content />
+          )}
 
-            {!service.isLoading && <MainPagination />}
-          </ObjectContextProvider>
+          {!service.isLoading && <MainPagination />}
         </div>
 
         {service.activeRecord && (
@@ -97,6 +95,6 @@ export const ObjectPane = observer<ObjectPaneProps>(({ service, selectable = fal
           </div>
         )}
       </div>
-    </>
+    </ObjectContextProvider>
   );
 });

@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite';
 // import { set } from 'mobx';
-import React, { FC, createContext, useContext } from 'react';
+import React, { FC, createContext, useContext, useCallback } from 'react';
 
 import { RecladaObjectClass } from 'src/api/IRecladaObject';
 import { AddDatasourceToDatasetModal } from 'src/pages/FilesPage/FilesTabs/AddDatasourceToDatasetModal/AddDatasourceToDatasetModal';
+import { useObjectContext } from 'src/pages/FilesPage/FilesTabs/ObjectPane/ObjectContext';
 import { ReactComponent as Filter } from 'src/resources/filter.svg';
 import { ReactComponent as Settings } from 'src/resources/settings.svg';
 import { ReactComponent as Sort } from 'src/resources/sort.svg';
@@ -60,6 +61,7 @@ export const ResultToolbar: FC<ResultToolbarProps> = observer(({ className }) =>
   const filterModal = useOpen();
 
   const store = useContext(ToolbarContext);
+  const { scrollToPage } = useObjectContext();
 
   const selectedDataSources = store.selectedRows ?? [];
 
@@ -75,6 +77,10 @@ export const ResultToolbar: FC<ResultToolbarProps> = observer(({ className }) =>
   // ) : (
   //   <Menu key={0}></Menu>
   // );
+
+  const handleChangePage = useCallback((page: number) => scrollToPage(page - 1), [
+    scrollToPage,
+  ]);
 
   return (
     <>
@@ -92,7 +98,7 @@ export const ResultToolbar: FC<ResultToolbarProps> = observer(({ className }) =>
           page={store.currentPage + 1}
           pageSize={store.pageSize}
           total={store.count}
-          onChange={page => console.log(page)}
+          onChange={handleChangePage}
         />
         <Separator />
         {/* <SortSettings /> */}

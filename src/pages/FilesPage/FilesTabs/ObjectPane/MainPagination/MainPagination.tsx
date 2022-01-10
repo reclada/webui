@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { Pagination } from 'src/shared/Pagination/Pagination';
 import { Select } from 'src/shared/Select/Select';
@@ -24,10 +24,14 @@ const pageSizeOptions = [
 ];
 
 export const MainPagination = observer(() => {
-  const { service } = useObjectContext();
+  const { service, scrollToPage } = useObjectContext();
 
   const handleChangePageSize = (pageSize: string | number) =>
     service.listStore.setPageSize(Number(pageSize));
+
+  const handleChange = useCallback((page: number) => scrollToPage(page - 1), [
+    scrollToPage,
+  ]);
 
   return (
     <div className={styles.container}>
@@ -35,7 +39,7 @@ export const MainPagination = observer(() => {
         page={service.currentPage + 1}
         pageSize={service.pageSize}
         total={service.count}
-        onChange={(page: number) => console.log(page)}
+        onChange={handleChange}
       />
 
       <div className={styles.pageSizeContainer}>

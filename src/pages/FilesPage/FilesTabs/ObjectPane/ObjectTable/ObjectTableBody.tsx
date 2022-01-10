@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import React, { FC, useRef, useLayoutEffect } from 'react';
+import React, { FC, useRef, useLayoutEffect, useEffect, useCallback } from 'react';
 import { FixedSizeList, FixedSizeListProps } from 'react-window';
 
 import { useObjectContext } from '../ObjectContext';
@@ -43,6 +43,8 @@ export const ObjectTableBody: FC<
   Prop & Omit<FixedSizeListProps, 'children' | 'innerElementType'>
 > = observer(({ row, ...rest }) => {
   const { onScrollTable } = useDragContext();
+  const { scrollToRef } = useObjectContext();
+
   const listRef = useRef<FixedSizeList>(null);
   const listContainerRef = useRef<HTMLDivElement>(null);
 
@@ -53,6 +55,17 @@ export const ObjectTableBody: FC<
 
     return () => current?.removeEventListener('scroll', onScrollTable);
   }, [listContainerRef, onScrollTable]);
+
+  const scrollTo = useCallback(
+    (offset: number) => {
+      listRef.current?.scrollTo(offset);
+    },
+    [listRef]
+  );
+
+  useEffect(() => {
+    scrollToRef.current = scrollTo;
+  }, [scrollTo, scrollToRef]);
 
   return (
     <FixedSizeList

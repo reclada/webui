@@ -1,10 +1,21 @@
-import React, { ReactElement, ReactNode, useContext, useMemo } from 'react';
+import { observer } from 'mobx-react-lite';
+import React, {
+  MutableRefObject,
+  ReactElement,
+  ReactNode,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+} from 'react';
 
 import { ObjectDataService } from './objectdata.service';
 
 interface ObjectContextTypes {
   service: ObjectDataService;
   selectable: boolean;
+  scrollToRef: MutableRefObject<((offset: number) => void) | null>;
+  scrollToPage: (page: number) => void;
 }
 
 const ObjectContext = React.createContext<ObjectContextTypes>({
@@ -17,20 +28,32 @@ interface Props {
   selectable: boolean;
 }
 
-export const ObjectContextProvider = ({
-  children,
-  service,
-  selectable,
-}: Props): ReactElement => {
-  const value = useMemo(
-    () => ({
-      service,
-      selectable,
-    }),
-    [selectable, service]
-  );
+export const ObjectContextProvider = observer(
+  ({ children, service, selectable }: Props): ReactElement => {
+    const scrollToRef = useRef<(offset: number) => void>(null);
 
-  return <ObjectContext.Provider value={value}>{children}</ObjectContext.Provider>;
-};
+    const scrollToPage = useCallback(
+      (page: number) => {
+        const count = page * service.pageSize;
+        const y = Math.max(count * 65, 0);
+
+        scrollToRef.current?.(y);
+      },
+      [service.pageSize]
+    );
+
+    const value = useMemo(
+      () => ({
+        service,
+        selectable,
+        scrollToRef,
+        scrollToPage,
+      }),
+      [selectable, service, scrollToPage]
+    );
+
+    return <ObjectContext.Provider value={value}>{children}</ObjectContext.Provider>;
+  }
+);
 
 export const useObjectContext = () => useContext(ObjectContext);

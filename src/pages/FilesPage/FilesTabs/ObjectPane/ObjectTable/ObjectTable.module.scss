@@ -25,6 +25,7 @@
     font-weight: bold;
     color: #243B50;
     transition: background-color 200ms linear;
+    border: 1px solid transparent;
 
     &:not(.dragging):hover {
         background-color: #FAFBFC;

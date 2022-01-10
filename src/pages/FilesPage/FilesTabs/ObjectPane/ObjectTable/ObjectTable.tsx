@@ -53,7 +53,7 @@ export const ObjectTable = observer(() => {
 
       const y = event.target.scrollTop;
 
-      const index = Math.max((y - 40) / 65, 0);
+      const index = Math.max(y / 65, 0);
       const page = Math.floor(index / service.pageSize);
 
       service.listStore.setCurrentPage(page);
