@@ -68,19 +68,19 @@ export const ObjectTableRow = observer(
         {...context}
         position={{ x: 0, y: 0 }}
       >
-        <tr className={styles.tableRow} id={index + '/-1'} style={{ ...style, top }}>
+        <div className={styles.tableRow} id={index + '/-1'} style={{ ...style, top }}>
           {selectable && (
-            <td
+            <div
               className={styles.tableCell}
               id={index + '/-1'}
               style={{ width: '35px', minWidth: '35px' }}
             >
               {object && <Checkbox checked={checked} onChange={onSelect} />}
-            </td>
+            </div>
           )}
 
           {cells}
-        </tr>
+        </div>
       </Draggable>
     );
   }

@@ -146,7 +146,7 @@ export const ObjectTableCell = observer(
     const style = { width, minWidth: width, maxWidth: width };
 
     return (
-      <td key={column} className={styles.tableCell} id={id} style={style}>
+      <div key={column} className={styles.tableCell} id={id} style={style}>
         {object ? (
           <>
             {content}
@@ -156,7 +156,7 @@ export const ObjectTableCell = observer(
             )}
           </>
         ) : null}
-      </td>
+      </div>
     );
   }
 );

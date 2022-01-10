@@ -5,7 +5,6 @@ import { FixedSizeList, FixedSizeListProps } from 'react-window';
 import { useObjectContext } from '../ObjectContext';
 
 import { useDragContext } from './DragContext';
-import styles from './ObjectTable.module.scss';
 import { ObjectTableHeader } from './ObjectTableHeader';
 
 type Prop = {
@@ -21,19 +20,16 @@ const Inner = React.forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>(
 
     return (
       <div {...rest} ref={ref} style={{ ...style, height }}>
-        <table
+        <div
           style={{
             height: '100%',
-            tableLayout: 'auto',
             width: service.widthTable + (selectable ? 35 : 0),
           }}
         >
-          <div className={styles.headTable} style={{ width: '100%', overflow: 'hidden' }}>
-            <ObjectTableHeader />
-          </div>
+          <ObjectTableHeader />
 
-          <tbody>{children}</tbody>
-        </table>
+          {children}
+        </div>
       </div>
     );
   }

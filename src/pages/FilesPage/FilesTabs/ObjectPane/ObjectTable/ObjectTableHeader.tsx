@@ -64,7 +64,14 @@ export const ObjectTableHeader = observer(
     });
 
     return (
-      <div style={{ display: 'flex' }}>
+      <div
+        className={styles.headTable}
+        style={{
+          width: '100%',
+          overflow: 'hidden',
+          display: 'flex',
+        }}
+      >
         {selectable && (
           <div
             className={classNames(styles.columnTable)}
