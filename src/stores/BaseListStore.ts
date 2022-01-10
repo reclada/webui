@@ -160,8 +160,6 @@ export default class BaseListStore<TListItem extends IIdentifiable> {
   updateList(index: number) {
     const page = Math.floor(index / this.rowInPage);
 
-    this.setCurrentPage(page);
-
     if (!this.pageLoding.has(page) && !this._results.has(index)) {
       this.pageLoding.add(page);
       this.fetchData(page * this.rowInPage, this.rowInPage)

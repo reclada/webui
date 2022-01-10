@@ -221,7 +221,7 @@ export class ObjectDataService {
   fetchData(index: number, limit: number) {
     return fetchObject(this.className, this.orderBy, limit, index, ({
       operator: 'LIKE',
-      value: ['{attributes,name}', 'V%v%'],
+      value: ['{attributes,name}', 'V%'],
     } as unknown) as RFilter);
   }
 

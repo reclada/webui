@@ -47,9 +47,19 @@ export const ObjectTable = observer(() => {
     [service]
   );
 
-  const onScrollTable = useCallback(event => {
-    containerRef.current?.scrollTo(event.target.scrollLeft, 0);
-  }, []);
+  const onScrollTable = useCallback(
+    event => {
+      containerRef.current?.scrollTo(event.target.scrollLeft, 0);
+
+      const y = event.target.scrollTop;
+
+      const index = Math.max((y - 40) / 65, 0);
+      const page = Math.floor(index / service.pageSize);
+
+      service.listStore.setCurrentPage(page);
+    },
+    [service.listStore, service.pageSize]
+  );
 
   return (
     <DragContext.Provider
