@@ -152,9 +152,13 @@ export default class BaseListStore<TListItem extends IIdentifiable> {
 
   @action
   setPageSize(pageSize: number) {
-    this.rowInPage = pageSize;
+    const items = this.rowInPage * this.currentPage;
+    const newPage = Math.floor(items / pageSize);
 
-    // TODO: update list on change pageSize !!!
+    this.rowInPage = pageSize;
+    this.setCurrentPage(newPage);
+
+    // TODO: check work of caching
   }
 
   updateList(index: number) {
