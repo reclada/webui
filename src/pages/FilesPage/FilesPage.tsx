@@ -61,7 +61,11 @@ export const FilesPage: FC<FilesPageProps> = function FilesPage({ pageType }) {
         {/* <FilesTabsActions /> */}
         {pageType === FilePageType.Datasets && <DataSets />}
         {pageType === FilePageType.Datasources && (
-          <ObjectPane selectable service={objectDataService} />
+          <ObjectPane
+            errorTitle="Failed to load files"
+            selectable
+            service={objectDataService}
+          />
         )}
         {pageType === FilePageType.Assets ? 'Assets' : ''}
         {pageType === FilePageType.Available ? 'Available to me' : ''}

@@ -25,11 +25,17 @@ export const DataSets = observer(
             selectedDataset={activeRecord as IRecladaDataset}
             onUnselectDataset={handleUnselectDataset}
           />
-          <ObjectPane selectable service={objectDataService} />
+          <ObjectPane
+            errorTitle="Failed to load files"
+            selectable
+            service={objectDataService}
+          />
         </>
       );
     }
 
-    return <ObjectPane service={objectDataSetsService} />;
+    return (
+      <ObjectPane errorTitle="Failed to load datasets" service={objectDataSetsService} />
+    );
   }
 );

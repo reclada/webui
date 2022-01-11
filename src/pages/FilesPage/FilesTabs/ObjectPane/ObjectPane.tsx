@@ -21,6 +21,7 @@ import { ObjectTable } from './ObjectTable/ObjectTable';
 type ObjectPaneProps = {
   service: ObjectDataService;
   selectable?: boolean;
+  errorTitle?: string;
 };
 
 const contentMap = {
@@ -29,72 +30,68 @@ const contentMap = {
   [DisplayingTypes.LIST]: () => null,
 };
 
-export const ObjectPane = observer<ObjectPaneProps>(({ service, selectable = false }) => {
-  const handleUnselectDataset = useCallback(() => {
-    service.setActiveRecord(undefined);
-    //setSelectedDataset(undefined);
-  }, [service]);
+export const ObjectPane = observer<ObjectPaneProps>(
+  ({ service, errorTitle, selectable = false }) => {
+    const handleUnselectDataset = useCallback(() => {
+      service.setActiveRecord(undefined);
+      //setSelectedDataset(undefined);
+    }, [service]);
 
-  useEffect(() => {
-    service.initList();
-  }, [service]);
+    useEffect(() => {
+      service.initList();
+    }, [service]);
 
-  const activeUrl = useFileUrl(
-    service.activeRecord ? service.activeRecord['{GUID}'] : '',
-    service.activeRecord !== undefined
-  );
-
-  if (service.isError) {
-    return (
-      <Result
-        status="error"
-        subTitle="Please, try again"
-        title="Failed to load datasets"
-      />
+    const activeUrl = useFileUrl(
+      service.activeRecord ? service.activeRecord['{GUID}'] : '',
+      service.activeRecord !== undefined
     );
-  }
 
-  const Content = contentMap[service.displayingType];
+    if (service.isError) {
+      return <Result status="error" subTitle="Please, try again" title={errorTitle} />;
+    }
 
-  return (
-    <ObjectContextProvider selectable={selectable} service={service}>
-      <ResultTabs />
+    const Content = contentMap[service.displayingType];
 
-      <div className={style.toolbar}>
-        <ToolbarContext.Provider value={service}>
-          <ResultToolbar />
-        </ToolbarContext.Provider>
-      </div>
+    return (
+      <ObjectContextProvider selectable={selectable} service={service}>
+        <ResultTabs />
 
-      <div className={style.main}>
-        <div className={style.leftPanelWide}>
-          {service.isLoading ? (
-            <Spin
-              size="large"
-              style={{
-                width: '100%',
-                height: '500px',
-              }}
-            />
-          ) : (
-            <Content />
-          )}
-
-          {!service.isLoading && <MainPagination />}
+        <div className={style.toolbar}>
+          <ToolbarContext.Provider value={service}>
+            <ResultToolbar />
+          </ToolbarContext.Provider>
         </div>
 
-        {service.activeRecord && (
-          <div className={style.rightPanel}>
-            <ArticleViewPanel
-              article={{
-                id: service.activeRecord['{GUID}'],
-                url: activeUrl,
-                title: service.activeRecord['{attributes,name}'] ?? '',
-              }}
-            />
+        <div className={style.main}>
+          <div className={style.leftPanelWide}>
+            {service.isLoading ? (
+              <Spin
+                size="large"
+                style={{
+                  width: '100%',
+                  height: '500px',
+                }}
+              />
+            ) : (
+              <Content />
+            )}
+
+            {!service.isLoading && <MainPagination />}
           </div>
-        )}
-      </div>
-    </ObjectContextProvider>
-  );
-});
+
+          {service.activeRecord && (
+            <div className={style.rightPanel}>
+              <ArticleViewPanel
+                article={{
+                  id: service.activeRecord['{GUID}'],
+                  url: activeUrl,
+                  title: service.activeRecord['{attributes,name}'] ?? '',
+                }}
+              />
+            </div>
+          )}
+        </div>
+      </ObjectContextProvider>
+    );
+  }
+);

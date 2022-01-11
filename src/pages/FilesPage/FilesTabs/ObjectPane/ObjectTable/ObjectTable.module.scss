@@ -23,7 +23,7 @@
     font-size: 14px;
     line-height: 24px;
     font-weight: bold;
-    color: #243B50;
+    color: $dark-blue-0;
     transition: background-color 200ms linear;
     border: 1px solid transparent;
 
@@ -88,7 +88,7 @@ thead{
     vertical-align: top;
     font-size: 14px;
     line-height: 20px;
-    color: #243B50;
+    color: $dark-blue-0;
     transition: background-color 200ms linear;
 
     &:hover {
