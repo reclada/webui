@@ -13,7 +13,7 @@ interface Props {
   size?: 'l' | 'm';
   variant?: 'colored' | 'outlined';
   disabled?: boolean;
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLSpanElement>;
   onClose?: () => void;
 }
 

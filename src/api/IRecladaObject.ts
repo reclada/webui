@@ -24,13 +24,14 @@ export interface IRecladaFile extends IRecladaObject {
   '{attributes,mimeType}': string;
   '{attributes,uri}': string;
   '{attributes,checksum}': string;
-  '{attributes,tags}': unknown[];
+  '{attributes,tags}': string[];
 }
 
 export interface IRecladaDataset extends IRecladaObject {
   '{dataSetId}': string;
   // TODO: types for dataSources
   '{attributes,dataSources}': unknown[];
+  '{attributes,tags}': string[];
 }
 
 export type ObjectAttributes = {

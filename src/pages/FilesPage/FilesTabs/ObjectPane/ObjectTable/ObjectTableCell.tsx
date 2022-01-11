@@ -3,7 +3,7 @@ import React, { ReactElement, useCallback, useMemo } from 'react';
 
 import { ArticleType } from 'src/api/articleService';
 import { ItemSettings } from 'src/api/IColumn';
-import { IRecladaObject } from 'src/api/IRecladaObject';
+import { IRecladaDataset, IRecladaFile, IRecladaObject } from 'src/api/IRecladaObject';
 import { DateColumn } from 'src/pages/shared/DateColumn/DateColumn';
 import { Tag } from 'src/shared/Tag/Tag';
 
@@ -82,7 +82,12 @@ export const ObjectTableCell = observer(
           case 'name': {
             return (
               <div onClick={() => onClickAction?.(itemValue)}>
-                <ArticleNameRenderer title={String(itemValue)} />
+                <ArticleNameRenderer
+                  dictionaries={
+                    (object as IRecladaDataset | IRecladaFile)?.['{attributes,tags}']
+                  }
+                  title={String(itemValue)}
+                />
               </div>
             );
           }
@@ -129,7 +134,7 @@ export const ObjectTableCell = observer(
           }
         }
       },
-      [getClickAction]
+      [getClickAction, object]
     );
 
     const content = useMemo(() => {
