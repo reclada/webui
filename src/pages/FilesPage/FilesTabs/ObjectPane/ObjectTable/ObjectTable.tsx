@@ -70,7 +70,7 @@ export const ObjectTable = observer(() => {
           width: '100%',
           height: '100%',
           overflow: 'hidden',
-          maxWidth: service.widthTable + (selectable ? 35 : 0),
+          maxWidth: service.widthTable + (selectable ? 35 : 0) + 15,
         }}
       >
         <AutoSizer>

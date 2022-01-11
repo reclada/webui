@@ -10,18 +10,18 @@ export const tabs: IResultTab[] = [
   },
   {
     title: 'Projects',
-    itemsFound: 4489,
+    itemsFound: 54,
   },
   {
     title: 'Experiments',
-    itemsFound: 4489,
+    itemsFound: 213,
   },
   {
     title: 'Compounds',
-    itemsFound: 4489,
+    itemsFound: 112,
   },
   {
     title: 'Targets',
-    itemsFound: 4489,
+    itemsFound: 322,
   },
 ];

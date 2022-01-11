@@ -1,4 +1,3 @@
-import { Tag } from 'antd';
 import { observer } from 'mobx-react-lite';
 import React, { ReactElement, useCallback, useMemo } from 'react';
 
@@ -6,7 +5,7 @@ import { ArticleType } from 'src/api/articleService';
 import { ItemSettings } from 'src/api/IColumn';
 import { IRecladaObject } from 'src/api/IRecladaObject';
 import { DateColumn } from 'src/pages/shared/DateColumn/DateColumn';
-import { StatusTag } from 'src/pages/shared/StatusTag/StatusTag';
+import { Tag } from 'src/shared/Tag/Tag';
 
 import { ArticleNameRenderer } from '../../DatasourcesPane/shared/ArticleNameRenderer/ArticleNameRenderer';
 import { ArticleTypeRenderer } from '../../DatasourcesPane/shared/ArticleTypeRenderer/ArticleTypeRenderer';
@@ -107,7 +106,9 @@ export const ObjectTableCell = observer(
           }
 
           case 'status': {
-            return <StatusTag value={itemValue.toString()} onClick={onClickAction} />;
+            return (
+              <Tag onClick={() => onClickAction?.(itemValue)}>{itemValue.toString()}</Tag>
+            );
           }
 
           case 'link': {

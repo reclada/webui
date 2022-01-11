@@ -1,6 +1,7 @@
 import React, { FC, memo } from 'react';
 
 import { ArticleType } from 'src/api/articleService';
+import { Tag } from 'src/shared/Tag/Tag';
 import { CellRendererProps } from 'src/types/CellRenderer';
 
 import style from './ArticleTypeRenderer.module.scss';
@@ -10,9 +11,9 @@ export const ArticleTypeRenderer: FC<CellRendererProps<ArticleType>> = memo(
     const handleClick = () => onClick?.(value);
 
     return (
-      <div className={style.type} onClick={handleClick}>
+      <Tag className={style.type} onClick={handleClick}>
         {value}
-      </div>
+      </Tag>
     );
   }
 );

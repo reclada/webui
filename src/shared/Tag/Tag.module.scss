@@ -1,0 +1,101 @@
+.tag {
+    box-sizing: border-box;
+    font-size: 10px;
+    line-height: 16px;
+    padding: 2px 8px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all .2s ease-in;
+    display: inline-flex;
+    align-items: center;
+
+    svg {
+        transition: all .2s ease-in;
+        margin-left: 4px;
+    }
+}
+
+.primary {
+    color: #0A93F5;
+    background-color: #CEE9FD;
+
+    svg {
+        fill: #0A93F5;
+    }
+
+    &:hover {
+        background-color: #0082DF;
+        color: #FFFFFF;
+
+        svg {
+            fill: #FFFFFF;
+        }
+    }
+
+    &:active {
+        background-color: #0069B4;
+        color: #FFFFFF;
+
+        svg {
+            fill: #FFFFFF;
+        }
+    }
+
+    &.disabled {
+        background-color: #BBD7E7;
+        color: #FFFFFF;
+        pointer-events: none;
+
+        svg {
+            fill: #FFFFFF;
+        }
+    }
+}
+
+.outlined {
+    color: #243B50;
+    border: 1px solid #90B3C7;
+
+    svg {
+        fill: #243B50;
+    }
+
+    &:hover {
+        color: #0082DF;
+        border-color: #0082DF;
+
+        svg {
+            fill: #0082DF;
+        }
+    
+    }
+
+    &:active {
+        color: #0069B4;
+        border-color: #0069B4;
+
+        svg {
+            fill: #0069B4;
+        }
+    }
+
+    &.disabled {
+        border-color: #BBD7E7;
+        color: #BBD7E7;
+        pointer-events: none;
+
+        svg {
+            fill: #BBD7E7;
+        }
+    }
+}
+
+.large {
+    font-size: 12px;
+    line-height: 18px;
+    padding: 4px 12px;
+
+    svg {
+        margin-left: 8px;
+    }
+}

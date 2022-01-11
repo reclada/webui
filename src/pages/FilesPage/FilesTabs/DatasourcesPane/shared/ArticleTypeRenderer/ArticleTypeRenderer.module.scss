@@ -1,19 +1,18 @@
 @import 'src/styles/variables';
 
 .type {
-  padding: 2px 8px;
-  border-radius: 10px;
   background-color: #90B3C7;
   color: $white;
-  font-weight: bold;
-  font-size: 10px;
-  line-height: 16px;
-  overflow-wrap: normal;
-  text-align: center;
-  display: inline-flex;
-  transition: background-color 200ms ease-in;
+
+  svg {
+    fill: $white;
+  }
 
   &:hover {
     background-color: #536D85;
+  }
+
+  &:active {
+    background-color: #0069B4;
   }
 }
