@@ -16,7 +16,7 @@ import { SidebarItem } from './SidebarItem/SidebarItem';
 import { SubSideMenu } from './SubSideMenu';
 
 type SearchResultSidebarProps = {
-  className: string;
+  className?: string;
 };
 export const SearchResultSidebar: FC<SearchResultSidebarProps> = observer(
   function SearchResultSidebar({ className }) {
@@ -27,20 +27,18 @@ export const SearchResultSidebar: FC<SearchResultSidebarProps> = observer(
     return (
       <div className={style.sidebarcontainer}>
         <div className={classNames(className, style.root)}>
-          <div className={style.buttonscontainer}>
-            <SidebarItem
-              icon={<Search />}
-              isActive={window.location.href.includes(routes.search)}
-              onClick={() => history.push(routes.search)}
-            />
+          <SidebarItem
+            icon={<Search />}
+            isActive={window.location.href.includes(routes.search)}
+            onClick={() => history.push(routes.search)}
+          />
 
-            <SidebarItem
-              icon={<Tile height={24} width={24} />}
-              onClick={() => console.log('MenuItem2')}
-            />
+          <SidebarItem
+            icon={<Tile height={24} width={24} />}
+            onClick={() => console.log('MenuItem2')}
+          />
 
-            <SidebarItem icon={<Global />} onClick={toggle} />
-          </div>
+          <SidebarItem icon={<Global />} onClick={toggle} />
         </div>
 
         <SubSideMenu close={close} isOpen={isOpen} items={Menu2Content.items} />

@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 
+import { Header } from 'src/shared/Header/Header';
+
 import { SearchResultSidebar } from '../SearchResultPage/SearchResultSidebar/SearchResultSidebar';
 
 import { FileSearch } from './FileSearch/FileSearch';
@@ -46,32 +48,36 @@ export const FilesPage: FC<FilesPageProps> = function FilesPage({ pageType }) {
 
   return (
     <div className={style.root}>
-      <div className={style.main}>
-        <div className={style.search}>
-          <div className={style.searchMain}>
-            <FileSearch />
-            {/* <Popover content={NewContent}>
+      <Header />
+
+      <div className={style.container}>
+        <div className={style.main}>
+          <div className={style.search}>
+            <div className={style.searchMain}>
+              <FileSearch />
+              {/* <Popover content={NewContent}>
               <Button className={style.searchButton} size="l" variant="secondary">
                 <PlusOutlined /> New
               </Button>
             </Popover> */}
+            </div>
           </div>
+          <div className={style.emptyContainer}></div>
+          {/* <FilesTabsActions /> */}
+          {pageType === FilePageType.Datasets && <DataSets />}
+          {pageType === FilePageType.Datasources && (
+            <ObjectPane
+              errorTitle="Failed to load files"
+              selectable
+              service={objectDataService}
+            />
+          )}
+          {pageType === FilePageType.Assets ? 'Assets' : ''}
+          {pageType === FilePageType.Available ? 'Available to me' : ''}
         </div>
-        <div className={style.emptyContainer}></div>
-        {/* <FilesTabsActions /> */}
-        {pageType === FilePageType.Datasets && <DataSets />}
-        {pageType === FilePageType.Datasources && (
-          <ObjectPane
-            errorTitle="Failed to load files"
-            selectable
-            service={objectDataService}
-          />
-        )}
-        {pageType === FilePageType.Assets ? 'Assets' : ''}
-        {pageType === FilePageType.Available ? 'Available to me' : ''}
-      </div>
 
-      <SearchResultSidebar className={style.sidebar} />
+        <SearchResultSidebar />
+      </div>
 
       {/* <EditDataSetModal
         handleCancel={closeCreateDataSetModal}

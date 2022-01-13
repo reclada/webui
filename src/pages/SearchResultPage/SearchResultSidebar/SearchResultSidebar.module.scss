@@ -10,11 +10,15 @@ $menu-width: 204px;
   transition-duration: 0.2s;
   transition-timing-function: ease-out;
   z-index: 4;
+  background-color: $sidebar-background;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebarcontainer {
   display: flex;
   position: relative;
+  max-height: calc(100vh - 68px);
 }
 
 .sidemenucontainter {
@@ -57,12 +61,6 @@ $menu-width: 204px;
   width: 153px;
   border: 1px solid #90b3c7;
   margin-top: 24px;
-}
-
-.buttonscontainer {
-  height: 100vh;
-  position: fixed;
-  background-color: $sidebar-background;
 }
 
 .menuSection:not(:last-child) {

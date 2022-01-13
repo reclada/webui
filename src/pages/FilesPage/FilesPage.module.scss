@@ -1,20 +1,21 @@
 .root {
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+}
+
+.container {
   display: flex;
   flex-direction: row-reverse;
+  flex: 1;
 }
 
 .main {
-  flex-grow: 1;
-  height: 100vh;
+  flex: 1;
   padding: 22px 32px 0px 34px;
   display: flex;
   flex-direction: column;
-}
-
-.sidebar {
-  flex-shrink: 0;
-  height: 100vh;
 }
 
 .search {
