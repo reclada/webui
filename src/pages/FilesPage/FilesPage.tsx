@@ -70,6 +70,7 @@ export const FilesPage: FC<FilesPageProps> = function FilesPage({ pageType }) {
         {pageType === FilePageType.Assets ? 'Assets' : ''}
         {pageType === FilePageType.Available ? 'Available to me' : ''}
       </div>
+
       <SearchResultSidebar className={style.sidebar} />
 
       {/* <EditDataSetModal

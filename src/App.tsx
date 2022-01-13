@@ -29,7 +29,9 @@ function App() {
           render={routeProps => <SearchResultPage query={routeProps.location.search} />}
         />
         <Route path={routes.datasets}>
-          <FilesPage pageType={FilePageType.Datasets} />
+          <AuthGuard>
+            <FilesPage pageType={FilePageType.Datasets} />
+          </AuthGuard>
         </Route>
         <Route path={routes.files}>
           <AuthGuard>

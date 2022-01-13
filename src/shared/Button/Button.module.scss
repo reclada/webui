@@ -4,6 +4,7 @@
   padding: 8px 16px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   border-radius: 6px;
   font-weight: bold;
   font-size: 16px;
@@ -16,6 +17,14 @@
   }
   &:disabled {
     cursor: not-allowed;
+  }
+
+  .leftIcon {
+    margin-right: 8px;
+  }
+
+  .rightIcon {
+    margin-left: 8px;
   }
 }
 
@@ -31,6 +40,14 @@
   padding: 4px 8px;
   font-size: 14px;
   line-height: 20px;
+
+  .leftIcon {
+    margin-right: 4px;
+  }
+
+  .rightIcon {
+    margin-left: 4px;
+  }
 }
 
 .primary {
@@ -57,6 +74,10 @@
   background-color: $white;
   color: #0A93F5;
   border: 1px solid #0A93F5;
+
+  svg {
+    fill: #0A93F5;
+  }
 
   &:hover {
     color: #0082DF;
@@ -89,6 +110,10 @@
 .clear {
   padding: 0px;
   color: #0A93F5;
+
+  svg {
+    fill: #0A93F5;
+  }
 
   &.xs {
     font-weight: normal;

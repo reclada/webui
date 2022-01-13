@@ -1,0 +1,38 @@
+@import 'src/styles/variables';
+
+.container {
+    margin-top: 16px;
+    position: relative;
+}
+
+.activeBorder {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: 4px;
+    background-color: $white;
+}
+
+.menuItem {
+    margin: 0 16px;
+    display: flex;
+    height: 40px;
+    width: 40px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all .2s ease-in;
+
+    svg {
+        fill: #90B3C7;
+    }
+
+    &:hover {
+        filter: brightness(200%);
+    }
+}
+
+.activeSvg > svg {
+    fill: $white !important;
+}
