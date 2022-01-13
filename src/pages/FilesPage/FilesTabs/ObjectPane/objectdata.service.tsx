@@ -219,10 +219,7 @@ export class ObjectDataService {
   }
 
   fetchData(index: number, limit: number) {
-    return fetchObject(this.className, this.orderBy, limit, index, ({
-      operator: 'LIKE',
-      value: ['{attributes,name}', 'Aa%'],
-    } as unknown) as RFilter);
+    return fetchObject(this.className, this.orderBy, limit, index);
   }
 
   getIsObjectSelected(id: string) {
