@@ -119,9 +119,9 @@ $menu-width: 204px;
   padding-left: 18px;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 
   .user {
-    display: inline-flex;
     margin-bottom: 12px;
   }
 }
