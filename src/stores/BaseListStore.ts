@@ -91,11 +91,16 @@ export default class BaseListStore<TListItem extends IIdentifiable> {
     this.setLoading(true);
     this.setCurrentPage(0);
     this.fetchData(0, this.rowInPage)
-      .then(result => {
-        this.addToList(result.objects, 0);
-        this.setCount(result.number);
+      .then(({ objects, number, display }) => {
+        this.addToList(objects, 0);
+        this.setCount(number);
 
-        this.setTableDisplay(result.display.table);
+        const orderColumn = this._tableDisplay.orderColumn;
+
+        this.setTableDisplay({
+          ...display.table,
+          orderColumn: orderColumn.length > 0 ? orderColumn : display.table.orderColumn,
+        });
 
         this.setLoading(false);
       })
