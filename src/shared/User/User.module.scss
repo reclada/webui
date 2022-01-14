@@ -1,7 +1,9 @@
+@import 'src/styles/variables';
+
 .root {
     display: flex;
     align-items: center;
-    border: 1px solid #0A93F5;
+    border: 1px solid $cyan;
     background-color: #CEE9FD;
     padding: 4px 16px 4px 4px;
     font-size: 16px;

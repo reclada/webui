@@ -19,15 +19,15 @@
 }
 
 .primary {
-    color: #0A93F5;
+    color: $cyan;
     background-color: #CEE9FD;
 
     svg {
-        fill: #0A93F5;
+        fill: $cyan;
     }
 
     &:hover {
-        background-color: #0082DF;
+        background-color: $cyan-hovered;
         color: #FFFFFF;
 
         svg {
@@ -36,7 +36,7 @@
     }
 
     &:active {
-        background-color: #0069B4;
+        background-color: $cyan-pressed;
         color: #FFFFFF;
 
         svg {
@@ -64,21 +64,21 @@
     }
 
     &:hover {
-        color: #0082DF;
-        border-color: #0082DF;
+        color: $cyan-hovered;
+        border-color: $cyan-hovered;
 
         svg {
-            fill: #0082DF;
+            fill: $cyan-hovered;
         }
     
     }
 
     &:active {
-        color: #0069B4;
-        border-color: #0069B4;
+        color: $cyan-pressed;
+        border-color: $cyan-pressed;
 
         svg {
-            fill: #0069B4;
+            fill: $cyan-pressed;
         }
     }
 

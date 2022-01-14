@@ -51,17 +51,17 @@
 }
 
 .primary {
-  background-color: #0A93F5;
+  background-color: $cyan;
 
   svg {
     fill: $white;
   }
 
   &:focus, &:active {
-    background-color: #0069B4;
+    background-color: $cyan-pressed;
   }
   &:hover {
-    background-color: #0082DF;
+    background-color: $cyan-hovered;
     cursor: pointer;
   }
   &:disabled {
@@ -72,28 +72,28 @@
 
 .secondary {
   background-color: $white;
-  color: #0A93F5;
-  border: 1px solid #0A93F5;
+  color: $cyan;
+  border: 1px solid $cyan;
 
   svg {
-    fill: #0A93F5;
+    fill: $cyan;
   }
 
   &:hover {
-    color: #0082DF;
-    border: 1px solid #0082DF;
+    color: $cyan-hovered;
+    border: 1px solid $cyan-hovered;
 
     svg {
-      fill: #0082DF;
+      fill: $cyan-hovered;
     }
   }
 
   &:active, &:focus {
-    color:#0069B4;
-    border: 1px solid#0069B4;
+    color:$cyan-pressed;
+    border: 1px solid $cyan-pressed;
 
     svg {
-      fill: #0069B4;
+      fill: $cyan-pressed;
     }
   }
 
@@ -109,10 +109,10 @@
 
 .clear {
   padding: 0px;
-  color: #0A93F5;
+  color: $cyan;
 
   svg {
-    fill: #0A93F5;
+    fill: $cyan;
   }
 
   &.xs {
@@ -120,18 +120,18 @@
   }
 
   &:hover {
-    color: #0082DF;
+    color: $cyan-hovered;
 
     svg {
-      fill: #0082DF;
+      fill: $cyan-hovered;
     }
   }
 
   &:active, &:focus {
-    color:#0069B4;
+    color:$cyan-pressed;
 
     svg {
-      fill: #0069B4;
+      fill: $cyan-pressed;
     }
   }
 

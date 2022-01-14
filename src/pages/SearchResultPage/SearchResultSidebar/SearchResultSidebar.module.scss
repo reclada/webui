@@ -44,11 +44,11 @@ $menu-width: 204px;
   line-height: 24px;
 
   &.active {
-    color: #0A93F5;
+    color: $cyan;
   }
 
   &:hover {
-    color: #0A93F5;
+    color: $cyan;
   }
 }
 

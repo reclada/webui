@@ -123,18 +123,18 @@
         }
 
         &-active {
-          color: #0A93F5;
+          color: $cyan;
 
           .tabCount {
-            color: #0A93F5;
+            color: $cyan;
           }
         }
 
         &:hover {
-          color: #0A93F5;
+          color: $cyan;
 
           .tabCount {
-            color: #0A93F5;
+            color: $cyan;
           }
         }
       }
@@ -144,7 +144,7 @@
         pointer-events: none;
         bottom: 0px;
         height: 4px;
-        background-color: #0A93F5;
+        background-color: $cyan;
 
         &-animated {
           transition: all 0.2s;

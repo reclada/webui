@@ -34,14 +34,14 @@
 }
 
 .primary {
-    background-color: #0A93F5;
+    background-color: $cyan;
 
     &:hover {
-        background-color: #0082DF;
+        background-color: $cyan-hovered;
     }
 
     &:active {
-        background-color: #0069B4;
+        background-color: $cyan-pressed;
     }
 
     &.disabled {
@@ -51,25 +51,25 @@
 }
 
 .secondary {
-    border: 1px solid #0A93F5;
+    border: 1px solid $cyan;
 
     > svg {
-        fill: #0A93F5;
+        fill: $cyan;
     }
 
     &:hover {
-        border-color: #0082DF;
+        border-color: $cyan-hovered;
 
         > svg {
-            fill: #0082DF;
+            fill: $cyan-hovered;
         }
     }
 
     &:active {
-        border-color: #0069B4;
+        border-color: $cyan-pressed;
 
         > svg {
-            fill: #0069B4;
+            fill: $cyan-pressed;
         }
     }
 
