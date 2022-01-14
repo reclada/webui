@@ -80,7 +80,7 @@ export const ObjectTable = observer(() => {
               itemCount={service.count}
               itemSize={65}
               row={ObjectTableRow}
-              style={{ overflowX: 'scroll' }}
+              style={{ overflow: 'auto' }}
               useIsScrolling={true}
               width={width}
             />
