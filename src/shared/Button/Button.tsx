@@ -10,7 +10,7 @@ import { classNames } from '../../utils/classNames';
 
 import style from './Button.module.scss';
 
-enum ButtonVariant {
+export enum ButtonVariant {
   primary = 'primary',
   secondary = 'secondary',
   clear = 'clear',

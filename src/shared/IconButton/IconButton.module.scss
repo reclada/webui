@@ -1,0 +1,84 @@
+@import 'src/styles/variables';
+
+.root {
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 200ms ease-in;
+
+    > svg {
+        fill: $white;
+    }
+
+    &.xs {
+        width: 24px;
+        height: 24px;
+    }
+
+    &.s {
+        width: 32px;
+        height: 32px;
+    }
+
+    &.m {
+        width: 36px;
+        height: 36px;
+    }
+
+    &.l {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+.primary {
+    background-color: #0A93F5;
+
+    &:hover {
+        background-color: #0082DF;
+    }
+
+    &:active {
+        background-color: #0069B4;
+    }
+
+    &.disabled {
+        background-color: #BBD7E7;
+        pointer-events: none;
+    }
+}
+
+.secondary {
+    border: 1px solid #0A93F5;
+
+    > svg {
+        fill: #0A93F5;
+    }
+
+    &:hover {
+        border-color: #0082DF;
+
+        > svg {
+            fill: #0082DF;
+        }
+    }
+
+    &:active {
+        border-color: #0069B4;
+
+        > svg {
+            fill: #0069B4;
+        }
+    }
+
+    &.disabled {
+        border-color: #BBD7E7;
+        pointer-events: none;
+
+        > svg {
+            fill: #BBD7E7;
+        }
+    }
+}

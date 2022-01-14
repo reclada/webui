@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react';
 
-import { Subjects } from '../Subjects/Subjects';
+import { Categories } from '../Categories/Categories';
 
 import styles from './Header.module.scss';
 
 export const Header = (): ReactElement => {
   return (
     <div className={styles.container}>
-      <Subjects />
+      <Categories />
     </div>
   );
 };
