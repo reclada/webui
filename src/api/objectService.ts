@@ -125,14 +125,18 @@ async function fetchObjectList(
   offset: number,
   filter?: RFilter
 ) {
-  return apiService.callRpcPost<RecladaObjectResponse>(rpcUrls.getRecladaObjectList, {
-    '{class}': className,
-    attrs: {},
-    orderBy: orderBy,
-    limit: limit,
-    offset: offset,
-    filter,
-  });
+  return apiService.callRpcPost<RecladaObjectResponse>(
+    rpcUrls.getRecladaObjectList,
+    {
+      '{class}': className,
+      attrs: {},
+      orderBy: orderBy,
+      limit: limit,
+      offset: offset,
+      filter,
+    },
+    { ver: 2 }
+  );
 }
 
 export async function fetchSourceById(id: string, objectClass: RecladaObjectClass) {

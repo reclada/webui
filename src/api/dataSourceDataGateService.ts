@@ -84,5 +84,5 @@ export async function updateDataSource(name: string, dataSource: Partial<IReclad
     '{attributes,name}': name,
   };
 
-  return apiService.callRpcPost(rpcUrls.updateRecladaObject, ds);
+  return apiService.callRpcPost(rpcUrls.updateRecladaObject, ds, { ver: 2 });
 }

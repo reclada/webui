@@ -31,7 +31,7 @@ export async function createDataset(name: string) {
     '{attributes,dataSources}': [],
   };
 
-  return apiService.callRpcPost(rpcUrls.createRecladaObject, dataSet);
+  return apiService.callRpcPost(rpcUrls.createRecladaObject, dataSet, { ver: 2 });
 }
 
 export async function updateDataset(name: string, datasetId: string) {
@@ -42,7 +42,7 @@ export async function updateDataset(name: string, datasetId: string) {
     '{attributes,dataSources}': [],
   };
 
-  return apiService.callRpcPost(rpcUrls.updateRecladaObject, dataSet);
+  return apiService.callRpcPost(rpcUrls.updateRecladaObject, dataSet, { ver: 2 });
 }
 
 export async function addDataSourcesToDataset(datasetId: string, ids: string[]) {
@@ -71,11 +71,15 @@ async function fetchRecladaDatasets(
   limit: number | string,
   offset?: number
 ) {
-  return apiService.callRpcPost<DatasetRecladaResponse>(rpcUrls.getRecladaObjectList, {
-    '{class}': RecladaObjectClass.DataSet,
-    attributes: {},
-    orderBy: order,
-    offset: !offset ? 0 : offset,
-    limit: limit,
-  });
+  return apiService.callRpcPost<DatasetRecladaResponse>(
+    rpcUrls.getRecladaObjectList,
+    {
+      '{class}': RecladaObjectClass.DataSet,
+      attributes: {},
+      orderBy: order,
+      offset: !offset ? 0 : offset,
+      limit: limit,
+    },
+    { ver: 2 }
+  );
 }
