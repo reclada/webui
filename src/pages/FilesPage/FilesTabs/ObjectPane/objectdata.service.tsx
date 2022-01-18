@@ -179,6 +179,7 @@ export class ObjectDataService {
 
   initList() {
     this.selectedRowKeys.clear();
+    this.setActiveRecord(undefined);
     this._listStore.initList();
   }
 

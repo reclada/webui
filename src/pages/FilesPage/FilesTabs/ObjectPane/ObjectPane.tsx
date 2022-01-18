@@ -79,7 +79,7 @@ export const ObjectPane = observer<ObjectPaneProps>(
             {!service.isLoading && <MainPagination />}
           </div>
 
-          {service.activeRecord && (
+          {service.activeRecord && !service.isLoading && (
             <div className={style.rightPanel}>
               <ArticleViewPanel
                 article={{

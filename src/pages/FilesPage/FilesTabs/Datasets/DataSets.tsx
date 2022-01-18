@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import React, { ReactElement, useCallback } from 'react';
+import React, { ReactElement, useCallback, useEffect } from 'react';
 
 import { IRecladaDataset, RecladaObjectClass } from 'src/api/IRecladaObject';
 
@@ -17,6 +17,10 @@ export const DataSets = observer(
       () => objectDataSetsService.setActiveRecord(undefined),
       []
     );
+
+    useEffect(() => {
+      return () => objectDataService.setActiveRecord(undefined);
+    }, [activeRecord]);
 
     if (activeRecord) {
       return (
