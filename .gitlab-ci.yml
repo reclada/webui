@@ -34,9 +34,9 @@ prepare_webui:
     reports:
       dotenv: prepare.env
   rules:
-    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME == "master"
       when: always
-    - if: $CI_COMMIT_REF_NAME !~ /^dynamic/ && $CI_MERGE_REQUEST_ID =~ /^./ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main" && $CI_COMMIT_MESSAGE !~ /^delenv/
+    - if: $CI_COMMIT_REF_NAME !~ /^dynamic/ && $CI_MERGE_REQUEST_ID =~ /^./ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master" && $CI_COMMIT_MESSAGE !~ /^delenv/
       when: always
     - if: $CI_COMMIT_REF_NAME !~ /^dynamic/ && $CI_MERGE_REQUEST_ID =~ /^./ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "test" && $CI_COMMIT_MESSAGE !~ /^delenv/
       when: always
@@ -58,11 +58,11 @@ build_webui:
     - job: prepare_webui
       artifacts: true
   rules:
-    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME == "master"
       when: always
     - if: $CI_COMMIT_MESSAGE =~ /^delenv/
       when: never
-    - if: $CI_COMMIT_REF_NAME !~ /^dynamic/ && $CI_MERGE_REQUEST_ID =~ /^./ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main" && $CI_COMMIT_MESSAGE !~ /^delenv/
+    - if: $CI_COMMIT_REF_NAME !~ /^dynamic/ && $CI_MERGE_REQUEST_ID =~ /^./ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master" && $CI_COMMIT_MESSAGE !~ /^delenv/
       when: always
     - if: $CI_COMMIT_REF_NAME !~ /^dynamic/ && $CI_MERGE_REQUEST_ID =~ /^./ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "test" && $CI_COMMIT_MESSAGE !~ /^delenv/
       when: always
@@ -96,7 +96,7 @@ test-dynamic-env:
     when: never
   - if: $CI_COMMIT_REF_NAME =~ /^dynamic/ && $CI_COMMIT_MESSAGE !~ /^delenv/
     when: always
-  - if: $CI_COMMIT_REF_NAME == "main"
+  - if: $CI_COMMIT_REF_NAME == "master"
     when: never
   - if: $CI_COMMIT_REF_NAME == "test"
     when: never
@@ -134,7 +134,7 @@ k8s-dynamic-env:
     when: never
   - if: $CI_COMMIT_REF_NAME =~ /^dynamic/
     when: always
-  - if: $CI_COMMIT_REF_NAME == "main"
+  - if: $CI_COMMIT_REF_NAME == "master"
     when: never
   - if: $CI_COMMIT_REF_NAME == "test"
     when: never
@@ -149,7 +149,7 @@ prepare_db:
     - echo $DB_REPO_TOKEN
     - echo $CI_COMMIT_REF_NAME
     #Create db with the same name prefix as current branch 
-    - curl --request POST --header "PRIVATE-TOKEN:$DB_REPO_TOKEN" "https://gitlab.reclada.com/api/v4/projects/34/repository/branches?branch=$CI_COMMIT_REF_NAME&ref=main" | jq
+    - curl --request POST --header "PRIVATE-TOKEN:$DB_REPO_TOKEN" "https://gitlab.reclada.com/api/v4/projects/34/repository/branches?branch=$CI_COMMIT_REF_NAME&ref=master" | jq
     # Check pipeline sussess for current branch in runtime repository 
     - sleep 60
     - export response="pending"
@@ -160,7 +160,7 @@ prepare_db:
   rules:
     - if: $CI_COMMIT_MESSAGE =~ /^delenv/
       when: never
-    - if: $CI_COMMIT_REF_NAME !~ /^dynamic/ && $CI_MERGE_REQUEST_ID =~ /^./ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME !~ /^dynamic/ && $CI_MERGE_REQUEST_ID =~ /^./ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"
       when: never
     - if: $CI_COMMIT_REF_NAME !~ /^dynamic/ && $CI_MERGE_REQUEST_ID =~ /^./ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "test"
       when: never
@@ -168,7 +168,7 @@ prepare_db:
       when: never
     - if: $CI_COMMIT_REF_NAME =~ /^dynamic/ && $CI_COMMIT_MESSAGE !~ /^delenv/ && $CI_MERGE_REQUEST_ID !~ /^./ 
       when: always
-    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME == "master"
       when: never
     - if: $CI_COMMIT_REF_NAME == "test"
       when: never
@@ -185,7 +185,7 @@ prepare_runtime:
     - echo $RUNTIME_REPO_TOKEN
     - echo $CI_COMMIT_REF_NAME
     #Create db with the same name prefix as current branch
-    - curl --request POST --header "PRIVATE-TOKEN:$RUNTIME_REPO_TOKEN" "https://gitlab.reclada.com/api/v4/projects/36/repository/branches?branch=$CI_COMMIT_REF_NAME&ref=main" | jq
+    - curl --request POST --header "PRIVATE-TOKEN:$RUNTIME_REPO_TOKEN" "https://gitlab.reclada.com/api/v4/projects/36/repository/branches?branch=$CI_COMMIT_REF_NAME&ref=master" | jq
     # Check pipeline sussess for current branch in runtime repository 
     - sleep 60
     - while [ $response != "success" ] && [ $response != "failed" ]; do sleep 5 ; echo "WATING FOR PIPELINE" ; response=$(curl --header "PRIVATE-TOKEN:$RUNTIME_REPO_TOKEN" "https://gitlab.reclada.com/api/v4/projects/36/pipelines?per_page=1&page=1" | jq -r '.[].status') ; echo $response ; done ;
@@ -197,7 +197,7 @@ prepare_runtime:
   rules:
     - if: $CI_COMMIT_MESSAGE =~ /^delenv/
       when: never
-    - if: $CI_COMMIT_REF_NAME !~ /^dynamic/ && $CI_MERGE_REQUEST_ID =~ /^./ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME !~ /^dynamic/ && $CI_MERGE_REQUEST_ID =~ /^./ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"
       when: never
     - if: $CI_COMMIT_REF_NAME !~ /^dynamic/ && $CI_MERGE_REQUEST_ID =~ /^./ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "test"
       when: never
@@ -205,7 +205,7 @@ prepare_runtime:
       when: never
     - if: $CI_COMMIT_REF_NAME =~ /^dynamic/ && $CI_COMMIT_MESSAGE !~ /^delenv/ && $CI_MERGE_REQUEST_ID !~ /^./ 
       when: always
-    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME == "master"
       when: never
     - if: $CI_COMMIT_REF_NAME == "test"
       when: never
@@ -221,7 +221,7 @@ prepare_scinlp:
     - jq --version
     - echo $CI_COMMIT_REF_NAME
     #Create db with the same name prefix as current branch
-    - curl --request POST --header "PRIVATE-TOKEN:$SCINLP_REPO_TOKEN" "https://gitlab.reclada.com/api/v4/projects/37/repository/branches?branch=$CI_COMMIT_REF_NAME&ref=main" | jq
+    - curl --request POST --header "PRIVATE-TOKEN:$SCINLP_REPO_TOKEN" "https://gitlab.reclada.com/api/v4/projects/37/repository/branches?branch=$CI_COMMIT_REF_NAME&ref=master" | jq
     # Check pipeline sussess for current branch in runtime repository 
     - sleep 60
     - while [ $response != "success" ] && [ $response != "failed" ]; do sleep 5 ; echo "WATING FOR PIPELINE" ; response=$(curl --header "PRIVATE-TOKEN:$SCINLP_REPO_TOKEN" "https://gitlab.reclada.com/api/v4/projects/37/pipelines?per_page=1&page=1" | jq -r '.[].status') ; echo $response ; done ;
@@ -233,7 +233,7 @@ prepare_scinlp:
   rules:
     - if: $CI_COMMIT_MESSAGE =~ /^delenv/
       when: never
-    - if: $CI_COMMIT_REF_NAME !~ /^dynamic/ && $CI_MERGE_REQUEST_ID =~ /^./ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME !~ /^dynamic/ && $CI_MERGE_REQUEST_ID =~ /^./ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"
       when: never
     - if: $CI_COMMIT_REF_NAME !~ /^dynamic/ && $CI_MERGE_REQUEST_ID =~ /^./ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "test"
       when: never
@@ -241,7 +241,7 @@ prepare_scinlp:
       when: never
     - if: $CI_COMMIT_REF_NAME =~ /^dynamic/ && $CI_COMMIT_MESSAGE !~ /^delenv/ && $CI_MERGE_REQUEST_ID !~ /^./ 
       when: always
-    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME == "master"
       when: never
     - if: $CI_COMMIT_REF_NAME == "test"
       when: never
@@ -268,7 +268,7 @@ delete-k8s-dynamic-env:
       when: never
     - if: $CI_COMMIT_REF_NAME =~ /^dynamic/ && $CI_COMMIT_MESSAGE =~ /^delenv/ && $CI_MERGE_REQUEST_ID !~ /^./
       when: always
-    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME == "master"
       when: never
     - if: $CI_COMMIT_REF_NAME == "test"
       when: never
@@ -309,7 +309,7 @@ delete-terraform-dynamic-env:
       when: never
     - if: $CI_COMMIT_REF_NAME =~ /^dynamic/ && $CI_COMMIT_MESSAGE =~ /^delenv/ && $CI_MERGE_REQUEST_ID !~ /^./ 
       when: always
-    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME == "master"
       when: never
     - if: $CI_COMMIT_REF_NAME == "test"
       when: never
@@ -337,7 +337,7 @@ delete-db-dynamic-env:
       when: never
     - if: $CI_COMMIT_REF_NAME =~ /^dynamic/ && $CI_COMMIT_MESSAGE =~ /^delenv/
       when: always
-    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME == "master"
       when: never
     - if: $CI_COMMIT_REF_NAME == "test"
       when: never
@@ -373,7 +373,7 @@ delete-branches-dynamic-env:
       when: never
     - if: $CI_COMMIT_REF_NAME =~ /^dynamic/ && $CI_COMMIT_MESSAGE =~ /^delenv/
       when: always
-    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME == "master"
       when: never
     - if: $CI_COMMIT_REF_NAME == "test"
       when: never
@@ -416,7 +416,7 @@ deploy-autotest-env:
       when: never
     - if: $CI_COMMIT_REF_NAME =~ /^dynamic/
       when: never
-    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME == "master"
       when: never
     - if: $CI_COMMIT_REF_NAME == "test"
       when: never
@@ -464,7 +464,7 @@ test-autotest-env:
       when: never
     - if: $CI_COMMIT_REF_NAME =~ /^dynamic/
       when: never
-    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME == "master"
       when: never
     - if: $CI_COMMIT_REF_NAME == "test"
       when: never
@@ -484,7 +484,7 @@ deploy-prod-env:
   tags:
       - k8s-devops
   rules:
-    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME == "master"
       when: always
     - if: $CI_COMMIT_MESSAGE =~ /^delenv/
       when: never
@@ -518,11 +518,11 @@ push-to-github:
   tags:
       - k8s-devops
   rules:
-    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME == "master"
       when: always
     - if: $CI_MERGE_REQUEST_ID =~ /^./ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "test"
       when: never
-    - if: $CI_MERGE_REQUEST_ID =~ /^./ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"
+    - if: $CI_MERGE_REQUEST_ID =~ /^./ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"
       when: never
     - if: $CI_COMMIT_REF_NAME !~ /^dynamic/ 
       when: never
