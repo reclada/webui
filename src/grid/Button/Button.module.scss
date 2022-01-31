@@ -1,0 +1,156 @@
+@import 'src/styles/variables';
+
+.root {
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 24px;
+  color: $white;
+  transition: all 200ms ease-in;
+
+  &:hover {
+    cursor: pointer;
+  }
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  .leftIcon {
+    margin-right: 8px;
+  }
+
+  .rightIcon {
+    margin-left: 8px;
+  }
+}
+
+.large {
+  padding: 12px 24px;
+}
+
+.small {
+  padding: 6px 16px;
+}
+
+.xs {
+  padding: 4px 8px;
+  font-size: 14px;
+  line-height: 20px;
+
+  .leftIcon {
+    margin-right: 4px;
+  }
+
+  .rightIcon {
+    margin-left: 4px;
+  }
+}
+
+.primary {
+  background-color: $cyan;
+
+  svg {
+    fill: $white;
+  }
+
+  &:focus, &:active {
+    background-color: $cyan-pressed;
+  }
+  &:hover {
+    background-color: $cyan-hovered;
+    cursor: pointer;
+  }
+  &:disabled {
+    background-color: #BBD7E7;
+    cursor: not-allowed;
+  }
+}
+
+.secondary {
+  background-color: $white;
+  color: $cyan;
+  border: 1px solid $cyan;
+
+  svg {
+    fill: $cyan;
+  }
+
+  &:hover {
+    color: $cyan-hovered;
+    border: 1px solid $cyan-hovered;
+
+    svg {
+      fill: $cyan-hovered;
+    }
+  }
+
+  &:active, &:focus {
+    color:$cyan-pressed;
+    border: 1px solid $cyan-pressed;
+
+    svg {
+      fill: $cyan-pressed;
+    }
+  }
+
+  &:disabled {
+    border: 1px solid #BBD7E7;
+    color: #BBD7E7;
+
+    svg {
+      fill: #BBD7E7;
+    }
+  }
+}
+
+.clear {
+  padding: 0px;
+  color: $cyan;
+
+  svg {
+    fill: $cyan;
+  }
+
+  &.xs {
+    font-weight: normal;
+  }
+
+  &:hover {
+    color: $cyan-hovered;
+
+    svg {
+      fill: $cyan-hovered;
+    }
+  }
+
+  &:active, &:focus {
+    color:$cyan-pressed;
+
+    svg {
+      fill: $cyan-pressed;
+    }
+  }
+
+  &:disabled {
+    color: #BBD7E7;
+
+    svg {
+      fill: #BBD7E7;
+    }
+  }
+}
+
+.icon {
+  padding: 5px;
+  svg {
+    fill: $primary;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}

@@ -1,0 +1,36 @@
+@import 'src/styles/variables';
+
+.marker {
+    font-weight: bold;
+    font-size: 10px;
+    line-height: 16px;
+    padding: 2px 7px;
+    border-radius: 30px;
+    color: $white;
+    background-color: $cyan;
+    cursor: pointer;
+    transition: all .3s ease-in;
+
+    svg {
+        fill: $white;
+        width: 16px;
+        height: 16px;
+    }
+
+    &:hover {
+        background-color: $cyan-hovered;
+    }
+
+    &:active {
+        background-color: $cyan-pressed;
+    }
+
+    &.error {
+        background-color: $red;
+    }
+}
+
+.disabled {
+    background-color: #BBD7E7;
+    pointer-events: none;
+}

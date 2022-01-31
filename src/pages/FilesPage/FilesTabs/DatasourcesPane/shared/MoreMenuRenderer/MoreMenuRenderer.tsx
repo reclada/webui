@@ -4,9 +4,9 @@ import React, { FC, useCallback } from 'react';
 import { getDatasourceDownloadLink } from 'src/api/dataSourceDataGateService';
 import { MoreDropdown } from 'src/shared/MoreDropdown/MoreDropdown';
 import { downloadURI } from 'src/utils/downloadUri';
+import { eventEmitter } from 'src/utils/EventEmitter';
 import { useOpen } from 'src/utils/useOpen';
 
-import { FilePreviewModal } from '../FilePreviewModal/FilePreviewModal';
 import { EditDatasourceModal } from '../Modals/EditDatasourceModal';
 
 export type MoreMenuRendererProps = {
@@ -48,14 +48,21 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
     isEditModalOpen.close();
   };
 
-  const filePreviewModal = useOpen();
-
   const moreMenu = (
     <Menu theme="dark">
       <Menu.Item key={0} onClick={downloadDatasource}>
         <span>Download</span>
       </Menu.Item>
-      <Menu.Item key={1} onClick={filePreviewModal.open}>
+      <Menu.Item
+        key={1}
+        onClick={() => {
+          datasource &&
+            eventEmitter.emit('PREVIEW', {
+              '{GUID}': datasource?.['{GUID}'],
+              '{attributes,name}': datasource?.['{attributes,name}'],
+            });
+        }}
+      >
         <span>Preview</span>
       </Menu.Item>
       <Menu.Item key={2}>
@@ -90,12 +97,6 @@ export const MoreMenuRenderer: FC<MoreMenuRendererProps> = function MoreMenuRend
   return (
     <div className={className}>
       <MoreDropdown menu={moreMenu} />
-      <FilePreviewModal
-        datasourceId={datasource['{GUID}']}
-        fileName={datasource['{attributes,name}']}
-        isOpen={filePreviewModal.isOpen}
-        onClose={filePreviewModal.close}
-      />
     </div>
   );
 };

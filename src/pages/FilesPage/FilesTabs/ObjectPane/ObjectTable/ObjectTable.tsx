@@ -9,7 +9,11 @@ import { DragContext } from './DragContext';
 import { ObjectTableBody } from './ObjectTableBody';
 import { ObjectTableRow } from './ObjectTableRow';
 
-export const ObjectTable = observer(() => {
+interface Props {
+  className?: string;
+}
+
+export const ObjectTable = observer(({ className }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { selectable, service } = useObjectContext();
 
@@ -66,6 +70,7 @@ export const ObjectTable = observer(() => {
       value={{ onStart: onStartDrag, onStop: onStopDrag, onScrollTable }}
     >
       <div
+        className={className}
         style={{
           width: '100%',
           height: '100%',

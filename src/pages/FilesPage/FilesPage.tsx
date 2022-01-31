@@ -1,8 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
+import { GridLayout } from 'src/grid/GridLayout';
 import { Header } from 'src/shared/Header/Header';
-
-import { SearchResultSidebar } from '../SearchResultPage/SearchResultSidebar/SearchResultSidebar';
+import { GridLayoutItem } from 'src/types/GridLayout';
+import { eventEmitter } from 'src/utils/EventEmitter';
 
 import { FileSearch } from './FileSearch/FileSearch';
 import style from './FilesPage.module.scss';
@@ -76,7 +78,7 @@ export const FilesPage: FC<FilesPageProps> = function FilesPage({ pageType }) {
           {pageType === FilePageType.Available ? 'Available to me' : ''}
         </div>
 
-        <SearchResultSidebar />
+        {/* <GridLayout layout={SidebarGrid} /> */}
       </div>
 
       {/* <EditDataSetModal

@@ -15,10 +15,7 @@ export const SidebarItem = ({ isActive = false, icon, onClick }: Props): ReactEl
     <div className={styles.container}>
       {isActive && <span className={styles.activeBorder} />}
 
-      <div
-        className={classNames(styles.menuItem, isActive ? styles.activeSvg : '')}
-        onClick={onClick}
-      >
+      <div className={classNames(styles.menuItem, isActive ? styles.activeSvg : '')}>
         {icon}
       </div>
     </div>

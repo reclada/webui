@@ -29,6 +29,8 @@ export class ObjectDataService {
   @observable private _selectedColumn: number | undefined;
   @observable private _filters: RecladaFilter[] | undefined;
 
+  static _instances: Record<string, ObjectDataService> = {};
+
   private get orderBy(): OrderBy[] {
     const result = new Array<OrderBy>();
 
@@ -43,7 +45,14 @@ export class ObjectDataService {
 
   constructor(className: RecladaObjectClass) {
     this.className = className;
+
+    // if (ObjectDataService._instances?.[className]) {
+    //   return ObjectDataService._instances?.[className];
+    // }
+
     makeObservable(this);
+
+    // ObjectDataService._instances[className] = this;
   }
 
   get orders(): RecladaOrder[] | undefined {

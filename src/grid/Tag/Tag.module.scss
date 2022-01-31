@@ -1,0 +1,105 @@
+@import 'src/styles/variables';
+
+.tag {
+    box-sizing: border-box;
+    font-size: 10px;
+    line-height: 16px;
+    padding: 2px 8px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all .2s ease-in;
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+
+    svg {
+        transition: all .2s ease-in;
+        margin-left: 4px;
+    }
+}
+
+.primary {
+    color: $cyan;
+    background-color: #CEE9FD;
+
+    svg {
+        fill: $cyan;
+    }
+
+    &:hover {
+        background-color: $cyan-hovered;
+        color: #FFFFFF;
+
+        svg {
+            fill: #FFFFFF;
+        }
+    }
+
+    &:active {
+        background-color: $cyan-pressed;
+        color: #FFFFFF;
+
+        svg {
+            fill: #FFFFFF;
+        }
+    }
+
+    &.disabled {
+        background-color: #BBD7E7;
+        color: #FFFFFF;
+        pointer-events: none;
+
+        svg {
+            fill: #FFFFFF;
+        }
+    }
+}
+
+.outlined {
+    color: $dark-blue-0;
+    border: 1px solid #90B3C7;
+
+    svg {
+        fill: $dark-blue-0;
+    }
+
+    &:hover {
+        color: $cyan-hovered;
+        border-color: $cyan-hovered;
+
+        svg {
+            fill: $cyan-hovered;
+        }
+    
+    }
+
+    &:active {
+        color: $cyan-pressed;
+        border-color: $cyan-pressed;
+
+        svg {
+            fill: $cyan-pressed;
+        }
+    }
+
+    &.disabled {
+        border-color: #BBD7E7;
+        color: #BBD7E7;
+        pointer-events: none;
+
+        svg {
+            fill: #BBD7E7;
+        }
+    }
+}
+
+.large {
+    font-size: 12px;
+    line-height: 18px;
+    padding: 4px 12px;
+    height: 26px;
+
+    svg {
+        margin-left: 8px;
+    }
+}

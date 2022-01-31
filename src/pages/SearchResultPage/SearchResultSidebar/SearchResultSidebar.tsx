@@ -1,47 +1,44 @@
 import { observer } from 'mobx-react-lite';
-import React, { FC } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { FC, useEffect } from 'react';
 
-import { ReactComponent as Tile } from 'src/resources/card-view.svg';
-import { ReactComponent as Global } from 'src/resources/global.svg';
-import { ReactComponent as Search } from 'src/resources/search.svg';
+import { GridLayout } from 'src/grid/GridLayout';
+import { BasicGridItem, GridLayoutItem } from 'src/types/GridLayout';
+import { eventEmitter } from 'src/utils/EventEmitter';
 import { useOpen } from 'src/utils/useOpen';
 
 import { classNames } from '../../../utils/classNames';
-import { routes } from '../../routes';
 
-import { Menu2Content } from './Menu2Content';
 import style from './SearchResultSidebar.module.scss';
 import { SidebarItem } from './SidebarItem/SidebarItem';
 import { SubSideMenu } from './SubSideMenu';
 
 type SearchResultSidebarProps = {
   className?: string;
+  children: GridLayoutItem[];
+  menu?: BasicGridItem[];
 };
+
 export const SearchResultSidebar: FC<SearchResultSidebarProps> = observer(
-  function SearchResultSidebar({ className }) {
+  function SearchResultSidebar({ className, children, menu }) {
     const { isOpen, toggle, close } = useOpen();
-    // const isLogged = authService.user.isLogged;
-    const history = useHistory();
+
+    useEffect(() => {
+      const cb = () => toggle();
+
+      eventEmitter.on('TOGGLE_SIDEBAR', cb);
+
+      return () => eventEmitter.off('TOGGLE_SIDEBAR', cb);
+    }, [toggle]);
 
     return (
       <div className={style.sidebarcontainer}>
         <div className={classNames(className, style.root)}>
-          <SidebarItem
-            icon={<Search />}
-            isActive={window.location.href.includes(routes.search)}
-            onClick={() => history.push(routes.search)}
-          />
-
-          <SidebarItem
-            icon={<Tile height={24} width={24} />}
-            onClick={() => console.log('MenuItem2')}
-          />
-
-          <SidebarItem icon={<Global />} onClick={toggle} />
+          {children.map((child, index) => {
+            return <SidebarItem key={index} icon={<GridLayout layout={child} />} />;
+          })}
         </div>
 
-        <SubSideMenu close={close} isOpen={isOpen} items={Menu2Content.items} />
+        <SubSideMenu close={close} isOpen={isOpen} menu={menu} />
       </div>
     );
   }
