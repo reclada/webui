@@ -1,18 +1,16 @@
-@import 'src/styles/variables';
-
 .type {
   background-color: #90B3C7;
-  color: $white;
+  color: var(--white);
 
   svg {
-    fill: $white;
+    fill: var(--white);
   }
 
   &:hover {
-    background-color: #536D85;
+    background-color: var(--blue-1);
   }
 
   &:active {
-    background-color: $cyan-pressed;
+    background-color: var(--accent-pressed);
   }
 }

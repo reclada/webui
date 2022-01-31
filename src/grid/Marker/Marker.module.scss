@@ -1,36 +1,34 @@
-@import 'src/styles/variables';
-
 .marker {
     font-weight: bold;
     font-size: 10px;
     line-height: 16px;
     padding: 2px 7px;
     border-radius: 30px;
-    color: $white;
-    background-color: $cyan;
+    color: var(--white);
+    background-color: var(--accent);
     cursor: pointer;
     transition: all .3s ease-in;
 
     svg {
-        fill: $white;
+        fill: var(--white);
         width: 16px;
         height: 16px;
     }
 
     &:hover {
-        background-color: $cyan-hovered;
+        background-color: var(--accent-hovered);
     }
 
     &:active {
-        background-color: $cyan-pressed;
+        background-color: var(--accent-pressed);
     }
 
     &.error {
-        background-color: $red;
+        background-color: var(--red);
     }
 }
 
 .disabled {
-    background-color: #BBD7E7;
+    background-color: var(--disabled-button);
     pointer-events: none;
 }

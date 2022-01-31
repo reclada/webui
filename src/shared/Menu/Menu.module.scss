@@ -1,11 +1,9 @@
-@import 'src/styles/variables';
-
 .root {
     display: flex;
     flex-direction: column;
-    background-color: $dark-blue-0;
+    background-color: var(--primary);
     border-radius: 4px;
-    color: $white;
+    color: var(--white);
     max-height: 184px;
     padding-top: 8px;
     padding-bottom: 8px;
@@ -23,16 +21,16 @@
     gap: 8px;
 
     &:hover {
-        background-color: #536D85;
+        background-color: var(--blue-1);
         cursor: pointer
     }
 
     .selected {
-        background-color: #3A4F62;
+        background-color: var(--menu-background);
     }
 
     svg {
-        fill: $white;
+        fill: var(--blue-1);
         width: 16px;
         height: 16px;
     }
@@ -41,5 +39,5 @@
 .divider {
     margin: 4px 0;
     height: 1px;
-    background-color: #536D85;
+    background-color: var(--blue-1);
 }

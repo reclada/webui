@@ -179,7 +179,7 @@
     min-width: 300px;
 
     & > div {
-      border: 1px solid $primary;
+      border: 1px solid var(--primary);
       min-height: 50px;
       background: #fff;
     }

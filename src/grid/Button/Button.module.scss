@@ -1,5 +1,3 @@
-@import 'src/styles/variables';
-
 .root {
   padding: 8px 16px;
   display: flex;
@@ -9,7 +7,7 @@
   font-weight: bold;
   font-size: 16px;
   line-height: 24px;
-  color: $white;
+  color: var(--white);
   transition: all 200ms ease-in;
 
   &:hover {
@@ -51,68 +49,68 @@
 }
 
 .primary {
-  background-color: $cyan;
+  background-color: var(--accent);
 
   svg {
-    fill: $white;
+    fill: var(--white);
   }
 
   &:focus, &:active {
-    background-color: $cyan-pressed;
+    background-color: var(--accent-pressed);
   }
   &:hover {
-    background-color: $cyan-hovered;
+    background-color: var(--accent-hovered);
     cursor: pointer;
   }
   &:disabled {
-    background-color: #BBD7E7;
+    background-color: var(--disabled-button);
     cursor: not-allowed;
   }
 }
 
 .secondary {
-  background-color: $white;
-  color: $cyan;
-  border: 1px solid $cyan;
+  background-color: var(--white);
+  color: var(--accent);
+  border: 1px solid var(--accent);
 
   svg {
-    fill: $cyan;
+    fill: var(--accent);
   }
 
   &:hover {
-    color: $cyan-hovered;
-    border: 1px solid $cyan-hovered;
+    color: var(--accent-hovered);
+    border: 1px solid var(--accent-hovered);
 
     svg {
-      fill: $cyan-hovered;
+      fill: var(--accent-hovered);
     }
   }
 
   &:active, &:focus {
-    color:$cyan-pressed;
-    border: 1px solid $cyan-pressed;
+    color: var(--accent-pressed);
+    border: 1px solid var(--accent-pressed);
 
     svg {
-      fill: $cyan-pressed;
+      fill: var(--accent-pressed);
     }
   }
 
   &:disabled {
-    border: 1px solid #BBD7E7;
-    color: #BBD7E7;
+    border: 1px solid var(--disabled-button);
+    color: var(--disabled-button);
 
     svg {
-      fill: #BBD7E7;
+      fill: var(--disabled-button);
     }
   }
 }
 
 .clear {
   padding: 0px;
-  color: $cyan;
+  color: var(--accent);
 
   svg {
-    fill: $cyan;
+    fill: var(--accent);
   }
 
   &.xs {
@@ -120,26 +118,26 @@
   }
 
   &:hover {
-    color: $cyan-hovered;
+    color: var(--accent-hovered);
 
     svg {
-      fill: $cyan-hovered;
+      fill: var(--accent-hovered);
     }
   }
 
   &:active, &:focus {
-    color:$cyan-pressed;
+    color: var(--accent-pressed);
 
     svg {
-      fill: $cyan-pressed;
+      fill: var(--accent-pressed);
     }
   }
 
   &:disabled {
-    color: #BBD7E7;
+    color: var(--disabled-button);
 
     svg {
-      fill: #BBD7E7;
+      fill: var(--disabled-button);
     }
   }
 }
@@ -147,7 +145,7 @@
 .icon {
   padding: 5px;
   svg {
-    fill: $primary;
+    fill: var(--primary);
   }
 
   &:focus {

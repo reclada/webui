@@ -1,7 +1,5 @@
-@import 'src/styles/variables';
-
 .active {
   svg {
-    fill: $cyan;
+    fill: var(--accent);
   }
 }

@@ -1,9 +1,7 @@
-@import 'src/styles/variables';
-
 .container {
     min-height: 68px;
     width: 100%;
-    background-color: $white;
+    background-color: var(--white);
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -22,7 +20,7 @@
     border-radius: 4px;
 
     svg {
-        fill: #536D85;
+        fill: var(--blue-1);
         transition: all .3s ease-in;
     }
 
@@ -42,7 +40,7 @@
         background-color: #F0F9FF;
 
         svg {
-            fill: $cyan;
+            fill: var(--accent);
             transform: scale(-1);
         }
     }

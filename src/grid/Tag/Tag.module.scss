@@ -1,5 +1,3 @@
-@import 'src/styles/variables';
-
 .tag {
     box-sizing: border-box;
     font-size: 10px;
@@ -19,76 +17,76 @@
 }
 
 .primary {
-    color: $cyan;
+    color: var(--accent);
     background-color: #CEE9FD;
 
     svg {
-        fill: $cyan;
+        fill: var(--accent);
     }
 
     &:hover {
-        background-color: $cyan-hovered;
-        color: #FFFFFF;
+        background-color: var(--accent-hovered);
+        color: var(--white);
 
         svg {
-            fill: #FFFFFF;
+            fill: var(--white);
         }
     }
 
     &:active {
-        background-color: $cyan-pressed;
-        color: #FFFFFF;
+        background-color: var(--accent-pressed);
+        color: var(--white);
 
         svg {
-            fill: #FFFFFF;
+            fill: var(--white);
         }
     }
 
     &.disabled {
-        background-color: #BBD7E7;
-        color: #FFFFFF;
+        background-color: var(--disabled-button);
+        color: var(--white);
         pointer-events: none;
 
         svg {
-            fill: #FFFFFF;
+            fill: var(--white);
         }
     }
 }
 
 .outlined {
-    color: $dark-blue-0;
+    color: var(--primary);
     border: 1px solid #90B3C7;
 
     svg {
-        fill: $dark-blue-0;
+        fill: var(--primary);
     }
 
     &:hover {
-        color: $cyan-hovered;
-        border-color: $cyan-hovered;
+        color: var(--accent-hovered);
+        border-color: var(--accent-hovered);
 
         svg {
-            fill: $cyan-hovered;
+            fill: var(--accent-hovered);
         }
     
     }
 
     &:active {
-        color: $cyan-pressed;
-        border-color: $cyan-pressed;
+        color: var(--accent-pressed);
+        border-color: var(--accent-pressed);
 
         svg {
-            fill: $cyan-pressed;
+            fill: var(--accent-pressed);
         }
     }
 
     &.disabled {
-        border-color: #BBD7E7;
-        color: #BBD7E7;
+        border-color: var(--disabled-button);
+        color: var(--disabled-button);
         pointer-events: none;
 
         svg {
-            fill: #BBD7E7;
+            fill: var(--disabled-button);
         }
     }
 }

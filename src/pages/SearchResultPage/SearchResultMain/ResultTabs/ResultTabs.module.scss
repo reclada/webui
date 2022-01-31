@@ -100,7 +100,7 @@
 
         font-size: 16px;
         line-height: 24px;
-        color: #536D85;
+        color: var(--blue-1);
 
         padding-bottom: 12px;
 
@@ -123,18 +123,18 @@
         }
 
         &-active {
-          color: $cyan;
+          color: var(--accent);
 
           .tabCount {
-            color: $cyan;
+            color: var(--accent);
           }
         }
 
         &:hover {
-          color: $cyan;
+          color: var(--accent);
 
           .tabCount {
-            color: $cyan;
+            color: var(--accent);
           }
         }
       }
@@ -144,7 +144,7 @@
         pointer-events: none;
         bottom: 0px;
         height: 4px;
-        background-color: $cyan;
+        background-color: var(--accent);
 
         &-animated {
           transition: all 0.2s;
@@ -164,7 +164,7 @@
 
 .tabCount {
   font-weight: 700;
-  color: #243B50;
+  color: var(--primary);
   transition: all 200ms ease-in;
 }
 
