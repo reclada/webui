@@ -344,6 +344,24 @@
                   },
                   "children": [
                     {
+                      "component": "Box",
+                      "props": {
+                        "className": "content-subheader"
+                      },
+                      "children": [
+                        {
+                          "component": "Icon",
+                          "props": {
+                            "name": "global"
+                          }
+                        },
+                        {
+                          "component": "Text",
+                          "children": "Data Sources"
+                        }
+                      ]
+                    },
+                    {
                       "component": "Toolbar",
                       "children": [
                         {
@@ -543,7 +561,215 @@
                   "component": "ObjectContent",
                   "props": {
                     "objectClass": "DataSet"
-                  }
+                  },
+                  "children": [
+                    {
+                      "component": "Box",
+                      "props": {
+                        "className": "content-subheader"
+                      },
+                      "children": [
+                        {
+                          "component": "Icon",
+                          "props": {
+                            "name": "global"
+                          }
+                        },
+                        {
+                          "component": "Text",
+                          "children": "Data Sets"
+                        }
+                      ]
+                    },
+                    {
+                      "component": "Toolbar",
+                      "children": [
+                        {
+                          "component": "Box",
+                          "props": {
+                            "className": "toolbar-section"
+                          },
+                          "children": [
+                            {
+                              "component": "IconButton",
+                              "props": {
+                                "name": "add",
+                                "variant": "clear",
+                                "size": "s"
+                              },
+                              "event": {
+                                "type": "click",
+                                "name": "OPEN_ADD_MODAL"
+                              }
+                            },
+                            {
+                              "component": "IconButton",
+                              "props": {
+                                "name": "edit",
+                                "variant": "clear",
+                                "size": "s"
+                              }
+                            },
+                            {
+                              "component": "IconButton",
+                              "props": {
+                                "name": "delete",
+                                "variant": "clear",
+                                "size": "s"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "component": "Box",
+                          "props": {
+                            "className": "toolbar-section"
+                          },
+                          "children": [
+                            {
+                              "component": "IconButton",
+                              "props": {
+                                "name": "undo",
+                                "variant": "clear",
+                                "size": "s"
+                              }
+                            },
+                            {
+                              "component": "IconButton",
+                              "props": {
+                                "name": "redo",
+                                "variant": "clear",
+                                "size": "s"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "component": "Pagination"
+                        },
+                        {
+                          "component": "DisplayingSettings",
+                          "props": {
+                            "types": [
+                              { "value": "list", "icon": "list-view" },
+                              { "value": "table", "icon": "table-view" },
+                              { "value": "card", "icon": "card-view" }
+                            ]
+                          }
+                        },
+                        {
+                          "component": "Box",
+                          "props": {
+                            "className": "toolbar-section"
+                          },
+                          "children": [
+                            {
+                              "component": "IconButton",
+                              "props": {
+                                "name": "sort",
+                                "variant": "clear",
+                                "size": "s"
+                              },
+                              "event": {
+                                "type": "click",
+                                "name": "OPEN_SORT_MODAL"
+                              }
+                            },
+                            {
+                              "component": "IconButton",
+                              "props": {
+                                "name": "filter",
+                                "variant": "clear",
+                                "size": "s"
+                              },
+                              "event": {
+                                "type": "click",
+                                "name": "OPEN_FILTER_MODAL"
+                              }
+                            },
+                            {
+                              "component": "IconButton",
+                              "props": {
+                                "name": "settings",
+                                "variant": "clear",
+                                "size": "s"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "component": "Switch",
+                      "props": {
+                        "value": "{object.DataSet.displayingType}",
+                        "cases": {
+                          "table": {
+                            "component": "ObjectTable"
+                          },
+                          "list": {
+                            "component": "Text",
+                            "children": "List view"
+                          },
+                          "card": {
+                            "component": "Text",
+                            "children": "Card view"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "component": "Box",
+                      "props": {
+                        "className": "main-pagination"
+                      },
+                      "children": [
+                        {
+                          "component": "Pagination"
+                        },
+                        {
+                          "component": "Box",
+                          "props": {
+                            "className": "page-size-container"
+                          },
+                          "children": [
+                            {
+                              "component": "Text",
+                              "props": {
+                                "className": "page-size-label"
+                              },
+                              "children": "Results per page: "
+                            },
+                            {
+                              "component": "Select",
+                              "props": {
+                                "className": "page-size-select",
+                                "options": [
+                                  {
+                                    "value": 40,
+                                    "label": 40
+                                  },
+                                  {
+                                    "value": 60,
+                                    "label": 60
+                                  },
+                                  {
+                                    "value": 80,
+                                    "label": 80
+                                  }
+                                ],
+                                "value": "{object.DataSet.pageSize}"
+                              },
+                              "event": {
+                                "type": "change",
+                                "name": "CHANGE_PAGE_SIZE"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 }
               },
               "/assets": {

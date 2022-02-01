@@ -3,7 +3,12 @@ import React, { ReactElement, useCallback, useMemo } from 'react';
 
 import { ArticleType } from 'src/api/articleService';
 import { ItemSettings } from 'src/api/IColumn';
-import { IRecladaDataset, IRecladaFile, IRecladaObject } from 'src/api/IRecladaObject';
+import {
+  IRecladaDataset,
+  IRecladaFile,
+  IRecladaObject,
+  RecladaObjectClass,
+} from 'src/api/IRecladaObject';
 import { DateColumn } from 'src/pages/shared/DateColumn/DateColumn';
 import { Tag } from 'src/shared/Tag/Tag';
 import { eventEmitter } from 'src/utils/EventEmitter';
@@ -58,11 +63,14 @@ export const ObjectTableCell = observer(
         return (itemValue: Value) => {
           switch (action) {
             case 'preview': {
-              object &&
-                eventEmitter.emit('PREVIEW', {
-                  '{GUID}': object?.['{GUID}'],
-                  '{attributes,name}': object?.['{attributes,name}'],
-                });
+              if (object) {
+                service.objectClass === RecladaObjectClass.File
+                  ? eventEmitter.emit('PREVIEW', {
+                      '{GUID}': object?.['{GUID}'],
+                      '{attributes,name}': object?.['{attributes,name}'],
+                    })
+                  : eventEmitter.emit('REDIRECT', `/files?datasetId=${object['{GUID}']}`);
+              }
 
               return;
             }
@@ -72,7 +80,7 @@ export const ObjectTableCell = observer(
           }
         };
       },
-      [object]
+      [object, service.objectClass]
     );
 
     const getComponent = useCallback(
