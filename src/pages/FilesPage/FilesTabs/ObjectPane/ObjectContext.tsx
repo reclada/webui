@@ -5,9 +5,12 @@ import React, {
   ReactNode,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
 } from 'react';
+
+import { eventEmitter } from 'src/utils/EventEmitter';
 
 import { ObjectDataService } from './objectdata.service';
 
@@ -28,6 +31,14 @@ interface Props {
   selectable: boolean;
 }
 
+// interface RootStore {
+//   authStore: any
+//   objectsStores: {
+//     [key: RecladaObjectClass]: any
+//   }
+//   categories
+// }
+
 export const ObjectContextProvider = observer(
   ({ children, service, selectable }: Props): ReactElement => {
     const scrollToRef = useRef<(offset: number) => void>(null);
@@ -41,6 +52,15 @@ export const ObjectContextProvider = observer(
       },
       [service.pageSize]
     );
+
+    useEffect(() => {
+      const handleChangePageSize = (pageSize: string | number) =>
+        service.listStore.setPageSize(Number(pageSize));
+
+      eventEmitter.on('CHANGE_PAGE_SIZE', handleChangePageSize);
+
+      return () => eventEmitter.off('CHANGE_PAGE_SIZE', handleChangePageSize);
+    }, [service.listStore]);
 
     const value = useMemo(
       () => ({

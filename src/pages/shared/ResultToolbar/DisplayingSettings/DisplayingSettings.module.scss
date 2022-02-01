@@ -1,23 +1,5 @@
-@import 'src/styles/variables';
-
-.root {
-  display: flex;
-}
-
-.iconButton {
-  cursor: pointer;
-  margin: 0 8px;
-  padding: 0px;
-  display: flex;
-  align-items: center;
-
+.active {
   svg {
-    fill: #536D85;
-  }
-}
-
-.iconButton.active {
-  svg {
-    fill: $cyan;
+    fill: var(--accent);
   }
 }

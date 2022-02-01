@@ -1,5 +1,3 @@
-@import 'src/styles/variables';
-
 .root {
     border-radius: 4px;
     display: flex;
@@ -9,7 +7,7 @@
     transition: all 200ms ease-in;
 
     > svg {
-        fill: $white;
+        fill: var(--white);
     }
 
     &.xs {
@@ -34,51 +32,51 @@
 }
 
 .primary {
-    background-color: $cyan;
+    background-color: var(--accent);
 
     &:hover {
-        background-color: $cyan-hovered;
+        background-color: var(--accent-hovered);
     }
 
     &:active {
-        background-color: $cyan-pressed;
+        background-color: var(--accent-pressed);
     }
 
     &.disabled {
-        background-color: #BBD7E7;
+        background-color: var(--disabled-button);
         pointer-events: none;
     }
 }
 
 .secondary {
-    border: 1px solid $cyan;
+    border: 1px solid var(--accent);
 
     > svg {
-        fill: $cyan;
+        fill: var(--accent);
     }
 
     &:hover {
-        border-color: $cyan-hovered;
+        border-color: var(--accent-hovered);
 
         > svg {
-            fill: $cyan-hovered;
+            fill: var(--accent-hovered);
         }
     }
 
     &:active {
-        border-color: $cyan-pressed;
+        border-color: var(--accent-pressed);
 
         > svg {
-            fill: $cyan-pressed;
+            fill: var(--accent-pressed);
         }
     }
 
     &.disabled {
-        border-color: #BBD7E7;
+        border-color: var(--disabled-button);
         pointer-events: none;
 
         > svg {
-            fill: #BBD7E7;
+            fill: var(--disabled-button);
         }
     }
 }

@@ -24,23 +24,14 @@ const pageSizeOptions = [
 ];
 
 export const MainPagination = observer(() => {
-  const { service, scrollToPage } = useObjectContext();
+  const { service } = useObjectContext();
 
   const handleChangePageSize = (pageSize: string | number) =>
     service.listStore.setPageSize(Number(pageSize));
 
-  const handleChange = useCallback((page: number) => scrollToPage(page - 1), [
-    scrollToPage,
-  ]);
-
   return (
     <div className={styles.container}>
-      <Pagination
-        page={service.currentPage + 1}
-        pageSize={service.pageSize}
-        total={service.count}
-        onChange={handleChange}
-      />
+      <Pagination />
 
       <div className={styles.pageSizeContainer}>
         <p className={styles.pageSize}>Results per page:</p>

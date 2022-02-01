@@ -1,16 +1,14 @@
-@import 'src/styles/variables';
-
-$menu-width: 204px;
+$menu-width: 210px;
 
 .root {
   width: 72px;
-  color: $sidebar-color;
+  color: var(--sidebar-color);
   left: 0;
   transition-property: width;
   transition-duration: 0.2s;
   transition-timing-function: ease-out;
   z-index: 4;
-  background-color: $sidebar-background;
+  background-color: var(--sidebar-background);
   display: flex;
   flex-direction: column;
 }
@@ -23,13 +21,15 @@ $menu-width: 204px;
 
 .sidemenucontainter {
   padding: 16px;
-  background-color: #EEEEEE;
+  background-color: var(--gray);
   flex-direction: column;
   opacity: 0;
   transition: all .3s ease-in-out;
   margin-left: -$menu-width;
   z-index: 2;
   overflow: hidden;
+  width: 210px;
+  max-width: 210px;
 
   &.openedMenu {
     margin-left: 0px;
@@ -39,16 +39,16 @@ $menu-width: 204px;
 }
 
 .sidebarlink {
-  color: #243B50;
+  color: var(--primary);
   font-size: 16px;
   line-height: 24px;
 
   &.active {
-    color: $cyan;
+    color: var(--accent);
   }
 
   &:hover {
-    color: $cyan;
+    color: var(--accent);
   }
 }
 
@@ -76,7 +76,7 @@ $menu-width: 204px;
   align-items: center;
 
   > svg {
-    fill: #243B50;
+    fill: var(--primary);
     margin-right: 8px;
   }
 }
@@ -109,17 +109,4 @@ $menu-width: 204px;
   width: 4px;
   border-radius: 2px;
   background-color: #E4E4E4;
-}
-
-.menuSectionBody {
-  margin-left: 6px;
-  position: relative;
-  padding-left: 18px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  .user {
-    margin-bottom: 12px;
-  }
 }

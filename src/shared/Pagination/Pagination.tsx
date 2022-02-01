@@ -1,20 +1,26 @@
-import React, { memo, ReactElement, useCallback } from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { ReactElement, useCallback } from 'react';
+
+import { useObjectContext } from 'src/pages/FilesPage/FilesTabs/ObjectPane/ObjectContext';
 
 import { ReactComponent as LeftArrow } from '../../resources/arrow-left.svg';
 import { ReactComponent as RightArrow } from '../../resources/arrow-right.svg';
 
 import style from './Pagination.module.scss';
 
-interface PaginationProps {
-  page: number;
-  pageSize: number;
-  onChange: (page: number) => void;
-  total: number;
-}
+export const Pagination = observer(
+  (): ReactElement => {
+    const {
+      service: { pageSize, count, currentPage },
+      scrollToPage,
+    } = useObjectContext();
+    const pagesCount = Math.ceil(count / pageSize);
 
-export const Pagination = memo(
-  ({ page, pageSize, onChange, total }: PaginationProps): ReactElement => {
-    const pagesCount = Math.ceil(total / pageSize);
+    const page = currentPage + 1;
+
+    const onChange = useCallback((page: number) => scrollToPage(page - 1), [
+      scrollToPage,
+    ]);
 
     const handlePreviousPage = useCallback(() => onChange(Math.max(page - 1, 1)), [
       onChange,

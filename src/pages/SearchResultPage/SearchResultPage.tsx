@@ -19,7 +19,7 @@ export const SearchResultPage: React.FC<SearchResultPageProps> = function Search
 
       <div className={style.container}>
         <SearchResultMain className={style.main} />
-        <SearchResultSidebar className={style.sidebar} />
+        {/* <SearchResultSidebar className={style.sidebar} /> */}
       </div>
     </div>
   );

@@ -5,7 +5,7 @@
   background-color: transparent;
 
   &:focus {
-    //border: 2px solid $dark-blue-0;
+    //border: 2px solid var(--primary);
     //padding: 5px;
     background: $light-blue-1;
     border-radius: 10px;
@@ -16,7 +16,7 @@
   padding: 10px 10px 12px 10px;
   border-bottom: none;
   &:focus {
-    //border: 2px solid $dark-blue-0;
+    //border: 2px solid var(--primary);
     //padding: 5px;
     background: transparent;
   }
@@ -46,7 +46,7 @@
   flex-grow: 1;
 
   svg {
-    fill: $primary;
+    fill: var(--primary);
     margin-right: 10px;
   }
 }
@@ -78,7 +78,7 @@
 }
 
 .dictionary {
-  background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(180deg, var(--white) 0%, rgba(255, 255, 255, 0) 100%);
   border: 1px solid #E0E0E0;
   box-sizing: border-box;
   border-radius: 12px;
@@ -97,7 +97,7 @@
 }
 
 .title {
-  color: $cyan;
+  color: var(--accent);
   font-weight: bold;
   font-size: 16px;
   border-radius: 2px;
@@ -110,7 +110,7 @@
 
 .type {
   padding: 0 4px;
-  background-color: $cyan;
+  background-color: var(--accent);
   font-weight: bold;
   font-size: 12px;
   height: 18px;
@@ -130,7 +130,7 @@
 
 .propValue {
   font-size: 13px;
-  color: $primary;
+  color: var(--primary);
 }
 
 .paragraphWrapper {
@@ -149,7 +149,7 @@
 }
 
 .type {
-  background: $dark-blue-0;
+  background: var(--primary);
   border-radius: 2px;
   padding: 0 10px;
   width: 40px;

@@ -9,7 +9,7 @@ export const SearchPage: React.FC = function SearchPage() {
   return (
     <div className={style.root}>
       <SearchPanel />
-      <SearchResultSidebar className={style.sidebar} />
+      {/* <SearchResultSidebar className={style.sidebar} /> */}
     </div>
   );
 };

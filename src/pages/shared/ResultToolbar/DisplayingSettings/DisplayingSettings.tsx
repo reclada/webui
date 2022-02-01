@@ -1,9 +1,8 @@
 import { observer } from 'mobx-react-lite';
-import React, { FC, useContext } from 'react';
+import React, { FC, useCallback, useContext } from 'react';
 
-import { ReactComponent as CardViewIcon } from 'src/resources/card-view.svg';
-import { ReactComponent as ListViewIcon } from 'src/resources/list-view.svg';
-import { ReactComponent as TableViewIcon } from 'src/resources/table-view.svg';
+import { IconButton } from 'src/grid/IconButton/IconButton';
+import { iconLibrary } from 'src/grid/iconLibrary';
 import { DisplayingTypes } from 'src/stores/Types';
 
 import { classNames } from '../../../../utils/classNames';
@@ -11,46 +10,39 @@ import { ToolbarContext } from '../ResultToolbar';
 
 import style from './DisplayingSettings.module.scss';
 
+interface Type {
+  value: DisplayingTypes;
+  icon: keyof typeof iconLibrary;
+}
+
 type DisplayingSettingsProps = {
   className?: string;
+  types?: Type[];
 };
 
 export const DisplayingSettings: FC<DisplayingSettingsProps> = observer(
-  function DisplayingSettings({ className }) {
+  function DisplayingSettings({ className, types = [] }) {
     const displayingService = useContext(ToolbarContext);
 
+    const changeDisplay = useCallback(
+      (value: DisplayingTypes) => {
+        return () => displayingService.setDisplayingType(value);
+      },
+      [displayingService]
+    );
+
     return (
-      <div className={classNames(className, style.root)}>
-        <button
-          className={classNames(style.iconButton, {
-            [style.active]: displayingService.displayingType === DisplayingTypes.LIST,
-          })}
-          onClick={() => {
-            displayingService.setDisplayingType(DisplayingTypes.LIST);
-          }}
-        >
-          <ListViewIcon />
-        </button>
-        <button
-          className={classNames(style.iconButton, {
-            [style.active]: displayingService.displayingType === DisplayingTypes.TABLE,
-          })}
-          onClick={() => {
-            displayingService.setDisplayingType(DisplayingTypes.TABLE);
-          }}
-        >
-          <TableViewIcon />
-        </button>
-        <button
-          className={classNames(style.iconButton, {
-            [style.active]: displayingService.displayingType === DisplayingTypes.CARD,
-          })}
-          onClick={() => {
-            displayingService.setDisplayingType(DisplayingTypes.CARD);
-          }}
-        >
-          <CardViewIcon />
-        </button>
+      <div className={classNames('toolbar-section', className)}>
+        {types.map(({ value, icon }) => (
+          <IconButton
+            key={value}
+            className={displayingService.displayingType === value ? style.active : ''}
+            name={icon}
+            size="s"
+            variant="clear"
+            onClick={changeDisplay(value)}
+          />
+        ))}
       </div>
     );
   }

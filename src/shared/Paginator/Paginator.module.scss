@@ -40,7 +40,7 @@
     list-style: none;
     display: flex;
     font-size: 14px;
-    color: $dark-blue-0;
+    color: var(--primary);
 
     svg {
       cursor: pointer;

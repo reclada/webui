@@ -1,8 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
+import { GridLayout } from 'src/grid/GridLayout';
 import { Header } from 'src/shared/Header/Header';
-
-import { SearchResultSidebar } from '../SearchResultPage/SearchResultSidebar/SearchResultSidebar';
+import { GridLayoutItem } from 'src/types/GridLayout';
+import { eventEmitter } from 'src/utils/EventEmitter';
 
 import { FileSearch } from './FileSearch/FileSearch';
 import style from './FilesPage.module.scss';
@@ -65,18 +67,18 @@ export const FilesPage: FC<FilesPageProps> = function FilesPage({ pageType }) {
           <div className={style.emptyContainer}></div>
           {/* <FilesTabsActions /> */}
           {pageType === FilePageType.Datasets && <DataSets />}
-          {pageType === FilePageType.Datasources && (
+          {/* {pageType === FilePageType.Datasources && (
             <ObjectPane
               errorTitle="Failed to load files"
               selectable
               service={objectDataService}
             />
-          )}
+          )} */}
           {pageType === FilePageType.Assets ? 'Assets' : ''}
           {pageType === FilePageType.Available ? 'Available to me' : ''}
         </div>
 
-        <SearchResultSidebar />
+        {/* <GridLayout layout={SidebarGrid} /> */}
       </div>
 
       {/* <EditDataSetModal
