@@ -37,10 +37,6 @@ export const ObjectPane = observer<ObjectPaneProps>(
       service.initList();
     }, [service]);
 
-    if (service.isError) {
-      return <Result status="error" subTitle="Please, try again" title={errorTitle} />;
-    }
-
     const Layout = useMemo(() => {
       if (!layout) {
         return null;
@@ -69,6 +65,10 @@ export const ObjectPane = observer<ObjectPaneProps>(
         openPreview();
       }
     );
+
+    if (service.isError) {
+      return <Result status="error" subTitle="Please, try again" title={errorTitle} />;
+    }
 
     return (
       <ObjectContextProvider selectable={selectable} service={service}>
