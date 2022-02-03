@@ -7,7 +7,9 @@ export function useFileUrl(id: string, active: boolean): string {
 
   useEffect(() => {
     if (active) {
-      getDatasourceDownloadLink(id).then(link => setUrl(link));
+      getDatasourceDownloadLink(id)
+        .then(link => setUrl(link))
+        .catch(() => setUrl(''));
     }
   }, [id, active]);
 

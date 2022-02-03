@@ -5,11 +5,11 @@ import { ReactComponent as AssetsIcon } from '../../../resources/assets.svg';
 import { ReactComponent as DatasetsIcon } from '../../../resources/datasets.svg';
 import { ReactComponent as DatasourceIcon } from '../../../resources/datasources.svg';
 
-import { DatasetsPane } from './DatasetsPane/DatasetsPane';
-import { DatasourcesPane } from './DatasourcesPane/DatasourcesPane';
+// import { DatasetsPane } from './DatasetsPane/DatasetsPane';
+// import { DatasourcesPane } from './DatasourcesPane/DatasourcesPane';
 // import { DatasourcesTable } from './DatasourcesTable/DatasourcesTable';
 import style from './FilesTabs.module.scss';
-import { FilesTabsActions } from './FilesTabsActions/FilesTabsActions';
+// import { FilesTabsActions } from './FilesTabsActions/FilesTabsActions';
 
 export const FilesTabs: React.FC = function FilesPage() {
   const { TabPane } = Tabs;
@@ -23,7 +23,7 @@ export const FilesTabs: React.FC = function FilesPage() {
       <Tabs
         className={style.tabs}
         defaultActiveKey="1"
-        tabBarExtraContent={<FilesTabsActions />}
+        // tabBarExtraContent={<FilesTabsActions />}
         onChange={callback}
       >
         <TabPane
@@ -36,7 +36,7 @@ export const FilesTabs: React.FC = function FilesPage() {
           }
         >
           {/* <DatasourcesTable /> */}
-          <DatasourcesPane />
+          {/* <DatasourcesPane /> */}
         </TabPane>
         <TabPane
           key="2"
@@ -47,7 +47,7 @@ export const FilesTabs: React.FC = function FilesPage() {
             </span>
           }
         >
-          <DatasetsPane />
+          {/* <DatasetsPane /> */}
         </TabPane>
         <TabPane
           key="3"

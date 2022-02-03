@@ -4,9 +4,11 @@ import { HashRouter, Route, Switch } from 'react-router-dom';
 import { AuthGuard } from 'src/pages/AuthGuard';
 import { routes } from 'src/pages/routes';
 
+import { AppStateProvider } from './context/RootState';
 import { FilePageType, FilesPage } from './pages/FilesPage/FilesPage';
 import { SearchResultPage } from './pages/SearchResultPage/SearchResultPage';
 import { TemporaryPdfView } from './pages/TemporaryPdfView/TemporaryPdfView';
+import { Root } from './Root';
 import { authService } from './services/authService';
 
 function App() {
@@ -20,16 +22,23 @@ function App() {
     return null;
   }
 
+  // return <GridLayout layout={gridItem} />;
+
   return (
     <HashRouter>
-      <Switch>
+      <AppStateProvider>
+        <Root />
+      </AppStateProvider>
+      {/* <Switch>
         <Route path="/viewer" render={routeProps => <TemporaryPdfView />} />
         <Route
           path={routes.search}
           render={routeProps => <SearchResultPage query={routeProps.location.search} />}
         />
         <Route path={routes.datasets}>
-          <FilesPage pageType={FilePageType.Datasets} />
+          <AuthGuard>
+            <FilesPage pageType={FilePageType.Datasets} />
+          </AuthGuard>
         </Route>
         <Route path={routes.files}>
           <AuthGuard>
@@ -56,7 +65,7 @@ function App() {
           path={routes.root}
           render={routeProps => <SearchResultPage query={routeProps.location.search} />}
         />
-      </Switch>
+      </Switch> */}
     </HashRouter>
   );
 }

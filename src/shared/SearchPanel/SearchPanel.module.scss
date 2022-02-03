@@ -1,5 +1,3 @@
-@import 'src/styles/variables';
-
 .root {
   width: 100%;
   display: flex;
@@ -13,8 +11,8 @@
 }
 
 .searchButton {
-  background: $cyan;
+  background: var(--accent);
   border: none;
-  color: $white;
+  color: var(--white);
   outline: none;
 }

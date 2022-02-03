@@ -1,51 +1,21 @@
 import React, { FC } from 'react';
-import { NavLink } from 'react-router-dom';
+
+import { GridLayout } from 'src/grid/GridLayout';
+import { BasicGridItem } from 'src/types/GridLayout';
+import { classNames } from 'src/utils/classNames';
 
 import style from './SearchResultSidebar.module.scss';
 
 export type SideBarSubMenuProps = {
-  name: string;
-  position: number;
-  items?: {
-    name: string;
-    icon: any;
-    link: string;
-    divider: boolean;
-  }[];
+  isOpen: boolean;
+  menu?: BasicGridItem[];
+  close: () => void;
 };
 
-export const SubSideMenu: FC<SideBarSubMenuProps> = function SubSideMenu({
-  name,
-  items,
-  position,
-}) {
-  return (
-    <div className={style.sidemenucontainter}>
-      <div style={{ top: 127 + (position - 1) * 72, position: 'absolute', left: '84px' }}>
-        <svg
-          fill="none"
-          height="32"
-          viewBox="0 0 16 32"
-          width="16"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M0 16L16 0V32L0 16Z" fill="#536D85" />
-        </svg>
-      </div>
-      <div className={style.sidemenuinnercontainter}>
-        <div className={style.sidemenuheader}>{name}</div>
-        {items?.map(item => {
-          return (
-            <div className={style.menuItemHeader}>
-              {item.icon}
-              <NavLink className={style.sidebarlink} to={item.link}>
-                {item.name}
-              </NavLink>
-              {item.divider ? <div className={style.divider} /> : <></>}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
+export const SubSideMenu: FC<SideBarSubMenuProps> = ({ isOpen, menu }) => (
+  <div className={classNames(style.sidemenucontainter, { [style.openedMenu]: isOpen })}>
+    {menu?.map((layout, index) => (
+      <GridLayout key={index} layout={layout} />
+    ))}
+  </div>
+);

@@ -1,0 +1,103 @@
+.tag {
+    box-sizing: border-box;
+    font-size: 10px;
+    line-height: 16px;
+    padding: 2px 8px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all .2s ease-in;
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+
+    svg {
+        transition: all .2s ease-in;
+        margin-left: 4px;
+    }
+}
+
+.primary {
+    color: var(--accent);
+    background-color: #CEE9FD;
+
+    svg {
+        fill: var(--accent);
+    }
+
+    &:hover {
+        background-color: var(--accent-hovered);
+        color: var(--white);
+
+        svg {
+            fill: var(--white);
+        }
+    }
+
+    &:active {
+        background-color: var(--accent-pressed);
+        color: var(--white);
+
+        svg {
+            fill: var(--white);
+        }
+    }
+
+    &.disabled {
+        background-color: var(--disabled-button);
+        color: var(--white);
+        pointer-events: none;
+
+        svg {
+            fill: var(--white);
+        }
+    }
+}
+
+.outlined {
+    color: var(--primary);
+    border: 1px solid #90B3C7;
+
+    svg {
+        fill: var(--primary);
+    }
+
+    &:hover {
+        color: var(--accent-hovered);
+        border-color: var(--accent-hovered);
+
+        svg {
+            fill: var(--accent-hovered);
+        }
+    
+    }
+
+    &:active {
+        color: var(--accent-pressed);
+        border-color: var(--accent-pressed);
+
+        svg {
+            fill: var(--accent-pressed);
+        }
+    }
+
+    &.disabled {
+        border-color: var(--disabled-button);
+        color: var(--disabled-button);
+        pointer-events: none;
+
+        svg {
+            fill: var(--disabled-button);
+        }
+    }
+}
+
+.large {
+    font-size: 12px;
+    line-height: 18px;
+    padding: 4px 12px;
+    height: 26px;
+
+    svg {
+        margin-left: 8px;
+    }
+}

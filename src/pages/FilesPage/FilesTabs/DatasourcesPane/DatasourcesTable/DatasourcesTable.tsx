@@ -353,9 +353,10 @@ const DatasourcesCheckBoxRow: FC<GridChildComponentProps> = observer(
             <div className={styleModule.checkBoxDiv}>
               <Checkbox
                 checked={
-                  datasourceTableService.selectedRows.filter(
-                    chel => datasource.GUID === chel
-                  ).length > 0
+                  // datasourceTableService.selectedRows.filter(
+                  //   chel => datasource.GUID === chel
+                  // ).length > 0
+                  false
                 }
                 className={styleModule.checkBox}
                 onChange={onSelect}
@@ -388,7 +389,7 @@ const DatasourcesMoreMenuRow: FC<GridChildComponentProps> = observer(
           <div className={styleModule.checkBoxDiv}>
             <MoreMenuRenderer
               className={styleModule.checkBox}
-              datasource={datasource}
+              datasource={datasource as any}
               onUpdate={onUpdate}
             />
           </div>

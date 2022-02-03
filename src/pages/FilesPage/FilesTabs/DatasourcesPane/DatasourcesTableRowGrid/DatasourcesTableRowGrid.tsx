@@ -91,7 +91,7 @@ export const DatasourcesTableRowGrid: FC<GridChildComponentProps> = observer(
         case 'date':
           content = (
             <DateColumn
-              date={
+              value={
                 getKeyValue<keyof IDatasource, IDatasource>(column as keyof IDatasource)(
                   datasource
                 ) as Date
@@ -116,7 +116,7 @@ export const DatasourcesTableRowGrid: FC<GridChildComponentProps> = observer(
         case 'type':
           content = (
             <ArticleTypeRenderer
-              articleType={
+              value={
                 getKeyValue<keyof IDatasource, IDatasource>(column as keyof IDatasource)(
                   datasource
                 ) as ArticleType

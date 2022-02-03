@@ -1,5 +1,3 @@
-@import 'src/styles/variables';
-
 .root {
   margin-bottom: 20px;
 }
@@ -13,7 +11,7 @@
 
 .activeTag {
   font-size: 16px;
-  color: $primary;
+  color: var(--primary);
   line-height: 30px;
   padding: 0 15px;
   border-radius: 15px;
@@ -41,5 +39,5 @@
 }
 
 .activeTag {
-  color: $white;
+  color: var(--white);
 }

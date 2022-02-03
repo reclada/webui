@@ -4,11 +4,12 @@ import React, { FC, useCallback, useState } from 'react';
 import { ReactComponent as Empty } from 'src/resources/empty.svg';
 import { ReactComponent as Plus } from 'src/resources/plus.svg';
 import { OrderType, RecladaOrder } from 'src/stores/Types';
+import { useOpen } from 'src/utils/useOpen';
+import { useSubscription } from 'src/utils/useSubscription';
 
 import style from './RecladaSorting.module.scss';
 
 type RecladaSortingProps = {
-  onClose: () => void;
   orders?: RecladaOrder[];
   enableOrders?: RecladaOrder[];
   setOrder: (value: RecladaOrder[] | undefined) => void;
@@ -17,18 +18,22 @@ type RecladaSortingProps = {
 const { Option } = Select;
 
 export const RecladaSorting: FC<RecladaSortingProps> = function RecladaSorting({
-  onClose,
   orders,
   enableOrders,
   setOrder,
 }) {
+  const { isOpen, open, close } = useOpen();
   const [currentOrders, setCurrentOrders] = useState(orders ? orders : []);
 
   const onClickAdd = useCallback(() => {
     setCurrentOrders([...currentOrders, { name: '', field: '', order: OrderType.ASC }]);
   }, [currentOrders]);
 
-  console.log('reneder RecladaSorting');
+  useSubscription('OPEN_SORT_MODAL', open);
+
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <Modal
@@ -38,20 +43,11 @@ export const RecladaSorting: FC<RecladaSortingProps> = function RecladaSorting({
       destroyOnClose={true}
       footer={
         <div>
-          <Button
-            key={0}
-            shape="round"
-            size="large"
-            type="default"
-            onClick={() => {
-              onClose();
-            }}
-          >
+          <Button key={0} shape="round" size="large" type="default" onClick={close}>
             Cancel
           </Button>
           <Button
             key={1}
-            disabled={false}
             shape="round"
             size="large"
             type="primary"
@@ -63,7 +59,7 @@ export const RecladaSorting: FC<RecladaSortingProps> = function RecladaSorting({
                     })
                   : undefined
               );
-              onClose();
+              close();
             }}
           >
             Apply
@@ -72,11 +68,11 @@ export const RecladaSorting: FC<RecladaSortingProps> = function RecladaSorting({
       }
       okText="Apply"
       visible={true}
-      onCancel={onClose}
+      onCancel={close}
     >
       <Typography.Title level={4}>Sorting by Multiple Columns</Typography.Title>
       <button className={style.iconButton} onClick={onClickAdd}>
-        <Plus /> Add
+        <Plus fill="#536D85" /> Add
       </button>
       {currentOrders.map((el, index) => {
         return (
@@ -91,7 +87,7 @@ export const RecladaSorting: FC<RecladaSortingProps> = function RecladaSorting({
               onChange={(val: number) => {
                 if (enableOrders) {
                   setCurrentOrders(prev => {
-                    const newOrders = [...currentOrders];
+                    const newOrders = [...prev];
 
                     newOrders[index].name = enableOrders[val].name;
                     newOrders[index].field = enableOrders[val].field;

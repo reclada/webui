@@ -1,9 +1,10 @@
+import format from 'date-fns/format';
 import React, { FC, memo } from 'react';
 
-type DateColumnProps = {
-  date: Date;
-};
+import { CellRendererProps } from 'src/types/CellRenderer';
 
-export const DateColumn: FC<DateColumnProps> = memo(function DateColumn({ date }) {
-  return <div>{date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear()}</div>;
+export const DateColumn: FC<CellRendererProps<Date>> = memo(({ value }) => {
+  const formattedDate = format(value, 'd MMM yyyy');
+
+  return <div>{formattedDate}</div>;
 });

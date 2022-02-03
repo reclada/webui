@@ -78,7 +78,7 @@ export const DatasourcesTable2 = observer(function DatasourcesTable2() {
   const containerRef = useRef(null);
   const onScrollTable = useCallback(event => {
     //@ts-ignore
-    containerRef.current.scrollTo(event.target.scrollLeft * 2, 0);
+    containerRef.current.scrollTo(event.target.scrollLeft, 0);
   }, []);
 
   return (
@@ -105,7 +105,7 @@ export const DatasourcesTable2 = observer(function DatasourcesTable2() {
                 <DatasourcesTableObjectHeader />
               </div>
               <DatasourcesTableObject
-                header={<TableTHead />}
+                // header={<TableTHead />}
                 height={height * 0.9}
                 itemCount={datasourceTableService.count}
                 itemSize={36}
@@ -187,7 +187,7 @@ const DatasourcesTableObjectHeader: FC<headerProp> = memo(
               <Divider className={styleModule.dividerHeader} type="vertical" />
             </div>
           </Draggable>
-          <div style={{ width: '35px' }}></div>
+          {/* <div style={{ minWidth: '35px' }}></div> */}
         </div>
       );
     }
@@ -206,6 +206,10 @@ const DatasourcesTableObjectHeader: FC<headerProp> = memo(
           {/* <Divider className={styleModule.dividerHeader} type="vertical" /> */}
         </div>
         {content}
+        <div
+          className={classNames(styleModule.columnTable, styleModule.columnHeader)}
+          style={{ minWidth: '50px', position: 'relative' }}
+        ></div>
       </div>
     );
   })
@@ -277,6 +281,9 @@ const RowDataSources: FC<ListChildComponentProps> = memo(
       for (let i = 0; i < 7; i++) {
         column = datasourceTableService.getKeyByIndex(i);
         const attrData = datasourceTableService.getAttributeDataByIndex(i);
+        const width = datasourceTableService.isColumnCustomWidth(i)
+          ? attrData.maxWidth
+          : attrData.width;
 
         switch (attrData.type) {
           case 'string':
@@ -285,6 +292,7 @@ const RowDataSources: FC<ListChildComponentProps> = memo(
                 key={i}
                 // ref={datasourceTableService.isColumnCustomWidth(i) ? refTD : null}
                 id={index + '/' + i}
+                style={{ width, minWidth: width }}
               >
                 <div>
                   {getKeyValue<keyof IDatasource, IDatasource>(
@@ -296,10 +304,9 @@ const RowDataSources: FC<ListChildComponentProps> = memo(
             break;
           case 'date':
             content.push(
-              <td key={i}>
-                {index}
+              <td key={i} style={{ width, minWidth: width }}>
                 <DateColumn
-                  date={
+                  value={
                     getKeyValue<keyof IDatasource, IDatasource>(
                       column as keyof IDatasource
                     )(datasource) as Date
@@ -310,7 +317,7 @@ const RowDataSources: FC<ListChildComponentProps> = memo(
             break;
           case 'name':
             content.push(
-              <td key={i}>
+              <td key={i} style={{ width, minWidth: width }}>
                 <div onClick={onClickActive}>
                   <ArticleNameRenderer
                     //   className={styleModule.nameCard}
@@ -326,9 +333,9 @@ const RowDataSources: FC<ListChildComponentProps> = memo(
             break;
           case 'type':
             content.push(
-              <td key={i}>
+              <td key={i} style={{ width, minWidth: width }}>
                 <ArticleTypeRenderer
-                  articleType={
+                  value={
                     getKeyValue<keyof IDatasource, IDatasource>(
                       column as keyof IDatasource
                     )(datasource) as ArticleType
@@ -339,7 +346,7 @@ const RowDataSources: FC<ListChildComponentProps> = memo(
             break;
           case 'array':
             content.push(
-              <td key={i}>
+              <td key={i} style={{ width, minWidth: width }}>
                 <OwnersRenderer
                   owners={
                     getKeyValue<keyof IDatasource, IDatasource>(
@@ -353,7 +360,6 @@ const RowDataSources: FC<ListChildComponentProps> = memo(
         }
       }
     }
-    //console.log('render');
 
     return (
       <>
@@ -384,6 +390,7 @@ const RowDataSources: FC<ListChildComponentProps> = memo(
               className={datasource ? styleModule.tableRow : ''}
               id={index + '/-1'}
               //id={index.toString()}
+              style={style}
               onMouseOver={() => {
                 if (datasourceTableService.rowDragging !== undefined) {
                   datasourceTableService.setRowForSwap(index);
@@ -391,7 +398,7 @@ const RowDataSources: FC<ListChildComponentProps> = memo(
               }}
             >
               {' '}
-              <td id={index + '/-1'}>
+              <td id={index + '/-1'} style={{ width: '35px', minWidth: '35px' }}>
                 {datasource ? (
                   <strong
                     style={{ display: 'inline-block', height: '100%', width: '100%' }}
@@ -399,9 +406,10 @@ const RowDataSources: FC<ListChildComponentProps> = memo(
                     <div className={styleModule.checkBoxDiv}>
                       <Checkbox
                         checked={
-                          datasourceTableService.selectedRows.filter(
-                            chel => datasource.GUID === chel
-                          ).length > 0
+                          // datasourceTableService.selectedRows.filter(
+                          //   chel => datasource.GUID === chel
+                          // ).length > 0
+                          false
                         }
                         className={styleModule.checkBox}
                         onChange={onSelect}
@@ -411,11 +419,11 @@ const RowDataSources: FC<ListChildComponentProps> = memo(
                 ) : null}
               </td>
               {content}
-              <td>
+              {/* <td style={{ width: '35px', minWidth: '35px' }}>
                 {datasource ? (
                   <MoreMenuRenderer datasource={datasource} onUpdate={onUpdate} />
                 ) : null}
-              </td>
+              </td> */}
             </tr>
           </Draggable>
           // </Popover>

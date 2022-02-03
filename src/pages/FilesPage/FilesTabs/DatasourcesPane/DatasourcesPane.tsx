@@ -11,6 +11,8 @@ import {
 import { InfiniteList } from 'src/shared/InfiniteList/InfiniteList';
 import { DisplayingTypes } from 'src/stores/Types';
 
+import { ObjectPane } from '../ObjectPane/ObjectPane';
+
 import { DatasourcesTable2 } from './DatasorcesTable2/DatasourcesTable2';
 import { DatasourcesCardRow } from './DatasourcesCardsRow/DatasuorcesCardRow';
 import style from './DatasourcesPane.module.scss';
@@ -29,7 +31,9 @@ export const DatasourcesPane: FC<DatasourcesPaneProps> = observer(
     }, [datasetId]);
 
     const activeUrl = useFileUrl(
-      datasourceTableService.activeRecord ? datasourceTableService.activeRecord.GUID : '',
+      datasourceTableService.activeRecord
+        ? datasourceTableService.activeRecord['{GUID}:string']
+        : '',
       datasourceTableService.activeRecord !== undefined
     );
 
@@ -64,7 +68,7 @@ export const DatasourcesPane: FC<DatasourcesPaneProps> = observer(
 
     const content =
       datasourceTableService.displaingType === DisplayingTypes.TABLE ? (
-        <DatasourcesTable />
+        <DatasourcesTable2 />
       ) : (
         // <DatasourcesTable3 />
         <InfiniteList
@@ -84,7 +88,7 @@ export const DatasourcesPane: FC<DatasourcesPaneProps> = observer(
       <>
         <>
           <div className={style.toolbar}>
-            <ToolbarContext.Provider value={datasourceTableService}>
+            <ToolbarContext.Provider value={datasourceTableService as any}>
               <ResultToolbar />
             </ToolbarContext.Provider>
           </div>
@@ -105,12 +109,12 @@ export const DatasourcesPane: FC<DatasourcesPaneProps> = observer(
                 content
               )}
             </div>
-            <Pager service={datasourceTableService.listStore} />
+            <Pager service={datasourceTableService.listStore as any} />
             {datasourceTableService.activeRecord && (
               <div className={style.rightPanel}>
                 <ArticleViewPanel
                   article={{
-                    id: datasourceTableService.activeRecord.GUID,
+                    id: datasourceTableService.activeRecord['{GUID}:string'],
                     url: activeUrl,
                     title: datasourceTableService.activeRecord.name,
                   }}

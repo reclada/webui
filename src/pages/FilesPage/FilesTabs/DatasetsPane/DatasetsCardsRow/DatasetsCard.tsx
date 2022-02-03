@@ -2,6 +2,8 @@ import { Card } from 'antd';
 import { observer } from 'mobx-react-lite';
 import React, { FC, useCallback } from 'react';
 
+import { IRecladaDataset } from 'src/api/IRecladaObject';
+
 import { OwnersRenderer } from '../../../../shared/OwnersRenderer/OwnersRenderer';
 import { datasetsDataService } from '../datasetsData.service';
 import { DatasetNameRenderer } from '../shared/DatasetNameRenderer/DatasetNameRenderer';
@@ -33,8 +35,8 @@ export const DatasetsCard: FC<DatasetCardProps> = observer(function DatasetsCard
   const onUpdate = useCallback(
     (name: string) => {
       if (dataset) {
-        dataset.title = name;
-        datasetsDataService.updateRow(index, dataset);
+        dataset['{attributes,name}'] = name;
+        datasetsDataService.updateRow(index, dataset as any);
       }
     },
     [dataset, index]
@@ -46,12 +48,12 @@ export const DatasetsCard: FC<DatasetCardProps> = observer(function DatasetsCard
         <Card className={style.card} loading={true}></Card>
       ) : (
         <Card
-          key={dataset.GUID}
+          key={dataset['{GUID}']}
           className={style.card}
           extra={
             <MoreMenuRenderer
-              dataSet={dataset}
-              datasetIndex={index}
+              dataSet={(dataset as unknown) as IRecladaDataset}
+              // datasetIndex={index}
               //dataSetId={dataset.id}
               //prevName={dataset.title}
               onUpdate={onUpdate}
@@ -59,7 +61,7 @@ export const DatasetsCard: FC<DatasetCardProps> = observer(function DatasetsCard
           }
           title={
             <div className={style.titleCard}>
-              <DatasetNameRenderer dataset={dataset} onSelect={onSelect} />
+              <DatasetNameRenderer dataset={dataset as any} onSelect={onSelect} />
             </div>
           }
         >
@@ -67,38 +69,38 @@ export const DatasetsCard: FC<DatasetCardProps> = observer(function DatasetsCard
           <div className={style.cardContent}>
             <div className={style.captionCard}>Create date</div>
             <div>
-              {dataset.createDate.getDate() +
+              {new Date(dataset['{createdTime}']).getDate() +
                 '-' +
-                dataset.createDate.getMonth() +
+                new Date(dataset['{createdTime}']).getMonth() +
                 '-' +
-                dataset.createDate.getFullYear()}
+                new Date(dataset['{createdTime}']).getFullYear()}
             </div>
           </div>
           <div className={style.divider} />
           <div className={style.cardContent}>
             <div className={style.captionCard}>Author</div>
-            <div>{dataset.author}</div>
+            <div>{(dataset as any).author}</div>
           </div>
           <div className={style.divider} />
           <div className={style.cardContent}>
             <div className={style.captionCard}>Last update</div>
             <div>
-              {dataset.lastUpdate.getDate() +
+              {(dataset as any).lastUpdate.getDate() +
                 '-' +
-                dataset.lastUpdate.getMonth() +
+                (dataset as any).lastUpdate.getMonth() +
                 '-' +
-                dataset.lastUpdate.getFullYear()}
+                (dataset as any).lastUpdate.getFullYear()}
             </div>
           </div>
           <div className={style.divider} />
           <div className={style.cardContent}>
             <div className={style.captionCard}>Who updated</div>
-            <div>{dataset.whoUpdated}</div>
+            <div>{(dataset as any).whoUpdated}</div>
           </div>
           <div className={style.divider} />
           <div className={style.cardContent}>
             <div className={style.captionCard}>Owner</div>
-            <OwnersRenderer owners={dataset.owners} />
+            <OwnersRenderer owners={(dataset as any).owners} />
           </div>
         </Card>
       )}

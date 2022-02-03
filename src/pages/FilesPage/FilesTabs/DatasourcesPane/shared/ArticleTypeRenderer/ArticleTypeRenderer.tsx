@@ -1,15 +1,19 @@
 import React, { FC, memo } from 'react';
 
 import { ArticleType } from 'src/api/articleService';
+import { Tag } from 'src/shared/Tag/Tag';
+import { CellRendererProps } from 'src/types/CellRenderer';
 
 import style from './ArticleTypeRenderer.module.scss';
 
-type ArticleTypeRendererProps = {
-  articleType: ArticleType;
-};
+export const ArticleTypeRenderer: FC<CellRendererProps<ArticleType>> = memo(
+  ({ value, onClick }) => {
+    const handleClick = () => onClick?.(value);
 
-export const ArticleTypeRenderer: FC<ArticleTypeRendererProps> = memo(
-  function ArticleTypeRenderer({ articleType }) {
-    return <div className={style.type}>{articleType}</div>;
+    return (
+      <Tag className={style.type} onClick={handleClick}>
+        {value}
+      </Tag>
+    );
   }
 );
