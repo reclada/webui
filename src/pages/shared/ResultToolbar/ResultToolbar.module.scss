@@ -1,22 +1,22 @@
+@import 'src/styles/variables';
+
 .root {
-  padding: 8px 10px;
-  border: 1px solid var(--disabled-button);
-  border-radius: 8px;
-  background-color: var(--gray-white);
+  padding: 15px 10px;
+  border: none;
+  border-radius: 10px 10px 10px 10px;
+  background-color: $light-blue-1;
   display: flex;
-  align-items: center;
-  margin-bottom: 24px;
 }
 
 .separator {
-  height: 24px;
+  height: 30px;
   width: 0;
-  border-left: 1px solid #90B3C7;
-  margin: 0 24px;
+  border-left: 1px solid $steel-blue;
+  margin: 0 25px;
 }
 
 .button {
-  color: var(--primary);
+  color: $dark-blue-0;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -26,36 +26,33 @@
 
   svg {
     margin-right: 10px;
-    fill: var(--blue-1);
+    fill: $steel-blue;
   }
 }
 
-.sectionContainer {
-  display: flex;
+.iconButton {
+  padding: 2px 0 0 0;
+  cursor: pointer;
+
+  svg {
+    fill: $steel-blue
+  }
 }
 
 .iconButton {
   cursor: pointer;
-  margin: 0 8px;
-  padding: 0px;
-  display: flex;
-  align-items: center;
-
   svg {
-    fill: var(--blue-1);
+    fill: $steel-blue
   }
 
-  &:disabled {
-    cursor: not-allowed;
-
-    svg {
-      fill: var(--disabled-button);
-    }
+  &:nth-of-type(2) {
+    margin: 0 25px;
   }
+
 }
 
 .actions {
   padding-left: 24px;
   padding-top: 5px;
-  color: var(--blue-1);
+  color: #536D85;
 }

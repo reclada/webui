@@ -1,60 +1,79 @@
-$menu-width: 210px;
+@import 'src/styles/variables';
+
+$entry-padding-x: 30px;
 
 .root {
-  width: 72px;
-  color: var(--sidebar-color);
+  width: 100px;
+  //background-color: $sidebar-background;
+  color: $sidebar-color;
   left: 0;
   transition-property: width;
   transition-duration: 0.2s;
   transition-timing-function: ease-out;
-  z-index: 4;
-  background-color: var(--sidebar-background);
-  display: flex;
-  flex-direction: column;
+}
+
+.root.opened {
+  width: 300px;
+}
+
+.wrapper {
+  overflow-x: hidden;
+  height: 100vh;
+}
+
+.jnjlogo {
+  background: #d51900;
+  padding: 19px;
+}
+
+.menuItem {
+  padding: 34px 34px 0;
+  cursor: pointer;
+}
+
+.menuItem:hover {
+  filter: brightness(200%);
 }
 
 .sidebarcontainer {
   display: flex;
-  position: relative;
-  max-height: calc(100vh - 68px);
 }
 
 .sidemenucontainter {
-  padding: 16px;
-  background-color: var(--gray);
-  flex-direction: column;
-  opacity: 0;
-  transition: all .3s ease-in-out;
-  margin-left: -$menu-width;
-  z-index: 2;
-  overflow: hidden;
-  width: 210px;
-  max-width: 210px;
+  width: 216px;
+  padding-top: 36px;
+  background-color: #536d85;
+}
 
-  &.openedMenu {
-    margin-left: 0px;
-    opacity: 1;
-    overflow: auto;
-  }
+.sidemenuinnercontainter {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.sidemenuheader {
+  font-family: Arial;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 28px;
+  color: #ffffff;
+  margin-bottom: 32px;
+}
+
+.sidebarlink,
+.sidebarlink:active,
+.sidebarlink:visited {
+  color: white;
+}
+
+.sidebarlink:hover {
+  color: #0a93f5;
 }
 
 .sidebarlink {
-  color: var(--primary);
-  font-size: 16px;
-  line-height: 24px;
-
-  &.active {
-    color: var(--accent);
-  }
-
-  &:hover {
-    color: var(--accent);
-  }
-}
-
-.closeSideMenuButton {
-  margin-bottom: 24px;
-  width: 100%;
+  margin-left: 14px;
+  position: relative;
+  bottom: 3px;
 }
 
 .divider {
@@ -63,50 +82,41 @@ $menu-width: 210px;
   margin-top: 24px;
 }
 
-.menuSection:not(:last-child) {
-  margin-bottom: 24px;
+.buttonscontainer {
+  height: 100vh;
+  position: fixed;
+  background-color: $sidebar-background;
 }
 
-.menuSectionHeader {
-  margin-bottom: 16px;
+.activeSvg > svg {
+  fill: white !important;
+}
+
+.menuItem > svg {
+  fill: #90b3c7;
+}
+
+.menuItem > svg:hover {
+  fill: #90b3c7;
+  opacity: 0.9;
+}
+.menuItemHeader {
+  margin-bottom: 20px;
+}
+.menuItemHeader,
+.menuItemHeader > a {
+  font-family: Arial;
+  font-style: normal;
+  font-weight: normal;
   font-size: 18px;
-  line-height: 30px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
+  line-height: 21px;
+  /* identical to box height */
 
-  > svg {
-    fill: var(--primary);
-    margin-right: 8px;
-  }
+  /* White */
+
+  color: #ffffff;
 }
 
-.tabs {
-  margin-left: 6px;
-
-  :global(.ant-tabs-content-holder) {
-    display: none;
-  }
-
-  :global(.ant-tabs-ink-bar) {
-    width: 4px !important;
-  }
-
-  :global(.ant-tabs-tab) {
-    padding: 0 18px !important;
-  }
-
-  :global(.ant-tabs-nav-wrap) {
-    z-index: 4;
-  }
-}
-
-.rail {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 4px;
-  border-radius: 2px;
-  background-color: #E4E4E4;
+.menuItemHeader > a:hover {
+  color: #90b3c7;
 }

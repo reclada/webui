@@ -14,7 +14,9 @@ export const FileSearch: React.FC = function FileSearch() {
           console.log('input');
         }}
       />
-      <Button size="l">Search</Button>
+      <Button className={style.searchButton} size="l">
+        Search
+      </Button>
     </div>
   );
 };

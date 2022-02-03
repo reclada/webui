@@ -55,21 +55,21 @@ export const DatasourcesCard: FC<DatasetCardProps> = observer(function Datasourc
         <Card className={style.card} loading={true}></Card>
       ) : (
         <Card
-          key={datasource['{GUID}:string']}
+          key={datasource.GUID}
           className={style.card}
-          extra={<MoreMenuRenderer datasource={datasource as any} onUpdate={onUpdate} />}
+          extra={<MoreMenuRenderer datasource={datasource} onUpdate={onUpdate} />}
           title={
             <div className={style.titleCard}>
               <Checkbox
                 checked={
                   datasourceTableService.selectedRows.filter(
-                    chel => datasource['{GUID}:string'] === chel
+                    chel => datasource.GUID === chel
                   ).length > 0
                 }
                 className={style.checkboxCard}
                 onChange={onSelect}
               />
-              <ArticleTypeRenderer value={datasource.type} />
+              <ArticleTypeRenderer articleType={datasource.type} />
             </div>
           }
         >

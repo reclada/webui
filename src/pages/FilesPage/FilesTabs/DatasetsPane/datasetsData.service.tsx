@@ -1,7 +1,6 @@
 import { action, makeObservable, observable } from 'mobx';
 
 import { fetchDatasets, IDataset } from 'src/api/datasetsDataGateService';
-import { IRecladaDataset } from 'src/api/IRecladaObject';
 import BaseListStore, { BaseListStoreType } from 'src/stores/BaseListStore';
 import {
   DisplayingTypes,
@@ -14,12 +13,12 @@ import {
 } from 'src/stores/Types';
 
 class DatasetsDataService {
-  private _listStore: BaseListStoreType = new BaseListStore<IRecladaDataset>(
+  private _listStore: BaseListStoreType = new BaseListStore<IDataset>(
     1000,
-    this.fetchData.bind(this) as any
+    this.fetchData.bind(this)
   );
   @observable private dispType: DisplayingTypes = DisplayingTypes.TABLE;
-  @observable private aRecord: IRecladaDataset | undefined;
+  @observable private aRecord: IDataset | undefined;
   @observable private sortopen: boolean = false;
 
   @observable private orderList: RecladaOrder[] | undefined;
@@ -78,7 +77,7 @@ class DatasetsDataService {
     return this.dispType;
   }
 
-  get activeRecord(): IRecladaDataset | undefined {
+  get activeRecord(): IDataset | undefined {
     return this.aRecord;
   }
 
@@ -101,8 +100,8 @@ class DatasetsDataService {
     return this._listStore.updateRow.bind(this._listStore);
   }
 
-  getRow(index: number): IRecladaDataset | undefined {
-    return this._listStore.getRow(index) as IRecladaDataset;
+  getRow(index: number): IDataset | undefined {
+    return this._listStore.getRow(index) as IDataset;
   }
 
   updateList(index: number) {
@@ -114,7 +113,7 @@ class DatasetsDataService {
   }
 
   @action
-  setDatasets(datasets: IRecladaDataset[]) {
+  setDatasets(datasets: IDataset[]) {
     //this.datasetsList = datasets;
   }
 
@@ -125,12 +124,8 @@ class DatasetsDataService {
   }
 
   @action
-  setActiveRecord(activeRecord: IRecladaDataset | undefined) {
-    if (
-      this.aRecord &&
-      activeRecord &&
-      this.aRecord['{GUID}'] === activeRecord['{GUID}']
-    ) {
+  setActiveRecord(activeRecord: IDataset | undefined) {
+    if (this.aRecord && activeRecord && this.aRecord.GUID === activeRecord.GUID) {
       this.aRecord = undefined;
     } else {
       this.aRecord = activeRecord;

@@ -1,3 +1,12 @@
+@import 'src/styles/variables';
+
+.root {
+  font-size: 14px;
+  margin-bottom: -2px;
+
+
+}
+
 :global {
   .rc-select {
     cursor: pointer !important;
@@ -5,11 +14,7 @@
 
     &-selector {
       border: none !important;
-      font-weight: bold;
-      font-size: 16px;
-      line-height: 24px;
-      color: var(--accent);
-      padding-right: 24px;
+      font-size: 14px;
 
       input {
         cursor: pointer;
@@ -18,26 +23,23 @@
 
     // ============== Dropdown ===============
     &-dropdown {
+      width: auto !important;
+      padding-top: 5px;
       font-size: 14px;
-      line-height: 20px;
-      
+
       & > div {
-        padding: 8px 0px;
-        background-color: var(--primary);
+        border: 1px solid $dark-blue-0;
         border-radius: 5px;
-        border: none;
         overflow: hidden;
+        min-height: 50px;
+        background: $white;
       }
     }
 
     // =============== Option ================
     &-item {
-      background-color: var(--primary);
-      color: var(--white);
+      font-size: 14px;
       cursor: pointer;
-      transition: background-color 200ms ease-in;
-      padding: 4px 16px 4px 12px;
-
       // >>> Option
       &-option {
         .rc-select-item-option-state {
@@ -45,7 +47,11 @@
         }
         // ------- Active -------
         &-active {
-          background: var(--menu-background);
+          background: $light-blue-1;
+        }
+        // ------ Disabled ------
+        &-disabled {
+          color: $gray-4;
         }
       }
       // >>> Empty
@@ -53,27 +59,12 @@
         text-align: center;
         color: #999;
       }
-
-      &:hover {
-        background-color: #536D85;
-      }
     }
-
-    &-show-arrow &-arrow {
-      position: absolute;
-      right: 4px;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-    }
-  }
-
-  .rc-virtual-list-holder {
-    max-height: 184px !important;
   }
 }
 
 .arrow {
-  fill: #536D85;
+  fill: $steel-blue;
+  margin-top: 5px;
 }
 

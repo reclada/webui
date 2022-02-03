@@ -1,3 +1,5 @@
+@import 'src/styles/variables';
+
 .tabs {
   > div::before {
     border-bottom: none !important;
@@ -7,7 +9,7 @@
 .tabHeader {
   font-size: 18px;
   line-height: 21px;
-  color: var(--primary);
+  color: $dark-blue-0;
   font-style: normal;
   font-weight: bold;
 

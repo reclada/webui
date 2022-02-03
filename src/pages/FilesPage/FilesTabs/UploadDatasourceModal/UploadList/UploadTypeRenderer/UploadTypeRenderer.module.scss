@@ -1,3 +1,5 @@
+@import 'src/styles/variables';
+
 .type {
   width: 40px;
   height: 32px;
@@ -6,8 +8,8 @@
   text-align: center;
   font-size: 10px;
   font-weight: bold;
-  color: var(--white);
-  background-color: var(--primary);
+  color: $white;
+  background-color: $dark-blue-0;
   white-space: nowrap;
   border-radius: 4px;
 }

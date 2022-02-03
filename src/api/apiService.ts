@@ -1,12 +1,8 @@
 import { authService } from 'src/services/authService';
 import { axiosCall } from 'src/utils/ajaxCall';
 
-interface Meta {
-  ver?: number;
-}
-
 class ApiService {
-  async callRpcPost<T>(url: string, payload: any, meta: Meta = {}): Promise<T> {
+  async callRpcPost<T>(url: string, payload: any): Promise<T> {
     const token = await authService.getAccessToken();
 
     if (token) {
@@ -18,7 +14,6 @@ class ApiService {
         url,
         {
           data: payload,
-          ...meta,
         },
         {
           headers: { 'Content-Profile': 'api' },

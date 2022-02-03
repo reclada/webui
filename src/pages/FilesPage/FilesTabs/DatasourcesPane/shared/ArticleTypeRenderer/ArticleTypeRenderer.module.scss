@@ -1,16 +1,15 @@
+@import 'src/styles/variables';
+
 .type {
-  background-color: #90B3C7;
-  color: var(--white);
-
-  svg {
-    fill: var(--white);
-  }
-
-  &:hover {
-    background-color: var(--blue-1);
-  }
-
-  &:active {
-    background-color: var(--accent-pressed);
-  }
+  width: 40px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 2px;
+  background: $dark-blue-0;
+  color: $white;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 18px;
+  overflow-wrap: normal;
+  text-align: center;
 }

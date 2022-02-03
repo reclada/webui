@@ -1,3 +1,4 @@
+@import 'src/styles/variables';
 .card {
   margin: 5px;
   width: 32%;
@@ -14,7 +15,7 @@
 
 .divider {
   width: 100%;
-  border: 1px solid var(--gray);
+  border: 1px solid #eeeeee;
   margin-top: 5px;
 }
 
@@ -35,7 +36,7 @@
 }
 
 .nameCard {
-  color: var(--accent);
+  color: $cyan;
   font-weight: bold;
   font-size: 16px;
   border-radius: 2px;

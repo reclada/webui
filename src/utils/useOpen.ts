@@ -4,7 +4,6 @@ interface UseOpenResult {
   isOpen: boolean;
   open: () => void;
   close: () => void;
-  toggle: () => void;
 }
 
 export function useOpen(initialValue = false): UseOpenResult {
@@ -18,14 +17,9 @@ export function useOpen(initialValue = false): UseOpenResult {
     setIsOpen(false);
   }, []);
 
-  const toggle = useCallback(() => {
-    setIsOpen(prevValue => !prevValue);
-  }, []);
-
   return {
     isOpen,
     open: handleOpen,
     close: handleClose,
-    toggle,
   };
 }

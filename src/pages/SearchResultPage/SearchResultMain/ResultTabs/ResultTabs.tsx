@@ -32,9 +32,7 @@ export const ResultTabs: FC<ResultTabsProps> = function ResultTabs({ className }
             tab={
               <>
                 <span className={style.tabTitle}>{tab.title}: </span>
-                <span className={classNames('tabCount', style.tabCount)}>
-                  {tab.itemsFound}
-                </span>
+                <span className={style.tabCount}>{tab.itemsFound}</span>
               </>
             }
           />

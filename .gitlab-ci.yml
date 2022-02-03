@@ -32,7 +32,7 @@ prepare_webui:
     - echo TEST_PARAMETERS_WEB_BASE_URL = "${ENV}.reclada.com" >> prepare.env
   artifacts:
     reports:
-      dotenv: prepare.env 
+      dotenv: prepare.env
   rules:
     - if: $CI_COMMIT_REF_NAME == "master"
       when: always

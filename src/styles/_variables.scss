@@ -16,8 +16,6 @@ $light-blue: #D3E9F5;
 $light-blue-1: #e9f4fa;
 
 $cyan: #0A93F5;
-$cyan-hovered: #0082DF;
-$cyan-pressed: #0069B4;
 
 $midnight-gray: #393e42;
 
@@ -29,58 +27,9 @@ $background: $white;
 
 $sidebar-background: $dark-blue-0;
 $sidebar-color: $light-blue;
+$sidebar-header: $light-blue;
 
 $disabled-color: #888888;
 
 $danger-color: #E87575;
 $success-color: #27AE60;
-
-$green: #58BA0B;
-$dark-green: #449B00;
-$light-green: #EFF9E7;
-
-$red: #ED3B3B;
-
-// TODO: remove scss variables
-
-:root {
-    --blue-0: #243B50;
-    --blue-1: #536D85;
-    --blue-2: #90B3C7;
-    --blue-3: #BBD7E7;
-    --blue-4: #B6DFFC;
-
-    --charcoal: #3A4F62;
-
-    --white: #ffffff;
-    --gray-white: #FAFBFC;  
-    --gray: #EEEEEE;
-
-    --cyan: #0A93F5;
-    --cyan-hovered: #0082DF;
-    --cyan-pressed: #0069B4;
-
-    --disabled-color: #888888;
-
-    --green: #58BA0B;
-    --dark-green: #449B00;
-    --light-green: #EFF9E7;
-
-    --red: #ED3B3B;
-
-    --primary: var(--blue-0);
-
-    --accent: var(--cyan);
-    --accent-hovered: var(--cyan-hovered);
-    --accent-pressed: var(--cyan-pressed);
-
-    --sidebar-background: var(--blue-0);
-    --sidebar-color: var(--white);
-
-    --menu-background: var(--charcoal);
-
-    --disabled-button: var(--blue-3);
-
-    --error: var(--red);
-    --success: var(--green);
-}

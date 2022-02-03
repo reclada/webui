@@ -1,3 +1,5 @@
+@import 'src/styles/variables';
+
 .root {
   width: 31px;
   height: 31px;
@@ -6,9 +8,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--primary);
+  background-color: $dark-blue-0;
 
   svg {
-    fill: var(--white);
+    fill: $white;
   }
 }

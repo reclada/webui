@@ -4,8 +4,6 @@ import React, { FC, useCallback, useState } from 'react';
 import { ReactComponent as Empty } from 'src/resources/empty.svg';
 import { ReactComponent as Plus } from 'src/resources/plus.svg';
 import { FiltersOperators, RecladaFilter } from 'src/stores/Types';
-import { useOpen } from 'src/utils/useOpen';
-import { useSubscription } from 'src/utils/useSubscription';
 
 import style from './FilterModal.module.scss';
 
@@ -13,16 +11,17 @@ type FilterModalProps = {
   filters?: RecladaFilter[];
   enableFilters?: RecladaFilter[];
   setFilters: (value: RecladaFilter[] | undefined) => void;
+  onClose: () => void;
 };
 
 const { Option } = Select;
 
 export const FilterModal: FC<FilterModalProps> = function FilterModal({
+  onClose,
   filters,
   enableFilters,
   setFilters,
 }) {
-  const { isOpen, open, close } = useOpen();
   const [currentFilters, setCurrentFilters] = useState(filters ? filters : []);
 
   const onClickAdd = useCallback(() => {
@@ -33,12 +32,6 @@ export const FilterModal: FC<FilterModalProps> = function FilterModal({
       ]);
     }
   }, [currentFilters, enableFilters]);
-
-  useSubscription('OPEN_FILTER_MODAL', open);
-
-  if (!isOpen) {
-    return null;
-  }
 
   const content = currentFilters
     ? currentFilters.map((el, index) => {
@@ -131,7 +124,15 @@ export const FilterModal: FC<FilterModalProps> = function FilterModal({
       destroyOnClose={true}
       footer={
         <div>
-          <Button key={0} shape="round" size="large" type="default" onClick={close}>
+          <Button
+            key={0}
+            shape="round"
+            size="large"
+            type="default"
+            onClick={() => {
+              onClose();
+            }}
+          >
             Cancel
           </Button>
           <Button
@@ -142,7 +143,7 @@ export const FilterModal: FC<FilterModalProps> = function FilterModal({
             type="primary"
             onClick={() => {
               setFilters(currentFilters);
-              close();
+              onClose();
             }}
           >
             Apply
@@ -151,7 +152,7 @@ export const FilterModal: FC<FilterModalProps> = function FilterModal({
       }
       okText="Apply"
       visible={true}
-      onCancel={close}
+      onCancel={onClose}
     >
       <Typography.Title level={4}>Filters</Typography.Title>
       <button className={style.iconButton} onClick={onClickAdd}>

@@ -1,5 +1,7 @@
+@import 'src/styles/variables';
+
 .title {
-  color: var(--accent);
+  color: $cyan;
   font-weight: bold;
   font-size: 16px;
   border-radius: 2px;

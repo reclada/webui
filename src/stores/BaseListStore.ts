@@ -1,32 +1,24 @@
 import { observable, action, makeObservable, ObservableMap, runInAction } from 'mobx';
 import { computedFn } from 'mobx-utils';
 
-import { Display, DisplaySettings } from 'src/api/objectService';
-
 import { IIdentifiable } from './Types';
 
 interface IResult<TListItem> {
   number: number;
-  display: Display;
   objects: TListItem[];
 }
 
 export default class BaseListStore<TListItem extends IIdentifiable> {
-  @observable protected _results: ObservableMap<number, TListItem> = observable.map<
+  @observable.shallow protected _results: ObservableMap<
     number,
     TListItem
-  >();
+  > = observable.map<number, TListItem>(undefined, { deep: false });
   @observable protected _count: number = 0;
   @observable protected _currentPage: number = 0;
   @observable protected _isError: boolean = false;
   @observable protected _isLoading: boolean = false;
-  @observable protected _tableDisplay: DisplaySettings = {
-    orderColumn: [],
-    orderRow: [],
-    columns: {},
-  };
 
-  @observable protected rowInPage: number;
+  protected rowInPage: number;
   protected pageLoding: Set<number> = new Set<number>();
   protected cache: Map<number, number> = new Map<number, number>();
 
@@ -57,14 +49,6 @@ export default class BaseListStore<TListItem extends IIdentifiable> {
     return this._isLoading;
   }
 
-  get tableDisplay() {
-    return this._tableDisplay;
-  }
-
-  get pageSize() {
-    return this.rowInPage;
-  }
-
   @action
   setCount(value: number) {
     this._count = value;
@@ -89,19 +73,10 @@ export default class BaseListStore<TListItem extends IIdentifiable> {
 
   initList() {
     this.setLoading(true);
-    this.setCurrentPage(0);
     this.fetchData(0, this.rowInPage)
-      .then(({ objects, number, display }) => {
-        this.addToList(objects, 0);
-        this.setCount(number);
-
-        const orderColumn = this._tableDisplay.orderColumn;
-
-        this.setTableDisplay({
-          ...display.table,
-          orderColumn: orderColumn.length > 0 ? orderColumn : display.table.orderColumn,
-        });
-
+      .then(result => {
+        this.addToList(result.objects, 0);
+        this.setCount(result.number);
         this.setLoading(false);
       })
       .catch(err => {
@@ -134,40 +109,10 @@ export default class BaseListStore<TListItem extends IIdentifiable> {
     this.cache.set(val, new Date().getTime());
   }
 
-  @action
-  setTableDisplay(tableDisplay: DisplaySettings) {
-    this._tableDisplay = tableDisplay;
-  }
-
-  @action
-  setColumnOrder(index: number, offset: number) {
-    const delta = Math.round(offset / 250);
-
-    if (!delta) {
-      return;
-    }
-
-    const newHeaders = [...this._tableDisplay.orderColumn];
-    const temp = newHeaders[index];
-
-    newHeaders[index] = newHeaders[index + delta];
-    newHeaders[index + delta] = temp;
-    this._tableDisplay.orderColumn = newHeaders;
-  }
-
-  @action
-  setPageSize(pageSize: number) {
-    const items = this.rowInPage * this.currentPage;
-    const newPage = Math.floor(items / pageSize);
-
-    this.rowInPage = pageSize;
-    this.setCurrentPage(newPage);
-
-    // TODO: check work of caching
-  }
-
   updateList(index: number) {
     const page = Math.floor(index / this.rowInPage);
+
+    this.setCurrentPage(page);
 
     if (!this.pageLoding.has(page) && !this._results.has(index)) {
       this.pageLoding.add(page);
